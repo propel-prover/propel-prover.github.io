@@ -182,15 +182,38 @@ function selectedIndexPopup() {
     return index;
 }
 
-function selectOffsetPopup(offset) {
+function highlightOptionOffsetPopup(offsetIndex) {
+    const N = document.querySelectorAll("#autocomplete li").length;
     const index = selectedIndexPopup();
+    const newIndex = (N + index + offsetIndex) % N;
+    highlightOptionPopup(newIndex, true);
+}
+
+function highlightOptionPopup(index, scroll) {
+    const selected = selectedIndexPopup();
     const lis = document.querySelectorAll("#autocomplete li");
-    const N = lis.length
-    const newIndex = (N + index + offset) % N;
-    lis[index].className = '';
-    lis[newIndex].className = 'selected';
+    lis[selected].className = '';
+    lis[index].className = 'selected';
     copyDescriptionPopup();
-    document.querySelector("#syntax").scrollTop = lis[newIndex].offsetTop - lis[newIndex].offsetHeight - 50;
+    if (scroll) {
+        const target = lis[index];
+        const popup = document.querySelector("#syntax");
+        if (target.offsetTop - target.offsetHeight < popup.scrollTop
+         || target.offsetTop > popup.scrollTop + popup.offsetHeight)
+            popup.scrollTop = target.offsetTop - target.offsetHeight - 50;
+    }
+}
+
+function insertSelectionPopup() {
+    const selected = document.querySelector("#autocomplete li.selected code");
+    const code = selected.innerText;
+    const text = code.startsWith("(") ? code.substr(1) : code + ")";
+    const editor = document.querySelector("#editor");
+    editor.value = editor.value.substr(0, editor.selectionStart) + text +
+                   editor.value.substr(editor.selectionStart);
+    editor.dispatchEvent(new Event('input'));
+    console.log("Will insert ", text);
+    closePopup();
 }
 
 function closePopup() {
@@ -207,6 +230,7 @@ function initEditor() {
     const viewer = document.querySelector("#viewer");
 
     let popupOpen = false;
+    let lastKeyDownEventDate = 0;
 
     function scroll() {
         viewer.scrollTop = editor.scrollTop;
@@ -224,22 +248,23 @@ function initEditor() {
         scroll();
     });
 
-    function popupEventListener(e) {
+    function popupKeyDownEventListener(e) {
         if (e.keyCode == 27) { // ESC key pressed: close popup
             closePopup();
         } else if (isOpenPopup()) {
-            if (e.keyCode == 38) { // UP
-                selectOffsetPopup(-1);
+            if (e.keyCode == 38 || e.keyCode == 40) { // UP or DOWN
+                lastKeyDownEventDate = performance.now();
+                highlightOptionOffsetPopup(e.keyCode - 39); // -1 on UP, 1 on DOWN
                 e.preventDefault();
-            } else if (e.keyCode == 40) { // DOWN
-                selectOffsetPopup(1);
+            } else if (e.keyCode == 13) { // ENTER
+                insertSelectionPopup();
                 e.preventDefault();
             }
         }
     }
 
-    editor.addEventListener('keydown', popupEventListener);
-    document.querySelector("#autocomplete").addEventListener('keydown', popupEventListener);
+    editor.addEventListener('keydown', popupKeyDownEventListener);
+    document.querySelector("#autocomplete").addEventListener('keydown', popupKeyDownEventListener);
 
     editor.addEventListener('scroll', scroll);
 
@@ -249,6 +274,15 @@ function initEditor() {
         if (editor.selectionStart == editor.selectionEnd) {
             highlightParen(editor.value, editor.selectionStart, '#D8D8D8');
         }
+    });
+
+    document.querySelectorAll("#autocomplete li").forEach(function (elem, index) {
+        elem.addEventListener('mouseover', function() {
+            // do not rehighlight if after up/down keypress a new <li> triggers its mouseover
+            if (performance.now() - lastKeyDownEventDate > 100)
+                highlightOptionPopup(index, false);
+        });
+        elem.addEventListener('click', insertSelectionPopup);
     });
 }
 
