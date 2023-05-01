@@ -3,347 +3,284 @@
 <head>
 <title>Propel</title>
 <meta charset="utf8">
-<style>
-#codewrapper {
-    position: relative;
-    height: 200px;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    flex: 1;
-    margin-right: 20px;
-}
-#viewer .line {
-    display: block;
-    min-height: 20px;
-    counter-increment: line;
-    padding: 0;
-}
-#viewer .line:before {
-    content: counter(line);
-    margin-left: -40px;
-    padding-right: 10px;
-    text-align: right;
-    width: 30px;
-    display: inline-block;
-    color: #999999;
-    font-size: 10px;
-    height: 0;
-}
-#viewer, #editor {
-    width: 100%;
-    height: 200px;
-    padding: 10px;
-    margin: 0px;
-    font-size: 14px;
-    font-family: monospace;
-    padding-left: 40px;
-    line-height: 20px;
-    overflow: scroll;
-    border: 1px solid #CCC;
-    display: block;
-    box-sizing: content-box;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-    position: absolute;
-    top: 0;
-    left: 0;
-    resize: none;
-    tab-size: 2;
-    margin-right: 10px;
-    outline: none;
-}
-#viewer { z-index: 0; }
-#editor {
-    z-index: 1;
-    color: transparent;
-    background: transparent;
-    caret-color: #444;
-}
-#viewer {
-    background: #f8f8f8;
-    color: #444444;
-    counter-reset: line 0;
-}
-
-#console {
-    display: block;
-    overflow: scroll;
-    height: 200px;
-    padding: 10px;
-    margin: 0;
-    border: 1px solid #CCC;
-    flex: 1;
-    width: 100%;
-    margin-left: 60px;
-}
-
-#status {
-    padding: 10px;
-    height: 20px;
-}
-
-#codeAndConsole {
-    display: flex;
-    justify-content: space-between;
-}
-
-#autocomplete {
-    width: 500px;
-    padding: 0px;
-    border: 1px solid #E8E4C1;
-    background: #FFFFE0;
-    position: absolute;
-    z-index: 2;
-    visibility: hidden;
-    font-size: 12px;
-}
-#autocomplete .description {
-    display: none;
-}
-#autocomplete ul {
-    margin: 0; padding: 0;
-}
-#autocomplete li {
-    list-style: none;
-    padding: 5px 10px;
-    border-bottom: 1px solid #CCC;
-    cursor: pointer;
-}
-#autocomplete li.selected {
-    background: rgba(0,0,0,0.05);
-}
-#autocomplete ul li:first-child {
-    border-top: 1px solid #CCC;
-}
-#autocomplete h3 {
-    margin: 5px 10px;
-    font-size: 14px;
-    font-weight: bold;
-    font-variant: small-caps;
-    margin-left: 35px;
-}
-#autocomplete .hint {
-    font-size: 10px;
-    padding: 10px;
-}
-#autocomplete  #syntax {
-    width: 500px;
-    height: 200px;
-    overflow-y: scroll;
-}
-#autocomplete #selected-description {
-    width: 480px;
-    border-top: 2px solid #CCC;
-    padding: 10px;
-    font-size: 14px;
-}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="interactiveCode">
-    <div id="autocomplete">
-        <div class="hint">Use the Up/Down arrow to cycle through the options. Click Enter to introduce the syntactic form. Click ESC to close popup</div>
-        <div id="syntax">
-        <h3>Expressions</h3>
-        <ul>
-            <li class="selected">
-                <code>(lambda [<em>prop...</em>] <em>arg...</em> <em>expr</em>)</code>
-                <div class="description">
-                A lambda expression with zero or more <em>properties</em>, one or more arguments of the form <code>(var type)</code>, and an expression.
-                The annotated properties are type checked and will be part of the function's type.
-                </div>
-            </li>
-            <li>
-                <code>(letrec <em>var</em> <em>type</em> <em>expr</em>)</code>
-                <div class="description">
-                Introduces a recursive definition bound to <em>var</em> that has the designed type and an expression.
-                Thus the identifier <em>var</em> is bound, and can be used, in <em>expr</em>
-                </div>
-            </li>
-            <li>
-                <code>(cases <em>expr</em> <em>[pattern expr]...</em>)</code>
-                <div class="description">
-                Perform a pattern match on the result of the first expression.
-                Cases are surrounded by square brackets and each case has one pattern and one expression to be executed if the case matches.
-                Free variables in patterns are bound as expected.
-                </div>
-            </li>
-            <li>
-                <code>(let <em>pattern</em> <em>expr</em> <em>expr</em>)</code>
-                <div class="description">
-                Introduces a definition for each free variable in a given pattern (that must be exhaustive) that matches the first expression in the second expression.
-                Non-trivial patterns are useful when a type has only one constructor, for example <code>Tuple</code>.
-                </div>
-            </li>
-            <li>
-                <code>(if <em>expr</em> <em>expr</em> <em>expr</em>)</code>
-                <div class="description">
-                Performs a conditional check. The first expression is expected to reduce to either <code>True</code> or <code>False</code>
-                </div>
-            </li>
-            <li>
-                <code>(not <em>expr</em>)</code>
-                <div class="description">
-                Negates the booleans <code>True</code> or <code>False</code>
-                </div>
-            </li>
-            <li>
-                <code>(and <em>expr</em> <em>expr</em>)</code>
-                <div class="description">
-                Computes the conjunction of two booleans
-                </div>
-            </li>
-            <li>
-                <code>(or <em>expr</em> <em>expr</em>)</code>
-                <div class="description">
-                Computes the disjunction of two booleans
-                </div>
-            </li>
-            <li>
-                <code>(implies <em>expr</em> <em>expr</em>)</code>
-                <div class="description">
-                Computes the implication between two booleans where the first expression is the antecedent and the second expression is the consequent.
-                </div>
-            </li>
-            <li>
-                <code>(type <em>var</em> <em>type</em>)</code>
-                <div class="description">
-                Introduce a type alias.
-                <em>var</em> will be bound to <em>type</em> in the rest of the program.
-                </div>
-            </li>
-        </ul>
 
-        <h3>Patterns</h3>
-        <ul>
-            <li>
-                <code>var</code>
-                <div class="description">
-                A pattern that will bind to everything.
-                </div>
-            </li>
-            <li>
-                <code>(<em>K</em> <em>pattern...</em>)</code>
-                <div class="description">
-                A pattern that will only match expressions constructed with the constructor <em>K</em> and whose arguments match each subpattern.
-                </div>
-            </li>
-        </ul>
+<div id="jumbo">
+    <div id="interactiveCode">
+        <h1>Try Propel</h1>
+        <h2>Check the commutativity, associativity, idempotency, and more algebraic properties of
+        your functions and binary relations in the browser</h2>
+        <div id="autocomplete"><!--{{{-->
+            <div class="hint">Use the Up/Down arrow to cycle through the options. Click Enter to introduce the syntactic form. Click ESC to close popup</div>
+            <div id="syntax">
+            <h3>Expressions</h3>
+            <ul>
+                <li class="selected">
+                    <code>(lambda [<em>prop...</em>] <em>arg...</em> <em>expr</em>)</code>
+                    <div class="description">
+                    A lambda expression with zero or more <em>properties</em>, one or more arguments of the form <code>(var type)</code>, and an expression.
+                    The annotated properties are type checked and will be part of the function's type.
+                    </div>
+                </li>
+                <li>
+                    <code>(letrec <em>var</em> <em>type</em> <em>expr</em>)</code>
+                    <div class="description">
+                    Introduces a recursive definition bound to <em>var</em> that has the designed type and an expression.
+                    Thus the identifier <em>var</em> is bound, and can be used, in <em>expr</em>
+                    </div>
+                </li>
+                <li>
+                    <code>(cases <em>expr</em> <em>[pattern expr]...</em>)</code>
+                    <div class="description">
+                    Perform a pattern match on the result of the first expression.
+                    Cases are surrounded by square brackets and each case has one pattern and one expression to be executed if the case matches.
+                    Free variables in patterns are bound as expected.
+                    </div>
+                </li>
+                <li>
+                    <code>(let <em>pattern</em> <em>expr</em> <em>expr</em>)</code>
+                    <div class="description">
+                    Introduces a definition for each free variable in a given pattern (that must be exhaustive) that matches the first expression in the second expression.
+                    Non-trivial patterns are useful when a type has only one constructor, for example <code>Tuple</code>.
+                    </div>
+                </li>
+                <li>
+                    <code>(if <em>expr</em> <em>expr</em> <em>expr</em>)</code>
+                    <div class="description">
+                    Performs a conditional check. The first expression is expected to reduce to either <code>True</code> or <code>False</code>
+                    </div>
+                </li>
+                <li>
+                    <code>(not <em>expr</em>)</code>
+                    <div class="description">
+                    Negates the booleans <code>True</code> or <code>False</code>
+                    </div>
+                </li>
+                <li>
+                    <code>(and <em>expr</em> <em>expr</em>)</code>
+                    <div class="description">
+                    Computes the conjunction of two booleans
+                    </div>
+                </li>
+                <li>
+                    <code>(or <em>expr</em> <em>expr</em>)</code>
+                    <div class="description">
+                    Computes the disjunction of two booleans
+                    </div>
+                </li>
+                <li>
+                    <code>(implies <em>expr</em> <em>expr</em>)</code>
+                    <div class="description">
+                    Computes the implication between two booleans where the first expression is the antecedent and the second expression is the consequent.
+                    </div>
+                </li>
+                <li>
+                    <code>(type <em>var</em> <em>type</em>)</code>
+                    <div class="description">
+                    Introduce a type alias.
+                    <em>var</em> will be bound to <em>type</em> in the rest of the program.
+                    </div>
+                </li>
+            </ul>
 
-        <h3>Properties</h3>
-        <ul>
-            <li>
-                <code>comm</code>
-                <div class="description">
-                Commutativity: <code>(f x y) = (f y x)</code>
-                </div>
-            </li>
-            <li>
-                <code>assoc</code>
-                <div class="description">
-                Associativity: <code>(f (f x y) z) = (f x (f y z))</code>
-                </div>
-            </li>
-            <li>
-                <code>idem</code>
-                <div class="description">
-                Idempotency: <code>f x x = x</code>
-                </div>
-            </li>
-            <li>
-                <code>sel</code>
-                <div class="description">
-                Selectivity: <code>f x y = x</code> or <code>f x y = y</code>
-                </div>
-            </li>
-            <li>
-                <code>refl</code>
-                <div class="description">
-                Reflexivity: <code>f x x = True</code>
-                </div>
-            </li>
-            <li>
-                <code>irefl</code>
-                <div class="description">
-                Irreflexivity: <code>f x x = False</code>
-                </div>
-            </li>
-            <li>
-                <code>sym</code>
-                <div class="description">
-                Symmetry: If <code>f x y = True</code> then <code>f y x = True</code>
-                </div>
-            </li>
-            <li>
-                <code>antisym</code>
-                <div class="description">
-                Antisymmetry: If <code>f x y = True</code> and <code>f y x = True</code> then <code>x = y</code>
-                </div>
-            </li>
-            <li>
-                <code>asym</code>
-                <div class="description">
-                Assymetry: If <code>f x y = True</code> then <code>f y x = False</code>
-                </div>
-            </li>
-            <li>
-                <code>conn</code>
-                <div class="description">
-                Connectedness: <code>f x y = True</code> or <code>f y x = True</code>
-                </div>
-            </li>
-            <li>
-                <code>trans</code>
-                <div class="description">
-                Transitivity: If <code>f x y = True</code> and <code>f y z = True</code> then <code>f x z = True</code>
-                </div>
-            </li>
-        </ul>
+            <h3>Patterns</h3>
+            <ul>
+                <li>
+                    <code>var</code>
+                    <div class="description">
+                    A pattern that will bind to everything.
+                    </div>
+                </li>
+                <li>
+                    <code>(<em>K</em> <em>pattern...</em>)</code>
+                    <div class="description">
+                    A pattern that will only match expressions constructed with the constructor <em>K</em> and whose arguments match each subpattern.
+                    </div>
+                </li>
+            </ul>
 
-        <h3>Types</h3>
-        <ul>
-            <li>
-                <code><em>var</em></code>
-                <div class="description">
-                A type identifier as defined through <code>type</code>, or a type variable as bound by <code>rec</code> and <code>forall</code>
-                </div>
-            </li>
-            <li>
-                <code>{<em>constructor...</em>}</code>
-                <div class="description">
-                Defines a tagged union defined by at least one constructor.
-                Additionally, if constructors take arguments, then each argument's type must be present alongside the constructor inside parenthesis.
-                </div>
-            </li>
-            <li>
-                <code>(rec <em>var</em> <em>type</em>)</code>
-                <div class="description">
-                Defines a recursive type.
-                <em>var</em> will be bound to the recursive type inside <em>type</em>.
-                </div>
-            </li>
-            <li>
-                <code>(forall <em>var</em> <em>type</em>)</code>
-                <div class="description">
-                Defines a polymorphic type.
-                <em>var</em> is bound in <em>type</em>
-                </div>
-            </li>
-        </ul>
+            <h3>Properties</h3>
+            <ul>
+                <li>
+                    <code>comm</code>
+                    <div class="description">
+                    Commutativity: <code>(f x y) = (f y x)</code>
+                    </div>
+                </li>
+                <li>
+                    <code>assoc</code>
+                    <div class="description">
+                    Associativity: <code>(f (f x y) z) = (f x (f y z))</code>
+                    </div>
+                </li>
+                <li>
+                    <code>idem</code>
+                    <div class="description">
+                    Idempotency: <code>f x x = x</code>
+                    </div>
+                </li>
+                <li>
+                    <code>sel</code>
+                    <div class="description">
+                    Selectivity: <code>f x y = x</code> or <code>f x y = y</code>
+                    </div>
+                </li>
+                <li>
+                    <code>refl</code>
+                    <div class="description">
+                    Reflexivity: <code>f x x = True</code>
+                    </div>
+                </li>
+                <li>
+                    <code>irefl</code>
+                    <div class="description">
+                    Irreflexivity: <code>f x x = False</code>
+                    </div>
+                </li>
+                <li>
+                    <code>sym</code>
+                    <div class="description">
+                    Symmetry: If <code>f x y = True</code> then <code>f y x = True</code>
+                    </div>
+                </li>
+                <li>
+                    <code>antisym</code>
+                    <div class="description">
+                    Antisymmetry: If <code>f x y = True</code> and <code>f y x = True</code> then <code>x = y</code>
+                    </div>
+                </li>
+                <li>
+                    <code>asym</code>
+                    <div class="description">
+                    Assymetry: If <code>f x y = True</code> then <code>f y x = False</code>
+                    </div>
+                </li>
+                <li>
+                    <code>conn</code>
+                    <div class="description">
+                    Connectedness: <code>f x y = True</code> or <code>f y x = True</code>
+                    </div>
+                </li>
+                <li>
+                    <code>trans</code>
+                    <div class="description">
+                    Transitivity: If <code>f x y = True</code> and <code>f y z = True</code> then <code>f x z = True</code>
+                    </div>
+                </li>
+            </ul>
+
+            <h3>Types</h3>
+            <ul>
+                <li>
+                    <code><em>var</em></code>
+                    <div class="description">
+                    A type identifier as defined through <code>type</code>, or a type variable as bound by <code>rec</code> and <code>forall</code>
+                    </div>
+                </li>
+                <li>
+                    <code>{<em>constructor...</em>}</code>
+                    <div class="description">
+                    Defines a tagged union defined by at least one constructor.
+                    Additionally, if constructors take arguments, then each argument's type must be present alongside the constructor inside parenthesis.
+                    </div>
+                </li>
+                <li>
+                    <code>(rec <em>var</em> <em>type</em>)</code>
+                    <div class="description">
+                    Defines a recursive type.
+                    <em>var</em> will be bound to the recursive type inside <em>type</em>.
+                    </div>
+                </li>
+                <li>
+                    <code>(forall <em>var</em> <em>type</em>)</code>
+                    <div class="description">
+                    Defines a polymorphic type.
+                    <em>var</em> is bound in <em>type</em>
+                    </div>
+                </li>
+            </ul>
+            </div>
+            <div id="selected-description">
+            </div>
+        <!--}}}--></div>
+        <div id="controls">
+            <input type="button" value="Check" id="checkCode"></input>
+            <select id="example">
+                <option value="bv_eq" selected>BitVector equality</option>
+                <option value="nat_add3p">Peano Number addition</option>
+                <option value="natlist_gcounter">GCounter merge</option>
+            </select>
+            <input type="checkbox" id="printReduction" checked>
+            <label for="printReduction">Print reductions</label>
+            <input type="checkbox" id="printDeduction" checked>
+            <label for="printDeduction">Print deductions</label>
+            <input type="checkbox" id="checkOnInput">
+            <label for="checkOnInput">Check on change</label>
         </div>
-        <div id="selected-description">
+        <div id="codeAndConsole">
+            <div id="codewrapper">
+                <pre id="viewer"></pre>
+                <textarea id="editor" spellcheck="false"></textarea>
+            </div>
+            <div id="consoleContainer">
+                <pre id="console">Click on 'Check' to start the checking</pre>
+            </div>
         </div>
-    </div>
-    <div id="status"></div>
-    <div id="codeAndConsole">
-        <div id="codewrapper">
-            <pre id="viewer"></pre>
-            <textarea id="editor" spellcheck="false"></textarea>
-        </div>
-        <pre id="console"></pre>
+        <div id="status"><br></div>
     </div>
 </div>
+
+<script type="text/propel" id="bv_eq">
+(type bitvec (rec x {(B0 x) (B1 x) BZ})
+(type bool {True False})
+
+(letrec bv_eq (fun bitvec bitvec bool)
+  (lambda [refl trans antisym] (x bitvec) (y bitvec)
+    (cases (Tuple x y)
+        [(Tuple BZ BZ) True]
+        [(Tuple (B0 x) (B0 y)) (bv_eq x y)]
+        [(Tuple (B1 x) (B1 y)) (bv_eq x y)]
+        [_ False]))
+
+Unit)
+</script>
+
+<script type="text/propel" id="nat_add3p">
+(type nat (rec x {(S x) Z}))
+
+(letrec nat_add3p (fun nat nat nat)
+  (lambda [comm assoc] (x nat) (y nat)
+    (cases (Tuple x y)
+        [(Tuple Z y) y]
+        [(Tuple x Z) x]
+        [(Tuple (S x) (S y)) (S (S (nat_add3p x y)))]))
+Unit)
+</script>
+
+<script type="text/propel" id="natlist_gcounter">
+(type nat (rec x {(S x) Z}))
+(type list (rec x {(Cons nat x) Nil}))
+
+(letrec nat_max (fun nat nat nat)
+  (lambda (x nat) (y nat)
+    (cases (Tuple x y)
+      [(Tuple Z y) y]
+      [(Tuple x Z) x]
+      [(Tuple (S x) (S y)) (S (nat_max x y))]))
+
+(letrec natlist_gcounter (fun list list list)
+  (lambda [idem comm assoc] (x list) (y list)
+    (cases (Tuple x y)
+      [(Tuple Nil y) y]
+      [(Tuple x Nil) x]
+      [(Tuple (Cons x xs) (Cons y ys))
+       (Cons (nat_max x y) (natlist_gcounter xs ys))]))
+
+Unit))
+</script>
+
 <script src="editor.js"></script>
 </body>
 </html>

@@ -212,7 +212,6 @@ function insertSelectionPopup() {
     editor.value = editor.value.substr(0, editor.selectionStart) + text +
                    editor.value.substr(editor.selectionStart);
     editor.dispatchEvent(new Event('input'));
-    console.log("Will insert ", text);
     closePopup();
 }
 
@@ -241,8 +240,6 @@ function initEditor() {
         viewer.innerHTML = syntaxHighlight(editor.value);
     }
 
-    content();
-
     editor.addEventListener('input', function() {
         content();
         scroll();
@@ -262,6 +259,14 @@ function initEditor() {
             }
         }
     }
+
+    function loadExample() {
+        const exampleId = document.querySelector("#example").value;
+        editor.value = document.getElementById(exampleId).innerHTML.trim();
+        content();
+    }
+
+    loadExample();
 
     editor.addEventListener('keydown', popupKeyDownEventListener);
     document.querySelector("#autocomplete").addEventListener('keydown', popupKeyDownEventListener);
@@ -283,6 +288,10 @@ function initEditor() {
                 highlightOptionPopup(index, false);
         });
         elem.addEventListener('click', insertSelectionPopup);
+    });
+
+    document.querySelector("#example").addEventListener('change', function() {
+        loadExample();
     });
 }
 
@@ -324,7 +333,7 @@ function initCompiler() {
         return line;
     }
 
-    function setCodeTimeoutCompiler() {
+    function setCodeTimeoutCompiler(timeout) {
         timer = setTimeout(function() {
 
             statusElem.innerHTML = "Compiling...";
@@ -333,7 +342,9 @@ function initCompiler() {
             if (worker != null) worker.terminate();
 
             var worker = new Worker(workerCode);
-            worker.postMessage([ editorElem.value, true, true ]);
+            worker.postMessage([ editorElem.value,
+                                 document.querySelector("#printDeduction").checked,
+                                 document.querySelector("#printReduction").checked ]);
             worker.onmessage = function(e) {
                 if (e.data.done) {
                     statusElem.innerHTML = "Result: (" + e.data.time + "ms) " + getLastLine(consoleElem.innerHTML);
@@ -344,14 +355,19 @@ function initCompiler() {
                 consoleElem.scrollTop = consoleElem.scrollHeight;
             }
 
-        }, 500);
+        }, timeout);
     }
 
-    setCodeTimeoutCompiler();
-
     editorElem.addEventListener('input', function() {
+        if (document.querySelector("#checkOnInput").checked) {
+            clearTimeout(timer);
+            setCodeTimeoutCompiler(500);
+        }
+    });
+
+    document.querySelector("#checkCode").addEventListener("click", function() {
         clearTimeout(timer);
-        setCodeTimeoutCompiler();
+        setCodeTimeoutCompiler(0);
     });
 }
 
