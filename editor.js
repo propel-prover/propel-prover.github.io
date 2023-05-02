@@ -257,6 +257,13 @@ function initEditor() {
                 insertSelectionPopup();
                 e.preventDefault();
             }
+        } else if (e.keyCode == 9) { // TAB
+            const sel = editor.selectionStart;
+            editor.value = editor.value.substr(0, sel) + '\t' + editor.value.substr(sel);
+            editor.selectionStart = sel+1;
+            editor.selectionEnd = sel+1;
+            content();
+            e.preventDefault();
         }
     }
 

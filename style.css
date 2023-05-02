@@ -83,9 +83,10 @@ html, body {
     padding: 10px;
     margin: 0;
     border: 1px solid #CCC;
-    width: calc(100% - 20px - 2px); /* 100% - 2*padding - 2*border */
+    width: calc(100% - 20px - 1px); /* 100% - 2*padding - border */
     background: #ffffff;
     white-space: break-spaces;
+    border-left: 0;
 }
 
 #codeAndConsole {
@@ -165,17 +166,20 @@ html, body {
 #checkCode, #example {
     background: #ffffff;
     border: 1px solid #186643;
-    border-radius: 0;
+    border-radius: 3px;
     padding: 5px 7px;
     cursor: pointer;
+}
+#example {
+    margin-left: 20px;
 }
 
 #checkCode:hover, #example:hover {
     background: #eeffee;
 }
 
-#controls label {
-    margin-right: 20px;
+#controls input[type=checkbox] {
+    margin-left: 20px;
 }
 
 #jumbo {
