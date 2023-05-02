@@ -288,10 +288,13 @@ Propel is a research language developed at the <a href="https://programming-grou
 </footer>
 
 <script type="text/propel" id="bv_eq">
-(type bitvec (rec x {(B0 x) (B1 x) BZ})
+; type definitions
+(type bitvec (rec x {(B0 x) (B1 x) BZ}))
 (type bool {True False})
 
+; definition of equality over bitvectors
 (letrec bv_eq (fun bitvec bitvec bool)
+  ; it must be reflexive, transitive, and antisymmetric
   (lambda [refl trans antisym] (x bitvec) (y bitvec)
     (cases (Tuple x y)
         [(Tuple BZ BZ) True]
@@ -303,9 +306,12 @@ Unit)
 </script>
 
 <script type="text/propel" id="nat_add3p">
+; type definitions
 (type nat (rec x {(S x) Z}))
 
+; definition of addition over the natural numbers
 (letrec nat_add3p (fun nat nat nat)
+  ; it must be commutative and associative
   (lambda [comm assoc] (x nat) (y nat)
     (cases (Tuple x y)
         [(Tuple Z y) y]
@@ -315,17 +321,22 @@ Unit)
 </script>
 
 <script type="text/propel" id="natlist_gcounter">
+; type definitions
 (type nat (rec x {(S x) Z}))
 (type list (rec x {(Cons nat x) Nil}))
 
+; definition of maximum over the natural numbers
 (letrec nat_max (fun nat nat nat)
-  (lambda (x nat) (y nat)
+  ; it must be idempotent, commutative, and associative
+  (lambda [idem comm assoc] (x nat) (y nat)
     (cases (Tuple x y)
       [(Tuple Z y) y]
       [(Tuple x Z) x]
       [(Tuple (S x) (S y)) (S (nat_max x y))]))
 
+; definition of the merge function of a GCounter
 (letrec natlist_gcounter (fun list list list)
+  ; it must be idempotent, commutative, and associative
   (lambda [idem comm assoc] (x list) (y list)
     (cases (Tuple x y)
       [(Tuple Nil y) y]
