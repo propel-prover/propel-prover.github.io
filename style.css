@@ -190,6 +190,7 @@ html, body {
     margin: 0; padding: 0;
     margin-bottom: 10px;
     font-weight: bold;
+    text-shadow: 1px 1px 0 #666;
 }
 
 #interactiveCode h2 {
@@ -200,4 +201,5 @@ html, body {
     text-align: center;
     margin: auto;
     margin-bottom: 50px;
+    text-shadow: 1px 1px 0 #666;
 }

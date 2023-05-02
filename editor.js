@@ -336,7 +336,7 @@ function initCompiler() {
     function setCodeTimeoutCompiler(timeout) {
         timer = setTimeout(function() {
 
-            statusElem.innerHTML = "Compiling...";
+            statusElem.innerHTML = "<strong>Compiling</strong>";
             consoleElem.innerHTML = "";
 
             if (worker != null) worker.terminate();
@@ -347,7 +347,7 @@ function initCompiler() {
                                  document.querySelector("#printReduction").checked ]);
             worker.onmessage = function(e) {
                 if (e.data.done) {
-                    statusElem.innerHTML = "Result: (" + e.data.time + "ms) " + getLastLine(consoleElem.innerHTML);
+                    statusElem.innerHTML = "<strong>Result</strong> (" + e.data.time + "ms) " + getLastLine(consoleElem.innerHTML);
                     worker = null;
                 } else {
                     consoleElem.innerHTML += e.data.line;

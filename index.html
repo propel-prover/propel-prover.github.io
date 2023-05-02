@@ -7,11 +7,22 @@
 </head>
 <body>
 
+<header>
+    <div id="logo">
+        Propel
+    </div>
+
+    <ul id="nav">
+        <li><a href="https://programming-group.com">Programming Group</a></li>
+        <li><a href="https://github.com/propel-prover">GitHub</a></li>
+    </ul>
+</header>
+
 <div id="jumbo">
     <div id="interactiveCode">
         <h1>Try Propel</h1>
-        <h2>Check the commutativity, associativity, idempotency, and more algebraic properties of
-        your functions and binary relations in the browser</h2>
+        <h2>Check the commutativity, associativity, idempotency, and other algebraic properties of
+        your binary functions and relations in the browser</h2>
         <div id="autocomplete"><!--{{{-->
             <div class="hint">Use the Up/Down arrow to cycle through the options. Click Enter to introduce the syntactic form. Click ESC to close popup</div>
             <div id="syntax">
@@ -231,6 +242,50 @@
         <div id="status"><br></div>
     </div>
 </div>
+
+<main>
+    <h1>Conflict-Free Replicated Data-Types (CRDT)</h1>
+    <p>
+    A state-based Conflict-Free Replicated Data-Type (CRDT) is any datatype that implements a <code>merge</code> function that merges any two instances&mdash;any two replicas&mdash;into one without any conflict or manual conflict resolution.
+    We expect the two following properties to hold:
+    </p>
+    <ol>
+        <li>The order of merging any number of replicas should not change the result, and</li>
+        <li>merging a replica with itself must not introduce any change to that replica, i.e. the replica remains constant.</li>
+    </ol>
+    <p>
+    When applied to two replicas the first property entails that <code>merge</code> must be <em>commutative</em>.
+    When applied to three or more replicas the first property entails that <code>merge</code> must be <em>associative</em>.
+    And the second property entails that <code>merge</code> must be <em>idempotent</em>.
+    </p>
+
+    <p>
+    <strong>How do we guarantee that implementations of <code>merge</code> satisfy these properties?</strong>
+    The state of the art is to verify models of these CRDTs manually or automatically by instantiating some framework.
+    Other works have developed code synthesizers that generate a <code>merge</code> function with the required properties given the desired semantics.
+    Both approaches limit developers.
+    Our solution is to develop a type-system that tracks these properties and a compiler that can prove these properties at compile-time.
+    </p>
+
+    <h1>Properties</h1>
+    <h2>Binary Functions</h2>
+    <h2>Binary Relations</h2>
+
+    <h1>Scala DSL</h1>
+
+    <h1>Getting Started</h1>
+
+    <h1>Publications</h1>
+    <ol class="publications">
+        <li>George Zakhour, Pascal Weisenburger, and Guido Salvaneschi. 2023. Type-Checking CRDT Convergence.
+            In <em>Proceedings of the 44th ACM SIGPLAN Conference on Programming Language Design and Implementation</em>, PLDI, June 17-21, 2023, Orlando, Florida, United States. <a href="https://doi.org/10.1145/3591276">https://doi.org/10.1145/3591276</a> [<a href="https://programming-group.com/assets/pdf/papers/2023_Type-Checking-CRDT-Convergence.pdf">author version</a>]</li>
+    </ol>
+</main>
+
+<footer>
+Propel is a research language developed at the <a href="https://programming-group.com">Programming Group</a>
+&copy; 2023
+</footer>
 
 <script type="text/propel" id="bv_eq">
 (type bitvec (rec x {(B0 x) (B1 x) BZ})
