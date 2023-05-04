@@ -357,7 +357,7 @@ function initCompiler() {
             worker.onmessage = function(e) {
                 requestAnimationFrame(function() {
                     if (e.data.done) {
-                        statusElem.innerHTML = "<strong>Result</strong> (" + e.data.time + "ms) " + getLastLine(output.textContent);
+                        statusElem.innerHTML = "<strong>Result</strong> (" + Math.round(e.data.time*100)/100 + "ms) " + getLastLine(output.textContent);
                         consoleElem.lastChild.remove();
                         consoleElem.style.scrollSnapType = "";
                         consoleElem.scrollTop = consoleElem.scrollHeight;
@@ -366,6 +366,7 @@ function initCompiler() {
                         output.textContent += e.data.line;
                     }
                 })
+                consoleElem.scrollTop = consoleElem.scrollHeight;
             }
 
         }, timeout);
