@@ -344,7 +344,9 @@ function initCompiler() {
         timer = setTimeout(function() {
 
             statusElem.innerHTML = "<strong>Compiling</strong>";
-            consoleElem.innerHTML = "";
+            consoleElem.innerHTML = "&nbsp;<div style='scroll-snap-align: end'>&nbsp;</div>";
+            consoleElem.style.scrollSnapType = "y mandatory";
+            var output = consoleElem.firstChild;
 
             if (worker != null) worker.terminate();
 
@@ -353,13 +355,17 @@ function initCompiler() {
                                  document.querySelector("#printDeduction").checked,
                                  document.querySelector("#printReduction").checked ]);
             worker.onmessage = function(e) {
-                if (e.data.done) {
-                    statusElem.innerHTML = "<strong>Result</strong> (" + e.data.time + "ms) " + getLastLine(consoleElem.innerHTML);
-                    worker = null;
-                } else {
-                    consoleElem.innerHTML += e.data.line;
-                }
-                consoleElem.scrollTop = consoleElem.scrollHeight;
+                requestAnimationFrame(function() {
+                    if (e.data.done) {
+                        statusElem.innerHTML = "<strong>Result</strong> (" + e.data.time + "ms) " + getLastLine(output.textContent);
+                        consoleElem.lastChild.remove();
+                        consoleElem.style.scrollSnapType = "";
+                        consoleElem.scrollTop = consoleElem.scrollHeight;
+                        worker = null;
+                    } else {
+                        output.textContent += e.data.line;
+                    }
+                })
             }
 
         }, timeout);
