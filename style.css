@@ -33,12 +33,12 @@ a {
 }
 #codewrapperNotRelative {
     flex: 1;
+    height: 300px;
+    margin: 0;
+    padding: 0;
 }
 #codewrapper {
     position: relative;
-    height: 200px;
-    margin: 0;
-    padding: 0;
 }
 #viewer .line {
     display: block;
@@ -118,7 +118,9 @@ a {
 #codeAndConsole {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     width: 100%;
+    row-gap: 20px;
 }
 
 #controls {
@@ -367,4 +369,16 @@ main .prop_card h4 {
 footer {
     margin: 50px auto;
     text-align: center;
+}
+
+@media (max-width: 950px) {
+    #codeAndConsole {
+        display: block;
+    }
+    #consoleContainer {
+        margin-top: 20px;
+    }
+    #consoleContainer, #codewrapperNotRelative {
+        width: 100%;
+    }
 }
