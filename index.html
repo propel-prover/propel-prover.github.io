@@ -13,11 +13,19 @@
         <img src="logo.svg" width="200px">
     </div>
 
-    <ul id="nav">
+    <ul>
         <li><a href="https://programming-group.com">Programming Group</a></li>
         <li><a href="https://github.com/propel-prover">GitHub</a></li>
     </ul>
 </header>
+
+<ul id="nav">
+    <li><a href="#section-crdt">CRDTs</a></li>
+    <li><a href="#section-properties">Properties</a></li>
+    <li><a href="#section-scala-dsl">Scala DSL</a></li>
+    <li><a href="#section-getting-started">Getting Started</a></li>
+    <li><a href="#section-publications">Publications</a></li>
+</ul>
 
 <div id="jumbo">
     <div id="interactiveCode">
@@ -245,7 +253,7 @@
 </div>
 
 <main>
-    <h1>Conflict-Free Replicated Data-Types (CRDT)</h1>
+    <h1 id="section-crdt">Conflict-Free Replicated Data-Types (CRDT)</h1>
     <p>
     A state-based Conflict-Free Replicated Data-Type (CRDT) is any datatype that implements a <code>merge</code> function that merges any two instances&mdash;any two replicas&mdash;into one without any conflict or manual conflict resolution.
     We expect the two following properties to hold:
@@ -268,32 +276,32 @@
     Our solution is to develop a type-system that tracks these properties and a compiler that can prove these properties at compile-time.
     </p>
 
-    <h1>Properties</h1>
+    <h1 id="section-properties">Properties We Support</h1>
     <h2>Binary Functions</h2>
     <div class="prop_box">
     <div class="prop_card">
-        <h3>Commutativity</h3>
         <img src="/diagrams/comm.svg">
-        <h4>E.g. Average of two numbers</h4>
+        <h3>Commutativity</h3>
         <p>A commutative function is one whose arguments can be given in any order without changing the result</p>
+        <h4>E.g. Average of two numbers</h4>
     </div>
     <div class="prop_card">
-        <h3>Idempotency</h3>
         <img src="/diagrams/idem.svg">
-        <h4>E.g. Set union</h4>
+        <h3>Idempotency</h3>
         <p>If an idempotent function is called with the same argument it must return it</p>
+        <h4>E.g. Set union</h4>
     </div>
     <div class="prop_card">
-        <h3>Associativity</h3>
         <img src="/diagrams/assoc.svg">
-        <h4>E.g. Matrix multiplication</h4>
+        <h3>Associativity</h3>
         <p>An associative function is one that can be folded in any direction on arguments without changing the result</p>
+        <h4>E.g. Matrix multiplication</h4>
     </div>
     <div class="prop_card">
-        <h3>Selectivity</h3>
         <img src="/diagrams/sel.svg">
-        <h4>E.g. Maximum of two numbers</h4>
+        <h3>Selectivity</h3>
         <p>A selective function must always return one of its arguments</p>
+        <h4>E.g. Maximum of two numbers</h4>
     </div>
     </div>
 
@@ -301,42 +309,42 @@
     <h2>Binary Relations</h2>
     <div class="prop_box">
         <div class="prop_card">
-            <h3>Reflexivity</h3>
             <img src="/diagrams/refl.svg">
-            <h4>E.g. Equality</h4>
+            <h3>Reflexivity</h3>
             <p>A reflexive relation is one where every element is related to itself</p>
+            <h4>E.g. Equality</h4>
         </div>
         <div class="prop_card">
-            <h3>Symmetric</h3>
             <img src="/diagrams/sym.svg">
-            <h4>E.g. Inequality</h4>
+            <h3>Symmetric</h3>
             <p>A symmetric relation is one where an element is related to another if and only if the other is related to it</p>
+            <h4>E.g. Inequality</h4>
         </div>
         <div class="prop_card">
-            <h3>Transitivity</h3>
             <img src="/diagrams/trans.svg">
-            <h4>E.g. Ancestry</h4>
+            <h3>Transitivity</h3>
             <p>In a transitive relation if an element <em>a</em> is related to <em>b</em> and <em>b</em> is related to <em>c</em> then <em>a</em> must be related to <em>c</em></p>
+            <h4>E.g. Ancestry</h4>
         </div>
         <div class="prop_card">
-            <h3>Connectivity</h3>
             <img src="/diagrams/conn.svg">
-            <h4>E.g. Total order</h4>
+            <h3>Connectivity</h3>
             <p>A connected relation is one where between any two distinct elements some relation exists</p>
+            <h4>E.g. Total order</h4>
         </div>
         <div class="prop_card">
-            <h3>Antisymmetry</h3>
             <img src="/diagrams/antisym.svg">
-            <h4>E.g. Divisibility</h4>
+            <h3>Antisymmetry</h3>
             <p>An antisymmetric relation is one where between any two distinct elements at moste one relation exists</p>
+            <h4>E.g. Divisibility</h4>
         </div>
     </div>
 
-    <h1>Scala DSL</h1>
+    <h1 id="section-scala-dsl">Scala DSL</h1>
 
-    <h1>Getting Started</h1>
+    <h1 id="section-getting-started">Getting Started</h1>
 
-    <h1>Publications</h1>
+    <h1 id="section-publications">Publications</h1>
     <ol class="publications">
         <li>George Zakhour, Pascal Weisenburger, and Guido Salvaneschi. 2023. Type-Checking CRDT Convergence.
             In <em>Proceedings of the 44th ACM SIGPLAN Conference on Programming Language Design and Implementation</em>, PLDI, June 17-21, 2023, Orlando, Florida, United States. <a href="https://doi.org/10.1145/3591276">https://doi.org/10.1145/3591276</a> [<a href="https://programming-group.com/assets/pdf/papers/2023_Type-Checking-CRDT-Convergence.pdf">author version</a>]</li>

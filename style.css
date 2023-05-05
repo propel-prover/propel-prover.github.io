@@ -2,8 +2,9 @@ html, body {
     padding: 0;
     margin: 0;
     font-family: sans-serif;
-    font-size: 14px;
+    font-size: 16px;
 }
+
 #interactiveCode {
     max-width: 1200px;
     margin: auto;
@@ -212,7 +213,7 @@ html, body {
 
 
 
-main, header, footer {
+main, header, footer, #nav {
     width: 1200px;
     max-width: 80%;
     margin: auto;
@@ -234,13 +235,73 @@ header ul {
 }
 header ul li {
     display: inline;
-    padding: 0 10px;
     font-size: 16px;
     align-items: center;
 }
 
+header a {
+    text-decoration: none;
+    color: #186643;
+    font-weight: bold;
+    padding: 10px 20px;
+}
+header a:hover {
+    background: #186643;
+    color: #fff;
+}
 
+#nav {
+    display: flex;
+    margin: 0px auto;
+    margin-bottom: 30px;
+    padding: 0;
+}
+#nav li {
+    flex-grow: 1;
+    text-align: center;
+    list-style: none;
+}
+#nav li a {
+    text-decoration: none;
+    padding: 10px 20px;
+    background: #186643;
+    display: block;
+    color: #fff;
+    font-weight: bold;
+    border: 2px solid #186643;
+}
+#nav li a:hover {
+    background: transparent;
+    color: #186643;
+}
+#nav li a:hover:before {
+    color: #999;
+}
+#nav li a:before {
+    content: '# ';
+    color: rgba(255,255,255,0.5);
+    font-size: 12px;
+}
 
+main { font-family: serif; line-height: 20px; }
+main h1, main h2, main h3, main h4 { font-family: sans-serif; }
+
+main h1 {
+    margin: 50px 0;
+    padding: 30px;
+    background: #186643;
+    color: #fff;
+    font-size: 32px;
+}
+main h2 {
+    margin-bottom: 30px;
+    padding: 20px;
+    color: #186643;
+    font-weight: bold;
+    font-size: 26px;
+    border: 2px solid #186643;
+    text-align: center;
+}
 
 main .prop_card img {
     width: 210px;
@@ -256,23 +317,23 @@ main .prop_box {
     flex-wrap: wrap;
     justify-content: space-between;
 }
-main .prop_card h3 {
+main .prop_box * {
     text-align: center;
+}
+main .prop_card h3 {
     margin: 0;
     padding: 0;
+    margin-top: 10px;
 }
 main .prop_card h4 {
     padding: 0;
     margin: 5 0;
     font-weight: normal;
-}
-main .prop_card p {
-    text-align: justify;
+    font-style: italic;
 }
 
 
 footer {
-    margin: 30px auto;
+    margin: 50px auto;
     text-align: center;
 }
-
