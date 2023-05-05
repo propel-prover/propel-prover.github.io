@@ -5,6 +5,7 @@
 <meta charset="utf8">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="stylesheet" href="style.css">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 
@@ -22,8 +23,8 @@
 <ul id="nav">
     <li><a href="#section-crdt">CRDTs</a></li>
     <li><a href="#section-properties">Properties</a></li>
-    <li><a href="#section-scala-dsl">Scala DSL</a></li>
     <li><a href="#section-getting-started">Getting Started</a></li>
+    <li><a href="#section-scala-dsl">Scala DSL</a></li>
     <li><a href="#section-publications">Publications</a></li>
 </ul>
 
@@ -255,7 +256,7 @@
 <main>
     <h1 id="section-crdt">Conflict-Free Replicated Data-Types (CRDT)</h1>
     <p>
-    A state-based Conflict-Free Replicated Data-Type (CRDT) is any datatype that implements a <code>merge</code> function that merges any two instances&mdash;any two replicas&mdash;into one without any conflict or manual conflict resolution.
+    A state-based Conflict-Free Replicated Data-Type (CRDT) is any datatype that defines a <code>merge</code> function that combines any two instances&mdash;any two replicas&mdash;into one without any conflict or manual conflict resolution.
     We expect the two following properties to hold:
     </p>
     <ol>
@@ -340,9 +341,113 @@
         </div>
     </div>
 
-    <h1 id="section-scala-dsl">Scala DSL</h1>
-
     <h1 id="section-getting-started">Getting Started</h1>
+
+<h2>Building and Loading the Propel Docker image</h2>
+
+<p>
+We provide you with <code>propel.tar.xz</code> on <a href="https://doi.org/10.5281/zenodo.7817421">Zenodo (doi: 10.5281/zenodo.7817421)</a>, which is a pre-built container image that contains all necessary programs.
+To load, run the following command:
+<br><code>
+$ docker load < propel.tar.xz
+</code>
+</p>
+
+<p>
+Further, we also provide the option to build the contain anew. To build, run the
+following command which takes between 10 and 20 minutes:
+<br><code>
+$ docker build -t propel .
+</code>
+</p>
+
+<p>
+Rebuilding the image may not work on Apple M1 machines because of incomplete emulation of system calls (specifically the <code>inotify</code> kernel subsystem).
+Hence, we recommend rebuilding the image on a platform fully supported by Docker, like x86-64 systems.
+</p>
+
+<h2>Compiling Propel</h2>
+<p>
+The provided container already contains a binary executable of Propel.
+</p>
+
+<p>
+To compile Propel to Java bytecode yourself, run the following command:
+<br><code>
+$ docker run -it --rm propel bash -c 'cd /propel; sbt clean compile'
+</code>
+</p>
+
+<p>
+To compile Propel to a native binary yourself, run the following command:
+<br><code>
+$ docker run -it --rm propel bash -c 'cd /propel; sbt clean nativeLink'
+</code>
+</p>
+
+<p>
+Compiling Propel, to bytecode or to a native executable, may not work inside the Docker container on Apple M1 machines for the reasons mentioned earlier.
+</p>
+
+<p>
+The resulting binary is at <code>/propel/.native/target/scala-3.2.2/propel</code>.
+The <code>propel</code> executable in the <code>$PATH</code> is already symlinked to that binary file.
+Hence, by default, you can just run <code>propel</code>.
+</p>
+
+
+    <h1 id="section-scala-dsl">Scala DSL</h1>
+<h2>Code Examples</h2>
+
+<h2>From the Propel Docker image</h2>
+<p>
+Propel is also provided as a DSL in Scala.
+To experiment with the DSL, we invite you take a look into the following files in the <a href="https://doi.org/10.5281/zenodo.7817421">Propel Docker image</a>:
+<code>/propel/src/test/scala/propel/ScalaExamplesNat.scala</code>,
+<code>/propel/src/test/scala/propel/ScalaExamplesNum.scala</code> and
+<code>/propel/src/test/scala/propel/ScalaExamplesList.scala</code> inside the container.
+</p>
+
+<p>
+As an example, you can execute the following commands to run a shell, explore the files and recompile the project:
+<code><pre>
+$ docker run -it --rm propel bash                               # open a shell
+$ nano /propel/src/test/scala/propel/ScalaExamplesList.scala    # open the file
+
+# edit and save the file
+$ cd /propel && sbt Test/compile                                # recompile
+</pre></code>
+
+<p>
+Compiling the examples may not work inside the Docker container on Apple M1 machines for the reasons mentioned earlier.
+</p>
+
+<p>
+You may define your own function using the following syntax:
+<code><pre>
+def myFunction = prop[(FunctionProperties) ::= (T1, T1) =>: T2] { (x, y) => body }
+// or
+def myRecursiveFunction = prop.rec[(FunctionProperties) ::= (T1, T1) =>: T2] { myRecursiveFunction => (x, y) => body }
+</pre></code>
+Here, <code>myFunction</code> is the name of the function, <code>FunctionProperties</code> is a list of function properties the function has (separated by <code>&</code>), <code>T1</code> is the type of the arguments of the binary function, <code>T2</code> is the return type of the function, <code>x</code> and <code>y</code> are the names of the function arguments, and <code>body</code> is the function body.
+</p>
+
+<p>
+The function properties are chosen from the following list: <code>Comm</code>, <code>Assoc</code>, <code>Idem</code>, <code>Sel</code>, <code>Refl</code>, <code>Antisym</code>, <code>Trans</code>, <code>Conn</code>, and <code>Sym</code>.
+</p>
+
+<p>
+If Propel is able to prove the properties that the function is annotated with, then compilation succeeds.
+If the properties cannot be proven, then a compilation error indicates which property could not be proven.
+</p>
+
+<p>
+For example, you can add the following GCounter CRDT example to one of the files in <code>/propel/src/test/scala/propel</code>
+<code><pre>
+def mergeGCounter = prop[(Comm & Assoc & Idem) := (List[Num], List[Num]) =>: List[Num]] { (x, y) => zipWith(maxNum)(x, y) }
+</pre></code>
+</p>
+
 
     <h1 id="section-publications">Publications</h1>
     <ol class="publications">

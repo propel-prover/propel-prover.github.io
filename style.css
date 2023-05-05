@@ -1,8 +1,30 @@
+@font-face {
+    font-family: 'Montserrat';
+    src: url('/fonts/Montserrat-ExtraBold.ttf') format('truetype');
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'Montserrat';
+    src: url('/fonts/Montserrat-ExtraLight.ttf') format('truetype');
+    font-weight: 300;
+}
+@font-face {
+    font-family: 'Montserrat';
+    src: url('/fonts/Montserrat-Regular.ttf') format('truetype');
+    font-weight: normal;
+}
+
 html, body {
     padding: 0;
     margin: 0;
-    font-family: sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 16px;
+    letter-spacing: 0.3px;
+}
+
+a {
+    text-decoration: underline;
+    color: #186643;
 }
 
 #interactiveCode {
@@ -201,6 +223,7 @@ html, body {
 
 #interactiveCode h2 {
     font-weight: 300;
+    letter-spacing: 0.5px;
     padding: 0;
     width: 80%;
     color: #fff;
@@ -223,6 +246,8 @@ main, header, footer, #nav {
 header {
     padding: 30px 0;
     display: flex;
+    flex-wrap: wrap;
+    row-gap: 20px;
 }
 
 header ul {
@@ -232,6 +257,7 @@ header ul {
     display: flex;
     align-items: center;
     direction: rtl;
+    flex-wrap: wrap;
 }
 header ul li {
     display: inline;
@@ -243,7 +269,7 @@ header a {
     text-decoration: none;
     color: #186643;
     font-weight: bold;
-    padding: 10px 20px;
+    padding: 15px 20px;
 }
 header a:hover {
     background: #186643;
@@ -252,6 +278,7 @@ header a:hover {
 
 #nav {
     display: flex;
+    flex-wrap: wrap;
     margin: 0px auto;
     margin-bottom: 30px;
     padding: 0;
@@ -263,7 +290,7 @@ header a:hover {
 }
 #nav li a {
     text-decoration: none;
-    padding: 10px 20px;
+    padding: 13px 20px;
     background: #186643;
     display: block;
     color: #fff;
@@ -283,22 +310,23 @@ header a:hover {
     font-size: 12px;
 }
 
-main { font-family: serif; line-height: 20px; }
-main h1, main h2, main h3, main h4 { font-family: sans-serif; }
+main { line-height: 28px; }
+main h1, main h2, main h3, main h4 { font-family: 'Montserrat', sans-serif; }
 
 main h1 {
     margin: 50px 0;
-    padding: 30px;
+    padding: 20px 30px;
     background: #186643;
     color: #fff;
-    font-size: 32px;
+    font-size: 28px;
+    line-height: 40px;
 }
 main h2 {
     margin-bottom: 30px;
     padding: 20px;
     color: #186643;
     font-weight: bold;
-    font-size: 26px;
+    font-size: 24px;
     border: 2px solid #186643;
     text-align: center;
 }
@@ -315,10 +343,11 @@ main .prop_card {
 main .prop_box {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 main .prop_box * {
     text-align: center;
+    line-height: 22px;
 }
 main .prop_card h3 {
     margin: 0;
@@ -331,7 +360,6 @@ main .prop_card h4 {
     font-weight: normal;
     font-style: italic;
 }
-
 
 footer {
     margin: 50px auto;
