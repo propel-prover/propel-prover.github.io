@@ -34,7 +34,7 @@ function syntaxHighlight(code) {
                 color = '#0087af';
             // terms
             else if (t=='lambda' || t=='cases' || t=='let' || t=='letrec' || t=='if' || t=='not'
-                  || t=='or' || t=='and' || t=='implies' || t=='type') {
+                  || t=='or' || t=='and' || t=='implies' || t=='def' || t=='type') {
                 color = '#d75f00';
                 weight = 'bold';
             }
@@ -347,6 +347,7 @@ function initCompiler() {
             consoleElem.innerHTML = "&nbsp;<div style='scroll-snap-align: end'>&nbsp;</div>";
             consoleElem.style.scrollSnapType = "y mandatory";
             var output = consoleElem.firstChild;
+            output.textContent = "";
 
             if (worker != null) worker.terminate();
 

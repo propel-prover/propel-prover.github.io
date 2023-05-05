@@ -48,7 +48,7 @@
                 <li>
                     <code>(letrec <em>var</em> <em>type</em> <em>expr</em>)</code>
                     <div class="description">
-                    Introduces a recursive definition bound to <em>var</em> that has the designed type and an expression.
+                    Introduces a recursive definition bound to <em>var</em> that has the designated type and an expression.
                     Thus the identifier <em>var</em> is bound, and can be used, in <em>expr</em>
                     </div>
                 </li>
@@ -97,10 +97,23 @@
                     Computes the implication between two booleans where the first expression is the antecedent and the second expression is the consequent.
                     </div>
                 </li>
+            </ul>
+
+            <h3>Definitions</h3>
+            <ul>
+                <li>
+                    <code>(def <em>var</em> [<em>type...</em>] <em>expr</em>)</code>
+                    <div class="description">
+                    Introduces a definition bound to <em>var</em>.
+                    Recursive definitions must designate their type.
+                    Non-recursive definitions leave out the type declaration.
+                    <em>var</em> will be bound to the value of <em>expr</em> in the rest of the program.
+                    </div>
+                </li>
                 <li>
                     <code>(type <em>var</em> <em>type</em>)</code>
                     <div class="description">
-                    Introduce a type alias.
+                    Introduce a recursive or non-recursive type alias.
                     <em>var</em> will be bound to <em>type</em> in the rest of the program.
                     </div>
                 </li>
@@ -467,16 +480,14 @@ Propel is a research language developed at the <a href="https://programming-grou
 (type bool {True False})
 
 ; definition of equality over bitvectors
-(letrec bv_eq (fun bitvec bitvec bool)
+(def bv_eq (fun bitvec bitvec bool)
   ; it must be reflexive, transitive, and antisymmetric
   (lambda [refl trans antisym] (x bitvec) (y bitvec)
     (cases (Tuple x y)
         [(Tuple BZ BZ) True]
         [(Tuple (B0 x) (B0 y)) (bv_eq x y)]
         [(Tuple (B1 x) (B1 y)) (bv_eq x y)]
-        [_ False]))
-
-Unit)
+        [_ False])))
 </script>
 
 <script type="text/propel" id="nat_add3p">
@@ -484,14 +495,13 @@ Unit)
 (type nat (rec x {(S x) Z}))
 
 ; definition of addition over the natural numbers
-(letrec nat_add3p (fun nat nat nat)
+(def nat_add3p (fun nat nat nat)
   ; it must be commutative and associative
   (lambda [comm assoc] (x nat) (y nat)
     (cases (Tuple x y)
         [(Tuple Z y) y]
         [(Tuple x Z) x]
-        [(Tuple (S x) (S y)) (S (S (nat_add3p x y)))]))
-Unit)
+        [(Tuple (S x) (S y)) (S (S (nat_add3p x y)))])))
 </script>
 
 <script type="text/propel" id="natlist_gcounter">
@@ -500,25 +510,23 @@ Unit)
 (type list (rec x {(Cons nat x) Nil}))
 
 ; definition of maximum over the natural numbers
-(letrec nat_max (fun nat nat nat)
+(def nat_max (fun nat nat nat)
   ; it must be idempotent, commutative, and associative
   (lambda [idem comm assoc] (x nat) (y nat)
     (cases (Tuple x y)
       [(Tuple Z y) y]
       [(Tuple x Z) x]
-      [(Tuple (S x) (S y)) (S (nat_max x y))]))
+      [(Tuple (S x) (S y)) (S (nat_max x y))])))
 
 ; definition of the merge function of a GCounter
-(letrec natlist_gcounter (fun list list list)
+(def natlist_gcounter (fun list list list)
   ; it must be idempotent, commutative, and associative
   (lambda [idem comm assoc] (x list) (y list)
     (cases (Tuple x y)
       [(Tuple Nil y) y]
       [(Tuple x Nil) x]
       [(Tuple (Cons x xs) (Cons y ys))
-       (Cons (nat_max x y) (natlist_gcounter xs ys))]))
-
-Unit))
+       (Cons (nat_max x y) (natlist_gcounter xs ys))])))
 </script>
 
 <script src="editor.js"></script>
