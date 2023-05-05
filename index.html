@@ -20,6 +20,10 @@
     </ul>
 </header>
 
+<h2 id="tagline">
+Track commutativity, associativity, idempotency, and <a href="#section-properties">other algebraic properties</a> of your functions and relations in your types to verify <a href="#section-crdt">CRDTs</a>
+</h2>
+
 <ul id="nav">
     <li><a href="#section-crdt">CRDTs</a></li>
     <li><a href="#section-properties">Properties</a></li>
@@ -31,8 +35,6 @@
 <div id="jumbo">
     <div id="interactiveCode">
         <h1>Try Propel</h1>
-        <h2>Check the commutativity, associativity, idempotency, and other algebraic properties of
-        your binary functions and relations in the browser</h2>
         <div id="autocomplete"><!--{{{-->
             <div class="hint">Use the Up/Down arrow to cycle through the options. Click Enter to introduce the syntactic form. Click ESC to close popup</div>
             <div id="syntax">
@@ -284,8 +286,10 @@
     And the second property entails that <code>merge</code> must be <em>idempotent</em>.
     </p>
 
+    <h2>Example: GCounter</h2>
+
+    <h2>How do we guarantee that implementations of <code>merge</code> satisfy these properties?</h2>
     <p>
-    <strong>How do we guarantee that implementations of <code>merge</code> satisfy these properties?</strong>
     The state of the art is to verify models of these CRDTs manually or automatically by instantiating some framework.
     Other works have developed code synthesizers that generate a <code>merge</code> function with the required properties given the desired semantics.
     Both approaches limit developers.

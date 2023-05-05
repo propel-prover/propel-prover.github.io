@@ -5,11 +5,6 @@
 }
 @font-face {
     font-family: 'Montserrat';
-    src: url('/fonts/Montserrat-ExtraLight.ttf') format('truetype');
-    font-weight: 300;
-}
-@font-face {
-    font-family: 'Montserrat';
     src: url('/fonts/Montserrat-Regular.ttf') format('truetype');
     font-weight: normal;
 }
@@ -30,6 +25,7 @@ a {
 #interactiveCode {
     max-width: 1200px;
     margin: auto;
+    margin-bottom: 30px;
 }
 #codewrapperNotRelative {
     flex: 1;
@@ -212,7 +208,7 @@ a {
 
 #jumbo {
     background: #186643;
-    padding: 50px;
+    padding: 30px;
     margin-bottom: 50px;
 }
 
@@ -221,27 +217,13 @@ a {
     color: #fff;
     font-size: 32px;
     margin: 0; padding: 0;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
     font-weight: bold;
-    text-shadow: 1px 1px 0 #666;
-}
-
-#interactiveCode h2 {
-    font-weight: 300;
-    letter-spacing: 0.5px;
-    padding: 0;
-    width: 80%;
-    color: #fff;
-    text-align: center;
-    margin: auto;
-    margin-bottom: 50px;
-    text-shadow: 1px 1px 0 #666;
 }
 
 
 
-
-main, header, footer, #nav {
+main, header, footer, #nav, #tagline {
     width: 1200px;
     max-width: 80%;
     margin: auto;
@@ -279,6 +261,15 @@ header a {
 header a:hover {
     background: #186643;
     color: #fff;
+}
+
+#tagline {
+    font-weight: normal;
+    text-align: center;
+    margin-bottom: 50px;
+}
+#tagline a {
+    text-decoration: none;
 }
 
 #nav {
