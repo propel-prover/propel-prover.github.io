@@ -162,8 +162,8 @@ function openPopup(code, index) {
     const box = elem.getBoundingClientRect();
     const autocomplete = document.querySelector("#autocomplete");
     autocomplete.style.visibility = 'visible';
-    autocomplete.style.left = box.x + 'px';
-    autocomplete.style.top = (box.y+20) + 'px';
+    autocomplete.style.left = (box.x+window.scrollX) + 'px';
+    autocomplete.style.top = (box.y+window.scrollY+20) + 'px';
 
     return true;
 }
@@ -227,11 +227,13 @@ function isOpenPopup() {
 function initEditor() {
     const editor = document.querySelector("#editor");
     const viewer = document.querySelector("#viewer");
+    const autocomplete = document.querySelector("#autocomplete")
 
     let popupOpen = false;
     let lastKeyDownEventDate = 0;
 
     function scroll() {
+        closePopup();
         viewer.scrollTop = editor.scrollTop;
         viewer.scrollLeft = editor.scrollLeft;
     }
@@ -276,17 +278,37 @@ function initEditor() {
     loadExample();
 
     editor.addEventListener('keydown', popupKeyDownEventListener);
-    document.querySelector("#autocomplete").addEventListener('keydown', popupKeyDownEventListener);
+    autocomplete.addEventListener('keydown', popupKeyDownEventListener);
 
     editor.addEventListener('scroll', scroll);
 
-    editor.addEventListener('selectionchange', function() {
-        popupOpen = openPopup(editor.value, editor.selectionStart);
-        if (!popupOpen) closePopup();
-        if (editor.selectionStart == editor.selectionEnd) {
-            highlightParen(editor.value, editor.selectionStart, '#D8D8D8');
+    let selectionStart = 0;
+
+    function checkCaret() {
+        if (editor.selectionStart !== selectionStart) {
+            selectionStart = editor.selectionStart;
+            popupOpen = openPopup(editor.value, selectionStart);
+            if (!popupOpen) closePopup();
+            if (selectionStart == editor.selectionEnd) {
+                highlightParen(editor.value, selectionStart, '#D8D8D8');
+            }
         }
-    });
+    }
+
+    editor.addEventListener('keyup', checkCaret);
+    editor.addEventListener('keypress', checkCaret);
+    editor.addEventListener('mousedown', checkCaret);
+    editor.addEventListener('mousemove', checkCaret);
+    editor.addEventListener('mouseup', checkCaret);
+    editor.addEventListener('touchstart', checkCaret);
+    editor.addEventListener('touchmove', checkCaret);
+    editor.addEventListener('touchend', checkCaret);
+    editor.addEventListener('input', checkCaret);
+    editor.addEventListener('paste', checkCaret);
+    editor.addEventListener('cut', checkCaret);
+    editor.addEventListener('select', checkCaret);
+    editor.addEventListener('selectstart', checkCaret);
+    editor.addEventListener('selectionchange', checkCaret);
 
     document.querySelectorAll("#autocomplete li").forEach(function (elem, index) {
         elem.addEventListener('mouseover', function() {
@@ -297,9 +319,14 @@ function initEditor() {
         elem.addEventListener('click', insertSelectionPopup);
     });
 
-    document.querySelector("#example").addEventListener('change', function() {
-        loadExample();
+    document.addEventListener('click', function(e) {
+        if (!autocomplete.contains(e.target) && !editor.contains(e.target))
+            closePopup();
     });
+
+    window.addEventListener('resize', closePopup);
+
+    document.querySelector("#example").addEventListener('change', loadExample);
 }
 
 
