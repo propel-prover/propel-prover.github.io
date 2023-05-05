@@ -9,10 +9,10 @@
 
 <header>
     <div id="logo">
-        <img src="logo.svg" width="300px" style="margin: 10px 0; margin-left: 200px;">
+        <img src="logo.svg" width="200px">
     </div>
 
-    <ul id="nav" style="float: right; display: inline-block">
+    <ul id="nav">
         <li><a href="https://programming-group.com">Programming Group</a></li>
         <li><a href="https://github.com/propel-prover">GitHub</a></li>
     </ul>
@@ -269,7 +269,67 @@
 
     <h1>Properties</h1>
     <h2>Binary Functions</h2>
+    <div class="prop_box">
+    <div class="prop_card">
+        <h3>Commutativity</h3>
+        <img src="/diagrams/comm.svg">
+        <h4>E.g. Average of two numbers</h4>
+        <p>A commutative function is one whose arguments can be given in any order without changing the result</p>
+    </div>
+    <div class="prop_card">
+        <h3>Idempotency</h3>
+        <img src="/diagrams/idem.svg">
+        <h4>E.g. Set union</h4>
+        <p>If an idempotent function is called with the same argument it must return it</p>
+    </div>
+    <div class="prop_card">
+        <h3>Associativity</h3>
+        <img src="/diagrams/assoc.svg">
+        <h4>E.g. Matrix multiplication</h4>
+        <p>An associative function is one that can be folded in any direction on arguments without changing the result</p>
+    </div>
+    <div class="prop_card">
+        <h3>Selectivity</h3>
+        <img src="/diagrams/sel.svg">
+        <h4>E.g. Maximum of two numbers</h4>
+        <p>A selective function must always return one of its arguments</p>
+    </div>
+    </div>
+
+
     <h2>Binary Relations</h2>
+    <div class="prop_box">
+        <div class="prop_card">
+            <h3>Reflexivity</h3>
+            <img src="/diagrams/refl.svg">
+            <h4>E.g. Equality</h4>
+            <p>A reflexive relation is one where every element is related to itself</p>
+        </div>
+        <div class="prop_card">
+            <h3>Symmetric</h3>
+            <img src="/diagrams/sym.svg">
+            <h4>E.g. Inequality</h4>
+            <p>A symmetric relation is one where an element is related to another if and only if the other is related to it</p>
+        </div>
+        <div class="prop_card">
+            <h3>Transitivity</h3>
+            <img src="/diagrams/trans.svg">
+            <h4>E.g. Ancestry</h4>
+            <p>In a transitive relation if an element <em>a</em> is related to <em>b</em> and <em>b</em> is related to <em>c</em> then <em>a</em> must be related to <em>c</em></p>
+        </div>
+        <div class="prop_card">
+            <h3>Connectivity</h3>
+            <img src="/diagrams/conn.svg">
+            <h4>E.g. Total order</h4>
+            <p>A connected relation is one where between any two distinct elements some relation exists</p>
+        </div>
+        <div class="prop_card">
+            <h3>Antisymmetry</h3>
+            <img src="/diagrams/antisym.svg">
+            <h4>E.g. Divisibility</h4>
+            <p>An antisymmetric relation is one where between any two distinct elements at moste one relation exists</p>
+        </div>
+    </div>
 
     <h1>Scala DSL</h1>
 
