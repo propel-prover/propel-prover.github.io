@@ -31,12 +31,14 @@ a {
     max-width: 1200px;
     margin: auto;
 }
+#codewrapperNotRelative {
+    flex: 1;
+}
 #codewrapper {
     position: relative;
     height: 200px;
     margin: 0;
     padding: 0;
-    flex: 1;
 }
 #viewer .line {
     display: block;
@@ -76,6 +78,7 @@ a {
     resize: none;
     tab-size: 2;
     outline: none;
+    letter-spacing: 0px;
 }
 #viewer { z-index: 0; }
 #editor {
@@ -92,7 +95,7 @@ a {
 
 #consoleContainer {
     flex: 1;
-    width: 100%;
+    width: 50%;
 }
 
 #consoleCheckboxes label {
@@ -108,8 +111,8 @@ a {
     border: 1px solid #CCC;
     width: calc(100% - 20px - 1px); /* 100% - 2*padding - border */
     background: #ffffff;
-    white-space: break-spaces;
     border-left: 0;
+    font-size: 14px;
 }
 
 #codeAndConsole {
