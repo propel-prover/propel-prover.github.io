@@ -1,19 +1,19 @@
 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="170" height="170" viewBox="-10 -10 170 170">
-<g transform="rotate(90.000000 5.000000 0.000000)"><path d="M 5 -1.5 L 64.0 -1.5 L 62.0 -4.5 L 70.0 0 L 62.0 4.5 L 64.0 1.5 L 5 1.5 Z" stroke="#666" stroke-width="0.500000" fill="#503DB3" /></g>
-<g transform="rotate(90.000000 20.000000 0.000000)"><path d="M 20 -1.5 L 79.0 -1.5 L 77.0 -4.5 L 85.0 0 L 77.0 4.5 L 79.0 1.5 L 20 1.5 Z" stroke="#666" stroke-width="0.500000" fill="#B32E19" /></g>
-<g transform="rotate(90.000000 12.500000 90.000000)"><path d="M 12.5 88.5 L 66.5 88.5 L 64.5 85.5 L 72.5 90 L 64.5 94.5 L 66.5 91.5 L 12.5 91.5 Z" stroke="#666" stroke-width="0.500000" fill="#2BB375" /></g>
-<rect x="0" y="65" width="25" height="25" fill="#eee" stroke-width="1" stroke="#666" />
+<g transform="rotate(90.000000 5.000000 0.000000)"><path d="M 5 -2.5 L 60.0 -2.5 L 58.0 -7.5 L 70.0 0 L 58.0 7.5 L 60.0 2.5 L 5 2.5 Z" stroke="#666" stroke-width="0.000000" fill="#503DB3" /></g>
+<g transform="rotate(90.000000 20.000000 0.000000)"><path d="M 20 -2.5 L 75.0 -2.5 L 73.0 -7.5 L 85.0 0 L 73.0 7.5 L 75.0 2.5 L 20 2.5 Z" stroke="#666" stroke-width="0.000000" fill="#B32E19" /></g>
+<g transform="rotate(90.000000 12.500000 90.000000)"><path d="M 12.5 87.5 L 62.5 87.5 L 60.5 82.5 L 72.5 90 L 60.5 97.5 L 62.5 92.5 L 12.5 92.5 Z" stroke="#666" stroke-width="0.000000" fill="#2BB375" /></g>
+<rect x="0" y="65" width="25" height="25" fill="#eee" stroke-width="1" stroke="#CCC" />
 <g transform="translate(70 0)">
-<g transform="rotate(90.000000 5.000000 0.000000)"><path d="M 5 -1.5 L 64.0 -1.5 L 62.0 -4.5 L 70.0 0 L 62.0 4.5 L 64.0 1.5 L 5 1.5 Z" stroke="#666" stroke-width="0.500000" fill="#503DB3" /></g>
-<g transform="rotate(90.000000 20.000000 0.000000)"><path d="M 20 -1.5 L 79.0 -1.5 L 77.0 -4.5 L 85.0 0 L 77.0 4.5 L 79.0 1.5 L 20 1.5 Z" stroke="#666" stroke-width="0.500000" fill="#B32E19" /></g>
-<g transform="rotate(90.000000 12.500000 90.000000)"><path d="M 12.5 88.5 L 66.5 88.5 L 64.5 85.5 L 72.5 90 L 64.5 94.5 L 66.5 91.5 L 12.5 91.5 Z" stroke="#666" stroke-width="0.500000" fill="#503DB3" /></g>
-<rect x="0" y="65" width="25" height="25" fill="#eee" stroke-width="1" stroke="#666" />
+<g transform="rotate(90.000000 5.000000 0.000000)"><path d="M 5 -2.5 L 60.0 -2.5 L 58.0 -7.5 L 70.0 0 L 58.0 7.5 L 60.0 2.5 L 5 2.5 Z" stroke="#666" stroke-width="0.000000" fill="#503DB3" /></g>
+<g transform="rotate(90.000000 20.000000 0.000000)"><path d="M 20 -2.5 L 75.0 -2.5 L 73.0 -7.5 L 85.0 0 L 73.0 7.5 L 75.0 2.5 L 20 2.5 Z" stroke="#666" stroke-width="0.000000" fill="#B32E19" /></g>
+<g transform="rotate(90.000000 12.500000 90.000000)"><path d="M 12.5 87.5 L 62.5 87.5 L 60.5 82.5 L 72.5 90 L 60.5 97.5 L 62.5 92.5 L 12.5 92.5 Z" stroke="#666" stroke-width="0.000000" fill="#503DB3" /></g>
+<rect x="0" y="65" width="25" height="25" fill="#eee" stroke-width="1" stroke="#CCC" />
 </g>
 <g transform="translate(125 0)">
-<g transform="rotate(90.000000 5.000000 0.000000)"><path d="M 5 -1.5 L 64.0 -1.5 L 62.0 -4.5 L 70.0 0 L 62.0 4.5 L 64.0 1.5 L 5 1.5 Z" stroke="#666" stroke-width="0.500000" fill="#503DB3" /></g>
-<g transform="rotate(90.000000 20.000000 0.000000)"><path d="M 20 -1.5 L 79.0 -1.5 L 77.0 -4.5 L 85.0 0 L 77.0 4.5 L 79.0 1.5 L 20 1.5 Z" stroke="#666" stroke-width="0.500000" fill="#B32E19" /></g>
-<g transform="rotate(90.000000 12.500000 90.000000)"><path d="M 12.5 88.5 L 66.5 88.5 L 64.5 85.5 L 72.5 90 L 64.5 94.5 L 66.5 91.5 L 12.5 91.5 Z" stroke="#666" stroke-width="0.500000" fill="#B32E19" /></g>
-<rect x="0" y="65" width="25" height="25" fill="#eee" stroke-width="1" stroke="#666" />
+<g transform="rotate(90.000000 5.000000 0.000000)"><path d="M 5 -2.5 L 60.0 -2.5 L 58.0 -7.5 L 70.0 0 L 58.0 7.5 L 60.0 2.5 L 5 2.5 Z" stroke="#666" stroke-width="0.000000" fill="#503DB3" /></g>
+<g transform="rotate(90.000000 20.000000 0.000000)"><path d="M 20 -2.5 L 75.0 -2.5 L 73.0 -7.5 L 85.0 0 L 73.0 7.5 L 75.0 2.5 L 20 2.5 Z" stroke="#666" stroke-width="0.000000" fill="#B32E19" /></g>
+<g transform="rotate(90.000000 12.500000 90.000000)"><path d="M 12.5 87.5 L 62.5 87.5 L 60.5 82.5 L 72.5 90 L 60.5 97.5 L 62.5 92.5 L 12.5 92.5 Z" stroke="#666" stroke-width="0.000000" fill="#B32E19" /></g>
+<rect x="0" y="65" width="25" height="25" fill="#eee" stroke-width="1" stroke="#CCC" />
 </g>
 <rect x="35" y="135" width="25" height="5" stroke="0" fill="#666" />
 <rect x="35" y="145" width="25" height="5" stroke="0" fill="#666" />
