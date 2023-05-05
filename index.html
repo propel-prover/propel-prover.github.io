@@ -41,60 +41,64 @@ Track commutativity, associativity, idempotency, and <a href="#section-propertie
             <h3>Expressions</h3>
             <ul>
                 <li class="selected">
-                    <code>(lambda [<em>prop...</em>] <em>arg...</em> <em>expr</em>)</code>
+                    <code>(lambda [<em>&lt;prop...&gt;</em>] <em>&lt;arg...&gt;</em> <em>&lt;expr&gt;</em>)</code>
                     <div class="description">
-                    A lambda expression with zero or more <em>properties</em>, one or more arguments of the form <code>(var type)</code>, and an expression.
-                    The annotated properties are type checked and will be part of the function's type.
+                    A lambda expression with zero or more <em>&lt;properties&gt;</em>, one or more arguments of the form <code>(<em>&lt;var&gt;</em> <em>&lt;type&gt;</em>)</code>, and a body <em>&lt;expr&gt;</em>.
+                    The annotated properties are type-checked and will be part of the function's type.
                     </div>
                 </li>
                 <li>
-                    <code>(letrec <em>var</em> <em>type</em> <em>expr</em>)</code>
+                    <code>(let <em>&lt;pattern&gt;</em> <em>&lt;expr&gt;</em> <em>&lt;expr&gt;</em>)</code>
                     <div class="description">
-                    Introduces a recursive definition bound to <em>var</em> that has the designated type and an expression.
-                    Thus the identifier <em>var</em> is bound, and can be used, in <em>expr</em>
-                    </div>
-                </li>
-                <li>
-                    <code>(cases <em>expr</em> <em>[pattern expr]...</em>)</code>
-                    <div class="description">
-                    Perform a pattern match on the result of the first expression.
-                    Cases are surrounded by square brackets and each case has one pattern and one expression to be executed if the case matches.
-                    Free variables in patterns are bound as expected.
-                    </div>
-                </li>
-                <li>
-                    <code>(let <em>pattern</em> <em>expr</em> <em>expr</em>)</code>
-                    <div class="description">
-                    Introduces a definition for each free variable in a given pattern (that must be exhaustive) that matches the first expression in the second expression.
+                    Introduces a definition for each free variable in a given pattern (that must be exhaustive) which matches the first expression in the second expression.
                     Non-trivial patterns are useful when a type has only one constructor, for example <code>Tuple</code>.
                     </div>
                 </li>
                 <li>
-                    <code>(if <em>expr</em> <em>expr</em> <em>expr</em>)</code>
+                    <code>(letrec <em>&lt;var&gt;</em> <em>&lt;type&gt;</em> <em>&lt;expr&gt;</em> <em>&lt;expr&gt;</em>)</code>
                     <div class="description">
-                    Performs a conditional check. The first expression is expected to reduce to either <code>True</code> or <code>False</code>
+                    Introduces a recursive definition for the first expression that has the designated type and is bound to <em>&lt;var&gt;</em> in the last expression.
                     </div>
                 </li>
                 <li>
-                    <code>(not <em>expr</em>)</code>
+                    <code>(lettype <em>&lt;var&gt;</em> <em>&lt;type&gt;</em> <em>&lt;expr&gt;</em>)</code>
                     <div class="description">
-                    Negates the booleans <code>True</code> or <code>False</code>
+                    Introduces a recursive or non-recursive type alias <em>&lt;var&gt;</em> for <em>&lt;type&gt;</em> in <em>&lt;expr&gt;</em>.
                     </div>
                 </li>
                 <li>
-                    <code>(and <em>expr</em> <em>expr</em>)</code>
+                    <code>(cases <em>&lt;expr&gt;</em> <em>&lt;[pattern expr]...&gt;</em>)</code>
                     <div class="description">
-                    Computes the conjunction of two booleans
+                    Pattern-matches on the result of the first expression.
+                    Cases are surrounded by square brackets and each case has one pattern and one expression to be executed if the case matches.
                     </div>
                 </li>
                 <li>
-                    <code>(or <em>expr</em> <em>expr</em>)</code>
+                    <code>(if <em>&lt;expr&gt;</em> <em>&lt;expr&gt;</em> <em>&lt;expr&gt;</em>)</code>
                     <div class="description">
-                    Computes the disjunction of two booleans
+                    Performs a conditional check. The first expression must reduce to either <code>True</code> or <code>False</code>.
                     </div>
                 </li>
                 <li>
-                    <code>(implies <em>expr</em> <em>expr</em>)</code>
+                    <code>(not <em>&lt;expr&gt;</em>)</code>
+                    <div class="description">
+                    Negates the booleans <code>True</code> or <code>False</code>.
+                    </div>
+                </li>
+                <li>
+                    <code>(and <em>&lt;expr&gt;</em> <em>&lt;expr&gt;</em>)</code>
+                    <div class="description">
+                    Computes the conjunction of two booleans.
+                    </div>
+                </li>
+                <li>
+                    <code>(or <em>&lt;expr&gt;</em> <em>&lt;expr&gt;</em>)</code>
+                    <div class="description">
+                    Computes the disjunction of two booleans.
+                    </div>
+                </li>
+                <li>
+                    <code>(implies <em>&lt;expr&gt;</em> <em>&lt;expr&gt;</em>)</code>
                     <div class="description">
                     Computes the implication between two booleans where the first expression is the antecedent and the second expression is the consequent.
                     </div>
@@ -104,19 +108,17 @@ Track commutativity, associativity, idempotency, and <a href="#section-propertie
             <h3>Definitions</h3>
             <ul>
                 <li>
-                    <code>(def <em>var</em> [<em>type...</em>] <em>expr</em>)</code>
+                    <code>(def <em>&lt;var&gt;</em> [<em>&lt;type&gt;</em>] <em>&lt;expr&gt;</em>)</code>
                     <div class="description">
-                    Introduces a definition bound to <em>var</em>.
+                    Introduces a definition that has is bound to <em>&lt;var&gt;</em> in the rest of the program.
                     Recursive definitions must designate their type.
                     Non-recursive definitions leave out the type declaration.
-                    <em>var</em> will be bound to the value of <em>expr</em> in the rest of the program.
                     </div>
                 </li>
                 <li>
-                    <code>(type <em>var</em> <em>type</em>)</code>
+                    <code>(type <em>&lt;var&gt;</em> <em>&lt;type&gt;</em>)</code>
                     <div class="description">
-                    Introduce a recursive or non-recursive type alias.
-                    <em>var</em> will be bound to <em>type</em> in the rest of the program.
+                    Introduce a recursive or non-recursive type alias <em>&lt;var&gt;</em> for <em>&lt;type&gt;</em> in the rest of the program.
                     </div>
                 </li>
             </ul>
@@ -130,9 +132,9 @@ Track commutativity, associativity, idempotency, and <a href="#section-propertie
                     </div>
                 </li>
                 <li>
-                    <code>(<em>K</em> <em>pattern...</em>)</code>
+                    <code>(<em>&lt;K&gt;</em> <em>&lt;pattern...&gt;</em>)</code>
                     <div class="description">
-                    A pattern that will only match expressions constructed with the constructor <em>K</em> and whose arguments match each subpattern.
+                    A pattern that will only match expressions constructed with the constructor <em>&lt;K&gt;</em> and whose arguments match each subpattern.
                     </div>
                 </li>
             </ul>
@@ -142,13 +144,13 @@ Track commutativity, associativity, idempotency, and <a href="#section-propertie
                 <li>
                     <code>comm</code>
                     <div class="description">
-                    Commutativity: <code>(f x y) = (f y x)</code>
+                    Commutativity: <code>f x y = f y x</code>
                     </div>
                 </li>
                 <li>
                     <code>assoc</code>
                     <div class="description">
-                    Associativity: <code>(f (f x y) z) = (f x (f y z))</code>
+                    Associativity: <code>f (f x y) z = f x (f y z)</code>
                     </div>
                 </li>
                 <li>
@@ -210,30 +212,30 @@ Track commutativity, associativity, idempotency, and <a href="#section-propertie
             <h3>Types</h3>
             <ul>
                 <li>
-                    <code><em>var</em></code>
+                    <code><em>&lt;var&gt;</em></code>
                     <div class="description">
-                    A type identifier as defined through <code>type</code>, or a type variable as bound by <code>rec</code> and <code>forall</code>
+                    A type identifier as defined through <code>type</code>, or a type variable as bound by <code>rec</code> or <code>forall</code>.
                     </div>
                 </li>
                 <li>
-                    <code>{<em>constructor...</em>}</code>
+                    <code>{<em>&lt;constructor...&gt;</em>}</code>
                     <div class="description">
                     Defines a tagged union defined by at least one constructor.
-                    Additionally, if constructors take arguments, then each argument's type must be present alongside the constructor inside parenthesis.
+                    Additionally, if constructors take arguments, then the arguments' types must follow after the constructor inside parenthesis.
                     </div>
                 </li>
                 <li>
-                    <code>(rec <em>var</em> <em>type</em>)</code>
+                    <code>(rec <em>&lt;var&gt;</em> <em>&lt;type&gt;</em>)</code>
                     <div class="description">
-                    Defines a recursive type.
-                    <em>var</em> will be bound to the recursive type inside <em>type</em>.
+                    Defines a recursive type and
+                    <em>&lt;var&gt;</em> will be bound to the recursive type inside <em>&lt;type&gt;</em>.
                     </div>
                 </li>
                 <li>
-                    <code>(forall <em>var</em> <em>type</em>)</code>
+                    <code>(forall <em>&lt;var&gt;</em> <em>&lt;type&gt;</em>)</code>
                     <div class="description">
-                    Defines a polymorphic type.
-                    <em>var</em> is bound in <em>type</em>
+                    Defines a polymorphic type and
+                    <em>&lt;var&gt;</em> is bound in <em>&lt;type&gt;</em>.
                     </div>
                 </li>
             </ul>

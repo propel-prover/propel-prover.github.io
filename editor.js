@@ -33,7 +33,7 @@ function syntaxHighlight(code) {
             if (t=='fun' || t=='forall' || t=='rec')
                 color = '#0087af';
             // terms
-            else if (t=='lambda' || t=='cases' || t=='let' || t=='letrec' || t=='if' || t=='not'
+            else if (t=='lambda' || t=='cases' || t=='let' || t=='letrec' || t=='lettype' || t=='if' || t=='not'
                   || t=='or' || t=='and' || t=='implies' || t=='def' || t=='type') {
                 color = '#d75f00';
                 weight = 'bold';
