@@ -58,7 +58,7 @@ Track commutativity, associativity, idempotency, and <a href="#section-propertie
             <h3 id="syntax-expressions">Expressions</h3>
             <ul>
                 <li>
-                    <code>(lambda [<em>&lt;prop...&gt;</em>] <em>&lt;arg...&gt;</em> <em>&lt;expr&gt;</em>)</code>
+                    <code>(lambda [<em>&lt;[prop...]&gt;</em>] <em>&lt;arg...&gt;</em> <em>&lt;expr&gt;</em>)</code>
                     <div class="description">
                     A lambda expression with zero or more <em>&lt;properties&gt;</em>, one or more arguments of the form (<em>&lt;var&gt;</em> <em>&lt;type&gt;</em>), and a body <em>&lt;expr&gt;</em>.
                     The annotated properties are type-checked and will be part of the function's type.
@@ -118,6 +118,24 @@ Track commutativity, associativity, idempotency, and <a href="#section-propertie
                     <code>(implies <em>&lt;expr&gt;</em> <em>&lt;expr&gt;</em>)</code>
                     <div class="description">
                     Computes the implication between two booleans where the first expression is the antecedent and the second expression is the consequent.
+                    </div>
+                </li>
+                <li>
+                    <code>(<em>&lt;K&gt;</em> <em>&lt;expr...&gt;</em>)</code>
+                    <div class="description">
+                    Applies a constructor to its arguments.
+                    </div>
+                </li>
+                <li>
+                    <code>(<em>&lt;expr&gt;</em> <em>&lt;expr...&gt;</em>)</code>
+                    <div class="description">
+                    Applies an expression to its arguments.
+                    </div>
+                </li>
+                <li>
+                    <code>(<em>&lt;expr&gt;</em> <em>&lt;[expr...]&gt;</em>)</code>
+                    <div class="description">
+                    Applies an expression to its type arguments.
                     </div>
                 </li>
             </ul>
@@ -477,10 +495,10 @@ Propel is a research language developed at the <a href="https://programming-grou
   ; it must be reflexive, transitive, and antisymmetric
   (lambda [refl trans antisym] (x bitvec) (y bitvec)
     (cases (Tuple x y)
-        [(Tuple BZ BZ) True]
-        [(Tuple (B0 x) (B0 y)) (bv_eq x y)]
-        [(Tuple (B1 x) (B1 y)) (bv_eq x y)]
-        [_ False])))
+      [(Tuple BZ BZ) True]
+      [(Tuple (B0 x) (B0 y)) (bv_eq x y)]
+      [(Tuple (B1 x) (B1 y)) (bv_eq x y)]
+      [_ False])))
 </script>
 
 <script type="text/propel" id="nat_add3p">
@@ -492,9 +510,9 @@ Propel is a research language developed at the <a href="https://programming-grou
   ; it must be commutative and associative
   (lambda [comm assoc] (x nat) (y nat)
     (cases (Tuple x y)
-        [(Tuple Z y) y]
-        [(Tuple x Z) x]
-        [(Tuple (S x) (S y)) (S (S (nat_add3p x y)))])))
+      [(Tuple Z y) y]
+      [(Tuple x Z) x]
+      [(Tuple (S x) (S y)) (S (S (nat_add3p x y)))])))
 </script>
 
 <script type="text/propel" id="natlist_gcounter">
