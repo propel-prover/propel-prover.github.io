@@ -302,10 +302,15 @@ function highlightOptionPopup(index, scroll) {
 }
 
 function insertSelectionPopup() {
+    const editor = document.querySelector("#editor");
     const selected = document.querySelector("#autocomplete li.selected");
     const completion = selected.dataset.completion || "";
-    document.querySelector("#editor").focus()
+    const selection = completion.match(/^([^< ]* *)(<[^>]+>|\[<[^>]+>\])/);
+    const selectionRange = selection ? [editor.selectionStart + selection[1].length, editor.selectionStart + selection[0].length] : [];
+    editor.focus();
     document.execCommand("insertText", false, completion);
+    if (selectionRange.length)
+        editor.setSelectionRange(selectionRange[0], selectionRange[1])
     closePopup();
 }
 
@@ -342,7 +347,25 @@ function initEditor() {
     });
 
     function popupKeyDownEventListener(e) {
-        if (e.keyCode == 27) { // ESC key
+        if (e.keyCode == 9) { // TAB
+            if (e.shiftKey) {
+                const caret = Math.min(editor.selectionStart, editor.selectionEnd);
+                const selection = editor.value.substring(0, caret).match(/(<[^>]+>|\[<[^>]+>\])( *)$/);
+                if (selection)
+                    editor.setSelectionRange(caret - selection[0].length, caret - selection[2].length);
+            } else {
+                const caret = Math.max(editor.selectionStart, editor.selectionEnd);
+                const lineWhitespaces = ("\n" + editor.value.substring(0, caret)).match(/\r?\n( *)[^\r\n]*\r?\n( *)$/);
+                const diffWhitespaces = lineWhitespaces ? lineWhitespaces[1].length - lineWhitespaces[2].length : 0;
+                const selection = !diffWhitespaces ? editor.value.substring(caret).match(/^( *)(<[^>]+>|\[<[^>]+>\])/) : null;
+                if (selection)
+                    editor.setSelectionRange(caret + selection[1].length, caret + selection[0].length);
+                else if (editor.selectionStart == editor.selectionEnd)
+                    document.execCommand("insertText", false, " ".repeat(diffWhitespaces > 0 ? diffWhitespaces : 2));
+            }
+            e.preventDefault();
+        }
+        else if (e.keyCode == 27) { // ESC
             closePopup();
             e.preventDefault();
         } else if (isOpenPopup()) {
@@ -358,14 +381,7 @@ function initEditor() {
             }
         } else if (e.keyCode == 32 && e.ctrlKey) { // SPACE
             if (editor.selectionStart == editor.selectionEnd)
-              openPopup(editor.value, editor.selectionStart);
-            e.preventDefault();
-        } else if (e.keyCode == 9) { // TAB
-            const sel = editor.selectionStart;
-            editor.value = editor.value.substr(0, sel) + '\t' + editor.value.substr(sel);
-            editor.selectionStart = sel+1;
-            editor.selectionEnd = sel+1;
-            content();
+                openPopup(editor.value, editor.selectionStart);
             e.preventDefault();
         }
     }
