@@ -129,6 +129,7 @@ a {
     padding: 5px 10px;
     background: #eeeeee;
     font-size: 12px;
+    font-variant-numeric: tabular-nums;
 }
 
 

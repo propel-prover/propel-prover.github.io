@@ -469,18 +469,30 @@ function initEditor() {
 
 
 
-function initCompiler() {
+function initTypeChecker() {
 
     const workerCode = `data:,
     importScripts('${window.location.origin}/propel.min.js');
 
+    let intermediateOutput = false;
+
     console.log = function() {
-        postMessage({ done: false, line: Array.from(arguments).join(" ") + "\\n" });
+        const line = Array.from(arguments).join(' ');
+        intermediateOutput = intermediateOutput
+            || line.startsWith('[error]')
+            || line.startsWith('Error:')
+            || line.endsWith('Check failed.')
+            || line.endsWith('Check successful.');
+        if (intermediateOutput)
+            postMessage({ done: false, line: line + "\\n" });
+        else
+            postMessage({ done: false });
     };
 
     onmessage = function (e) {
         const t0 = performance.now();
-        parseAndCheckSourceCode(e.data[0], e.data[1], e.data[2]);
+        intermediateOutput = e.data[1] || e.data[2];
+        parseAndCheckSourceCode(e.data[0], !intermediateOutput || e.data[1], !intermediateOutput || e.data[2]);
         const t1 = performance.now();
         postMessage({ done: true, time: t1-t0 });
     };
@@ -491,44 +503,69 @@ function initCompiler() {
     const editorElem = document.querySelector("#editor");
     const consoleElem = document.querySelector("#console");
     const statusElem = document.querySelector("#status");
-    let timer = undefined;
 
+    let timer = 0;
+    let interval = 0;
+    let checkingStart = 0;
+    let lastProgress = 0;
 
-    function getLastLine(str) {
-        var line = "";
-        var i = str.length-1;
-        while (str.charAt(i) == '\n' && i >= 0) i--;
-        while (i >= 0 && str.charAt(i) != '\n') {
-            line = str.charAt(i) + line;
-            i--;
-        }
-        return line;
+    const spinner = "⠋⠙⠹⠸⢰⣰⣠⣄⣆⡆⠇⠏";
+    let spinnerIndex = 0;
+
+    function updateStatus() {
+        statusElem.innerHTML = "<strong>Checking …</strong> (" + ((Date.now() - checkingStart) / 1000).toFixed(0) + "&thinsp;s)";
     }
 
-    function setCodeTimeoutCompiler(timeout) {
-        timer = setTimeout(function() {
+    function setCodeTimeoutTypeChecker(timeout) {
+        clearInterval(interval);
+        clearTimeout(timer);
 
-            statusElem.innerHTML = "<strong>Compiling</strong>";
+        timer = setTimeout(function() {
+            checkingStart = Date.now();
+            interval = setInterval(updateStatus, 1000);
+            updateStatus();
+
             consoleElem.innerHTML = "&nbsp;<div style='scroll-snap-align: end'>&nbsp;</div>";
             consoleElem.style.scrollSnapType = "y mandatory";
-            var output = consoleElem.firstChild;
-            output.textContent = "";
+            let output = consoleElem.firstChild;
 
-            if (worker != null) worker.terminate();
+            if (worker != null)
+                worker.terminate();
 
-            var worker = new Worker(workerCode);
-            worker.postMessage([ editorElem.value,
-                                 document.querySelector("#printDeduction").checked,
-                                 document.querySelector("#printReduction").checked ]);
+            const printDeduction = document.getElementById("printDeduction").checked
+            const printReduction = document.getElementById("printReduction").checked
+
+            worker = new Worker(workerCode);
+            worker.postMessage([ editorElem.value, printDeduction, printReduction ]);
+
+            if (!printDeduction && !printReduction) {
+                lastProgress = checkingStart;
+                spinnerIndex = 0;
+                output.textContent = spinner[spinnerIndex] + " Checking …";
+            }
+            else
+                lastProgress = 0;
+
             worker.onmessage = function(e) {
                 requestAnimationFrame(function() {
+                    if (lastProgress && Date.now() - lastProgress > 10) {
+                        lastProgress = Date.now();
+                        spinnerIndex = (spinnerIndex + 1) % spinner.length;
+                        output.textContent = spinner[spinnerIndex] + " Checking …";
+                    }
                     if (e.data.done) {
-                        statusElem.innerHTML = "<strong>Result</strong> (" + Math.round(e.data.time*100)/100 + "ms) " + getLastLine(output.textContent);
+                        clearInterval(interval);
+                        statusElem.innerHTML =
+                            "<strong>Result</strong> (" + (e.data.time / 1000).toFixed(1) + "&thinsp;s) " +
+                            (output.textContent.startsWith("Error:") ? "✘ Syntax Error" : output.textContent.match(/([^\r\n]*)[\r\n\s]*$/)[1]);
                         consoleElem.lastChild.remove();
                         consoleElem.style.scrollSnapType = "";
                         consoleElem.scrollTop = consoleElem.scrollHeight;
                         worker = null;
-                    } else {
+                    } else if (e.data.line) {
+                        if (lastProgress)
+                            output.textContent = "";
+                        lastProgress = 0;
                         output.textContent += e.data.line;
                     }
                 })
@@ -539,17 +576,14 @@ function initCompiler() {
     }
 
     editorElem.addEventListener('input', function() {
-        if (document.querySelector("#checkOnInput").checked) {
-            clearTimeout(timer);
-            setCodeTimeoutCompiler(500);
-        }
+        if (document.querySelector("#checkOnInput").checked)
+            setCodeTimeoutTypeChecker(500);
     });
 
     document.querySelector("#checkCode").addEventListener("click", function() {
-        clearTimeout(timer);
-        setCodeTimeoutCompiler(0);
+        setCodeTimeoutTypeChecker(0);
     });
 }
 
 initEditor();
-initCompiler();
+initTypeChecker();
