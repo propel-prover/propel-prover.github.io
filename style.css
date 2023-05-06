@@ -64,8 +64,7 @@ a {
     border: 1px solid #CCC;
     display: block;
     box-sizing: content-box;
-    word-wrap: break-word;
-    white-space: pre-wrap;
+    white-space: pre;
     position: absolute;
     top: 0;
     left: 0;
@@ -135,7 +134,8 @@ a {
 
 
 #autocomplete {
-    width: 500px;
+    width: calc(100% - 2px - 100px);
+    max-width: 500px;
     padding: 0px;
     border: 1px solid #E8E4C1;
     background: #F8F8E2;
@@ -146,7 +146,7 @@ a {
     transform: scale(0.95);
     font-size: 12px;
     box-shadow: 1px 1px 100px #0002, 3px 3px 10px #0008;
-    transition: 0.3s opacity ease, 0.3s visibility ease, 0.3s transform ease;
+    transition: 0.3s opacity ease, 0.3s visibility ease, 0.3s transform ease, 0.3s top step-end, 0.3s left step-end;
 }
 @supports (backdrop-filter: blur(50px)) {
     #autocomplete {
@@ -158,6 +158,7 @@ a {
     opacity: 0.95;
     visibility: visible;
     transform: none;
+    transition: 0.3s opacity ease, 0.3s visibility ease, 0.3s transform ease;
 }
 #autocomplete .description {
     display: none;
@@ -201,13 +202,11 @@ a {
     opacity: 0;
 }
 #autocomplete  #syntax {
-    width: 500px;
     max-height: 200px;
     overflow-y: scroll;
     scroll-behavior: smooth;
 }
 #autocomplete #selected-description {
-    width: 480px;
     border-top: 2px solid #CCC;
     padding: 10px;
     font-size: 14px;

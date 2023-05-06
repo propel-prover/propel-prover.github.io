@@ -163,10 +163,24 @@ function openPopup(code, index) {
 
     copyDescriptionPopup();
 
-    const box = elem.getBoundingClientRect();
+    let editor = document.querySelector("#editor");
+    let editorRect = editor.getBoundingClientRect();
+    let elemRect = elem.getBoundingClientRect();
+
+    elemRect = DOMRect.fromRect({
+        x: Math.max(Math.min(elemRect.x, document.documentElement.clientWidth - 550), 50),
+        y: elemRect.y,
+        width: elemRect.width,
+        height: elemRect.height
+    })
+
+    if (elemRect.left < editorRect.left - 2 || elemRect.left > editorRect.left + editor.clientWidth + 2 ||
+        elemRect.bottom < editorRect.top - 2 || elemRect.bottom > editorRect.top + editor.clientHeight + 2)
+        return false;
+
     const autocomplete = document.querySelector("#autocomplete");
-    autocomplete.style.left = (box.x+window.scrollX) + 'px';
-    autocomplete.style.top = (box.y+window.scrollY+20) + 'px';
+    autocomplete.style.left = (elemRect.left+window.scrollX) + 'px';
+    autocomplete.style.top = (elemRect.bottom+window.scrollY) + 'px';
     autocomplete.classList.add("active");
 
     return true;
@@ -296,7 +310,9 @@ function insertSelectionPopup() {
 }
 
 function closePopup() {
-    document.querySelector("#autocomplete").classList.remove("active");
+    const autocomplete = document.getElementById("autocomplete");
+    autocomplete.classList.remove("active");
+    autocomplete.style.left = "50px";
 }
 
 function isOpenPopup() {
@@ -374,8 +390,8 @@ function initEditor() {
                 closePopup();
             }
             else if (ch == '(' || ch == '{' || ch == '[' || isOpenPopup()) {
-                const popupOpen = openPopup(editor.value, editor.selectionStart);
-                if (!popupOpen) closePopup();
+                if (!openPopup(editor.value, editor.selectionStart))
+                    closePopup();
             }
         }
     });
@@ -413,7 +429,11 @@ function initEditor() {
         elem.addEventListener('click', insertSelectionPopup);
     });
 
-    editor.addEventListener('scroll', closePopup);
+    editor.addEventListener('scroll', function () {
+        if (isOpenPopup() && !openPopup(editor.value, editor.selectionStart))
+            closePopup();
+    });
+
     editor.addEventListener('mousedown', closePopup);
     editor.addEventListener('mouseup', closePopup);
     editor.addEventListener('touchstart', closePopup);
@@ -436,7 +456,7 @@ function initEditor() {
 function initCompiler() {
 
     const workerCode = `data:,
-    importScripts('${window.location.origin}' + '/propel.min.js');
+    importScripts('${window.location.origin}/propel.min.js');
 
     console.log = function() {
         postMessage({ done: false, line: Array.from(arguments).join(" ") + "\\n" });
