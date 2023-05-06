@@ -36,14 +36,31 @@ Track commutativity, associativity, idempotency, and <a href="#section-propertie
     <div id="interactiveCode">
         <h1>Try Propel</h1>
         <div id="autocomplete"><!--{{{-->
-            <div class="hint">Use the Up/Down arrow to cycle through the options. Click Enter to introduce the syntactic form. Click ESC to close popup</div>
             <div id="syntax">
-            <h3>Expressions</h3>
+            <h3 id="syntax-definitions">Definitions</h3>
             <ul>
                 <li class="selected">
+                    <code>(def <em>&lt;var&gt;</em> [<em>&lt;type&gt;</em>] <em>&lt;expr&gt;</em>)</code>
+                    <div class="description">
+                    Introduces a definition that has is bound to <em>&lt;var&gt;</em> in the rest of the program.
+                    Recursive definitions must designate their type.
+                    Non-recursive definitions leave out the type declaration.
+                    </div>
+                </li>
+                <li>
+                    <code>(type <em>&lt;var&gt;</em> <em>&lt;type&gt;</em>)</code>
+                    <div class="description">
+                    Introduce a recursive or non-recursive type alias <em>&lt;var&gt;</em> for <em>&lt;type&gt;</em> in the rest of the program.
+                    </div>
+                </li>
+            </ul>
+
+            <h3 id="syntax-expressions">Expressions</h3>
+            <ul>
+                <li>
                     <code>(lambda [<em>&lt;prop...&gt;</em>] <em>&lt;arg...&gt;</em> <em>&lt;expr&gt;</em>)</code>
                     <div class="description">
-                    A lambda expression with zero or more <em>&lt;properties&gt;</em>, one or more arguments of the form <code>(<em>&lt;var&gt;</em> <em>&lt;type&gt;</em>)</code>, and a body <em>&lt;expr&gt;</em>.
+                    A lambda expression with zero or more <em>&lt;properties&gt;</em>, one or more arguments of the form (<em>&lt;var&gt;</em> <em>&lt;type&gt;</em>), and a body <em>&lt;expr&gt;</em>.
                     The annotated properties are type-checked and will be part of the function's type.
                     </div>
                 </li>
@@ -105,32 +122,8 @@ Track commutativity, associativity, idempotency, and <a href="#section-propertie
                 </li>
             </ul>
 
-            <h3>Definitions</h3>
+            <h3 id="syntax-patterns">Patterns</h3>
             <ul>
-                <li>
-                    <code>(def <em>&lt;var&gt;</em> [<em>&lt;type&gt;</em>] <em>&lt;expr&gt;</em>)</code>
-                    <div class="description">
-                    Introduces a definition that has is bound to <em>&lt;var&gt;</em> in the rest of the program.
-                    Recursive definitions must designate their type.
-                    Non-recursive definitions leave out the type declaration.
-                    </div>
-                </li>
-                <li>
-                    <code>(type <em>&lt;var&gt;</em> <em>&lt;type&gt;</em>)</code>
-                    <div class="description">
-                    Introduce a recursive or non-recursive type alias <em>&lt;var&gt;</em> for <em>&lt;type&gt;</em> in the rest of the program.
-                    </div>
-                </li>
-            </ul>
-
-            <h3>Patterns</h3>
-            <ul>
-                <li>
-                    <code>var</code>
-                    <div class="description">
-                    A pattern that will bind to everything.
-                    </div>
-                </li>
                 <li>
                     <code>(<em>&lt;K&gt;</em> <em>&lt;pattern...&gt;</em>)</code>
                     <div class="description">
@@ -139,7 +132,32 @@ Track commutativity, associativity, idempotency, and <a href="#section-propertie
                 </li>
             </ul>
 
-            <h3>Properties</h3>
+            <h3 id="syntax-types">Types</h3>
+            <ul>
+                <li>
+                    <code>{<em>&lt;constructor...&gt;</em>}</code>
+                    <div class="description">
+                    Defines a tagged union defined by at least one constructor.
+                    Additionally, if constructors take arguments, then the arguments' types must follow after the constructor inside parenthesis.
+                    </div>
+                </li>
+                <li>
+                    <code>(rec <em>&lt;var&gt;</em> <em>&lt;type&gt;</em>)</code>
+                    <div class="description">
+                    Defines a recursive type and
+                    <em>&lt;var&gt;</em> will be bound to the recursive type inside <em>&lt;type&gt;</em>.
+                    </div>
+                </li>
+                <li>
+                    <code>(forall <em>&lt;var&gt;</em> <em>&lt;type&gt;</em>)</code>
+                    <div class="description">
+                    Defines a polymorphic type and
+                    <em>&lt;var&gt;</em> is bound in <em>&lt;type&gt;</em>.
+                    </div>
+                </li>
+            </ul>
+
+            <h3 id="syntax-properties">Properties</h3>
             <ul>
                 <li>
                     <code>comm</code>
@@ -208,37 +226,6 @@ Track commutativity, associativity, idempotency, and <a href="#section-propertie
                     </div>
                 </li>
             </ul>
-
-            <h3>Types</h3>
-            <ul>
-                <li>
-                    <code><em>&lt;var&gt;</em></code>
-                    <div class="description">
-                    A type identifier as defined through <code>type</code>, or a type variable as bound by <code>rec</code> or <code>forall</code>.
-                    </div>
-                </li>
-                <li>
-                    <code>{<em>&lt;constructor...&gt;</em>}</code>
-                    <div class="description">
-                    Defines a tagged union defined by at least one constructor.
-                    Additionally, if constructors take arguments, then the arguments' types must follow after the constructor inside parenthesis.
-                    </div>
-                </li>
-                <li>
-                    <code>(rec <em>&lt;var&gt;</em> <em>&lt;type&gt;</em>)</code>
-                    <div class="description">
-                    Defines a recursive type and
-                    <em>&lt;var&gt;</em> will be bound to the recursive type inside <em>&lt;type&gt;</em>.
-                    </div>
-                </li>
-                <li>
-                    <code>(forall <em>&lt;var&gt;</em> <em>&lt;type&gt;</em>)</code>
-                    <div class="description">
-                    Defines a polymorphic type and
-                    <em>&lt;var&gt;</em> is bound in <em>&lt;type&gt;</em>.
-                    </div>
-                </li>
-            </ul>
             </div>
             <div id="selected-description">
             </div>
@@ -258,11 +245,9 @@ Track commutativity, associativity, idempotency, and <a href="#section-propertie
             <label for="checkOnInput">Check on change</label>
         </div>
         <div id="codeAndConsole">
-            <div id="codewrapperNotRelative">
-                <div id="codewrapper">
-                    <pre id="viewer"></pre>
-                    <textarea id="editor" spellcheck="false"></textarea>
-                </div>
+            <div id="codewrapper">
+                <pre id="viewer"></pre>
+                <textarea id="editor" spellcheck="false"></textarea>
             </div>
             <div id="consoleContainer">
                 <pre id="console">Click on 'Check' to start the checking</pre>

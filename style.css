@@ -27,13 +27,11 @@ a {
     margin: auto;
     margin-bottom: 30px;
 }
-#codewrapperNotRelative {
+#codewrapper {
     flex: 1;
     height: 300px;
     margin: 0;
     padding: 0;
-}
-#codewrapper {
     position: relative;
 }
 #viewer .line {
@@ -140,11 +138,26 @@ a {
     width: 500px;
     padding: 0px;
     border: 1px solid #E8E4C1;
-    background: #FFFFE0;
+    background: #F8F8E2;
     position: absolute;
     z-index: 2;
+    opacity: 0;
     visibility: hidden;
+    transform: scale(0.95);
     font-size: 12px;
+    box-shadow: 1px 1px 100px #0002, 3px 3px 10px #0008;
+    transition: 0.3s opacity ease, 0.3s visibility ease, 0.3s transform ease;
+}
+@supports (backdrop-filter: blur(50px)) {
+    #autocomplete {
+        background: #FFFFE080;
+        backdrop-filter: blur(50px);
+    }
+}
+#autocomplete.active:not(.inapplicable) {
+    opacity: 0.95;
+    visibility: visible;
+    transform: none;
 }
 #autocomplete .description {
     display: none;
@@ -157,6 +170,7 @@ a {
     padding: 5px 10px;
     border-bottom: 1px solid #CCC;
     cursor: pointer;
+    overflow: hidden;
 }
 #autocomplete li.selected {
     background: rgba(0,0,0,0.05);
@@ -169,16 +183,28 @@ a {
     font-size: 14px;
     font-weight: bold;
     font-variant: small-caps;
-    margin-left: 35px;
+    overflow: hidden;
 }
-#autocomplete .hint {
-    font-size: 10px;
-    padding: 10px;
+#autocomplete.active:not(.inapplicable) li,
+#autocomplete.active:not(.inapplicable) h3 {
+    transition: 0.3s all ease;
+}
+#autocomplete li.inapplicable,
+#autocomplete h3.inapplicable {
+    height: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    opacity: 0;
 }
 #autocomplete  #syntax {
     width: 500px;
-    height: 200px;
+    max-height: 200px;
     overflow-y: scroll;
+    scroll-behavior: smooth;
 }
 #autocomplete #selected-description {
     width: 480px;
@@ -327,6 +353,11 @@ main h2 {
     text-align: center;
 }
 
+main pre, main p code {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
 main .prop_card img {
     width: 210px;
     text-align: center;
@@ -368,8 +399,6 @@ footer {
     }
     #consoleContainer {
         margin-top: 20px;
-    }
-    #consoleContainer, #codewrapperNotRelative {
         width: 100%;
     }
 }

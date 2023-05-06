@@ -151,89 +151,167 @@ function highlightParen(code, index, color) {
 
 
 function openPopup(code, index) {
-    // only open popup if the cursor is after (
-    if (index == 0 || code[index-1] != '(') return false;
+    const prefix = code.substring(0, index);
 
-    const elem = document.querySelector("#index" + (index-1));
+    const context = prefix.match(/[\[\]{}()][^\[\]{}()\r\n]*$/);
+    if (!context) return false;
+
+    const elem = document.querySelector("#index" + (index-context[0].length));
     if (elem == null) return false;
+
+    filterItemsPopup(prefix, context[0]);
 
     copyDescriptionPopup();
 
     const box = elem.getBoundingClientRect();
     const autocomplete = document.querySelector("#autocomplete");
-    autocomplete.style.visibility = 'visible';
     autocomplete.style.left = (box.x+window.scrollX) + 'px';
     autocomplete.style.top = (box.y+window.scrollY+20) + 'px';
+    autocomplete.classList.add("active");
 
     return true;
 }
 
+function filterItemsPopup(prefix, context) {
+    const token = context.match(/[^\s]*$/)[0];
+    const inSquareBrackets = context[0] == '[';
+
+    const DEFAULT = 0;
+    const IN_DOUBLE_QUOTE_STRING = 1;
+    const IN_DOUBLE_QUOTE_STRING_ESC = 2;
+    const IN_SINGLE_QUOTE_STRING = 3;
+    const IN_SINGLE_QUOTE_STRING_ESC = 4;
+    const IN_COMMENT = 5;
+
+    var state = DEFAULT;
+    var parens = 0;
+
+    for (let i = 0; i < prefix.length - token.length; i++) {
+        switch (state) {
+        case IN_DOUBLE_QUOTE_STRING_ESC: state = IN_DOUBLE_QUOTE_STRING; break;
+        case IN_SINGLE_QUOTE_STRING_ESC: state = IN_SINGLE_QUOTE_STRING; break;
+        case IN_DOUBLE_QUOTE_STRING: if (prefix[i] == '\"') state = DEFAULT; break;
+        case IN_SINGLE_QUOTE_STRING: if (prefix[i] == '\'') state = DEFAULT; break;
+        case IN_COMMENT: if (prefix[i] == '\r' || prefix[i] == '\n') state = DEFAULT; break;
+        default:
+            switch (prefix[i]) {
+            case ';': state = IN_COMMENT; break;
+            case '\"': state = IN_DOUBLE_QUOTE_STRING; break;
+            case '\'': state = IN_SINGLE_QUOTE_STRING; break;
+            case '(': case '[': case '{': parens++; break;
+            case ')': case ']': case '}': parens--; break;
+            }
+        }
+    }
+
+    const nested = parens > 0;
+
+    let applicableItems = false;
+
+    function filterItems(id, predicate) {
+        let applicable = false;
+
+        document.querySelectorAll(`#${id} + ul > li > code`).forEach(element => {
+            if (predicate(element.textContent)) {
+                element.parentElement.classList.remove("inapplicable");
+                element.parentElement.dataset.completion =
+                    element.textContent[0] == token[0]
+                        ? element.textContent.substring(token.length)
+                        : element.textContent.substring(token.length - 1);
+                applicable = true;
+                applicableItems = true;
+            } else {
+                element.parentElement.classList.add("inapplicable");
+                element.parentElement.classList.remove("selected");
+                delete element.parentElement.dataset.completion;
+            }
+        });
+
+        if (applicable)
+            document.getElementById(id).classList.remove("inapplicable");
+        else
+            document.getElementById(id).classList.add("inapplicable");
+    }
+
+    filterItems("syntax-definitions", text => text.startsWith(token) && !nested);
+    filterItems("syntax-expressions", text => text.startsWith(token));
+    filterItems("syntax-patterns", text => text.startsWith(token) && nested);
+    filterItems("syntax-types", text => text.startsWith(token) && nested);
+    filterItems("syntax-properties", text => (text.startsWith(token) || ("[" + text).startsWith(token)) && inSquareBrackets);
+
+    if (applicableItems)
+        document.getElementById("autocomplete").classList.remove("inapplicable");
+    else
+        document.getElementById("autocomplete").classList.add("inapplicable");
+
+    if (!document.querySelector("#autocomplete li.selected")) {
+        const firstItem = document.querySelector("#autocomplete li:not(.inapplicable)") || document.querySelector("#autocomplete li");
+        firstItem.classList.add("selected");
+    }
+}
+
 function copyDescriptionPopup() {
     document.querySelector("#autocomplete #selected-description").innerHTML =
-        document.querySelector("#autocomplete .selected .description").innerHTML;
+        document.querySelector("#autocomplete li.selected .description").innerHTML;
 }
 
 function selectedIndexPopup() {
-    const lis = Array.from(document.querySelectorAll("#autocomplete li"));
+    const items = Array.from(document.querySelectorAll("#autocomplete li:not(.inapplicable)"));
     var index = 0;
-    for(; index<lis.length; index++)
-        if (lis[index].className == 'selected')
+    for(; index<items.length; index++)
+        if (items[index].classList.contains("selected"))
             break;
     return index;
 }
 
 function highlightOptionOffsetPopup(offsetIndex) {
-    const N = document.querySelectorAll("#autocomplete li").length;
+    const N = document.querySelectorAll("#autocomplete li:not(.inapplicable)").length;
     const index = selectedIndexPopup();
     const newIndex = (N + index + offsetIndex) % N;
     highlightOptionPopup(newIndex, true);
 }
 
 function highlightOptionPopup(index, scroll) {
-    const selected = selectedIndexPopup();
-    const lis = document.querySelectorAll("#autocomplete li");
-    lis[selected].className = '';
-    lis[index].className = 'selected';
+    document.querySelector("#autocomplete li.selected").classList.remove("selected");
+
+    const items = document.querySelectorAll("#autocomplete li:not(.inapplicable)");
+    items[index].classList.add("selected");
+
     copyDescriptionPopup();
+
     if (scroll) {
-        const target = lis[index];
-        const popup = document.querySelector("#syntax");
-        if (target.offsetTop - target.offsetHeight < popup.scrollTop
-         || target.offsetTop > popup.scrollTop + popup.offsetHeight)
-            popup.scrollTop = target.offsetTop - target.offsetHeight - 50;
+        if (index == 0)
+            document.querySelector("#syntax").scrollTop = 0;
+        else
+            items[index].scrollIntoView({ block: "nearest", inline: "nearest" });
     }
 }
 
 function insertSelectionPopup() {
-    const selected = document.querySelector("#autocomplete li.selected code");
-    const code = selected.innerText;
-    const text = code.startsWith("(") ? code.substr(1) : code + ")";
-    const editor = document.querySelector("#editor");
-    editor.value = editor.value.substr(0, editor.selectionStart) + text +
-                   editor.value.substr(editor.selectionStart);
-    editor.dispatchEvent(new Event('input'));
+    const selected = document.querySelector("#autocomplete li.selected");
+    const completion = selected.dataset.completion || "";
+    document.querySelector("#editor").focus()
+    document.execCommand("insertText", false, completion);
     closePopup();
 }
 
 function closePopup() {
-    document.querySelector("#autocomplete").style.visibility = 'hidden';
+    document.querySelector("#autocomplete").classList.remove("active");
 }
 
 function isOpenPopup() {
-    return document.querySelector("#autocomplete").style.visibility == 'visible';
+    return document.querySelector("#autocomplete").classList.contains("active");
 }
 
 
 function initEditor() {
     const editor = document.querySelector("#editor");
     const viewer = document.querySelector("#viewer");
-    const autocomplete = document.querySelector("#autocomplete")
+    const autocomplete = document.querySelector("#autocomplete");
 
-    let popupOpen = false;
     let lastKeyDownEventDate = 0;
 
     function scroll() {
-        closePopup();
         viewer.scrollTop = editor.scrollTop;
         viewer.scrollLeft = editor.scrollLeft;
     }
@@ -248,17 +326,24 @@ function initEditor() {
     });
 
     function popupKeyDownEventListener(e) {
-        if (e.keyCode == 27) { // ESC key pressed: close popup
+        if (e.keyCode == 27) { // ESC key
             closePopup();
+            e.preventDefault();
         } else if (isOpenPopup()) {
             if (e.keyCode == 38 || e.keyCode == 40) { // UP or DOWN
-                lastKeyDownEventDate = performance.now();
+                lastKeyDownEventDate = Date.now();
                 highlightOptionOffsetPopup(e.keyCode - 39); // -1 on UP, 1 on DOWN
                 e.preventDefault();
             } else if (e.keyCode == 13) { // ENTER
                 insertSelectionPopup();
                 e.preventDefault();
+            } else if (e.keyCode == 37 || e.keyCode == 39) { // LEFT or RIGHT
+              closePopup();
             }
+        } else if (e.keyCode == 32 && e.ctrlKey) { // SPACE
+            if (editor.selectionStart == editor.selectionEnd)
+              openPopup(editor.value, editor.selectionStart);
+            e.preventDefault();
         } else if (e.keyCode == 9) { // TAB
             const sel = editor.selectionStart;
             editor.value = editor.value.substr(0, sel) + '\t' + editor.value.substr(sel);
@@ -282,16 +367,22 @@ function initEditor() {
 
     editor.addEventListener('scroll', scroll);
 
-    let selectionStart = 0;
+    editor.addEventListener('input', function() {
+        if (editor.selectionStart == editor.selectionEnd) {
+            const ch = editor.value[editor.selectionStart - 1]
+            if (ch.match(/\s/)) {
+                closePopup();
+            }
+            else if (ch == '(' || ch == '{' || ch == '[' || isOpenPopup()) {
+                const popupOpen = openPopup(editor.value, editor.selectionStart);
+                if (!popupOpen) closePopup();
+            }
+        }
+    });
 
     function checkCaret() {
-        if (editor.selectionStart !== selectionStart) {
-            selectionStart = editor.selectionStart;
-            popupOpen = openPopup(editor.value, selectionStart);
-            if (!popupOpen) closePopup();
-            if (selectionStart == editor.selectionEnd) {
-                highlightParen(editor.value, selectionStart, '#D8D8D8');
-            }
+        if (editor.selectionStart == editor.selectionEnd) {
+            highlightParen(editor.value, editor.selectionStart, '#D8D8D8');
         }
     }
 
@@ -310,14 +401,25 @@ function initEditor() {
     editor.addEventListener('selectstart', checkCaret);
     editor.addEventListener('selectionchange', checkCaret);
 
-    document.querySelectorAll("#autocomplete li").forEach(function (elem, index) {
+    document.querySelectorAll("#autocomplete li").forEach(function (elem) {
         elem.addEventListener('mouseover', function() {
             // do not rehighlight if after up/down keypress a new <li> triggers its mouseover
-            if (performance.now() - lastKeyDownEventDate > 100)
-                highlightOptionPopup(index, false);
+            if (Date.now() - lastKeyDownEventDate > 500) {
+                const index = Array.from(document.querySelectorAll("#autocomplete li:not(.inapplicable)")).indexOf(elem);
+                if (index != -1)
+                    highlightOptionPopup(index, false);
+            }
         });
         elem.addEventListener('click', insertSelectionPopup);
     });
+
+    editor.addEventListener('scroll', closePopup);
+    editor.addEventListener('mousedown', closePopup);
+    editor.addEventListener('mouseup', closePopup);
+    editor.addEventListener('touchstart', closePopup);
+    editor.addEventListener('touchend', closePopup);
+    editor.addEventListener('paste', closePopup);
+    editor.addEventListener('cut', closePopup);
 
     document.addEventListener('click', function(e) {
         if (!autocomplete.contains(e.target) && !editor.contains(e.target))
