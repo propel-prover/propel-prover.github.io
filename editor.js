@@ -398,6 +398,9 @@ function initEditor() {
         content();
     }
 
+    // load random example
+    const examples = Array.from(document.querySelectorAll("#example option"));
+    document.querySelector("#example").value = examples[Math.floor(Math.random() * examples.length)].value;
     loadExample();
 
     editor.addEventListener('keydown', popupKeyDownEventListener);
