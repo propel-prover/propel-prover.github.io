@@ -258,7 +258,7 @@ Typecheck <a href="#section-crdt">CRDTs</a> by tracking
                 <option value="bv_lwwreg">Last-Writer-Wins Bitvector Register</option>
                 <option value="gset">GSets encoded as functions</option>
                 <option value="average">Peano number average</option>
-                <option value="matrix-mult">2x2 matrix multiplication</option>
+                <option value="list-concat">List concatenation</option>
                 <option value="nat-max">Peano number maximum</option>
                 <option value="asym-eq">Peano number inequality</option>
                 <option value="ancestor-transitivity">Cat ancestry</option>
@@ -323,7 +323,7 @@ Typecheck <a href="#section-crdt">CRDTs</a> by tracking
 
         <div class="code-example-50">
             <h3>Propel in Scala</h3>
-<!--{{{--><pre class="preview"><code class=line><span style="color:#d75f00; font-weight:bold">enum</span> Num:</code><code class=line>  case <span style="color:#8700af">Zero</span>; case <span style="color:#8700af">Succ</span>(num: Num);</code><code class=line></code><code class=line><span style="color:#d75f00; font-weight:bold">def</span> max =</code><code class=line>  <span style="color:#d75f00; font-weight:bold">prop.rec</span>[<span style="color:#0087af">(<span style="color:#d70087;font-weight:bold">Comm</span> & <span style="color:#d70087;font-weight:bold">Assoc</span> & <span style="color:#d70087;font-weight:bold">Idem</span>) := (Num, Num) =>: Num</span>]: max =></code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Zero</span>, y) => y</code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (x, <span style="color:#8700af">Zero</span>) => x</code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Succ</span>(n), <span style="color:#8700af">Succ</span>(m)) => <span style="color:#8700af">Succ</span>(max(n, m))</code><code class=line></code><code class=line><span style="color:#d75f00; font-weight:bold">def</span> zipWith[P >: (<span style="color:#d70087;font-weight:bold">Comm</span> & <span style="color:#d70087;font-weight:bold">Assoc</span> & <span style="color:#d70087;font-weight:bold">Idem</span>), T] =</code><code class=line>  <span style="color:#d75f00; font-weight:bold">prop.rec</span>[<span style="color:#0087af">(P := (T, T) =>: T)</span></code><code class=line>           <span style="color:#0087af">=> (P := (List[T], List[T])</span></code><code class=line>           <span style="color:#0087af">=>: List[T])</span>]: zipWith => f =></code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Nil</span>, y) => y</code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (x, <span style="color:#8700af">Nil</span>) => x</code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (x <span style="color:#8700af">::</span> xs, y <span style="color:#8700af">::</span> ys) => f(x, y) <span style="color:#8700af">::</span> zipWith(f)(xs, ys)</code><code class=line></code><code class=line><span style="color:#d75f00; font-weight:bold">def</span> mergeGCounter =</code><code class=line><span style="color:#d75f00; font-weight:bold">  prop</span>[<span style="color:#0087af">(<span style="color:#d70087;font-weight:bold">Comm</span> & <span style="color:#d70087;font-weight:bold">Assoc</span> & <span style="color:#d70087;font-weight:bold">Idem</span>)</span></code><code class=line>       <span style="color:#0087af">:= (List[Num], List[Num]) =>: List[Num]</span>]:</code><code class=line>  zipWith(max)</code></pre><!--}}}-->
+<!--{{{--><pre class="preview"><code class=line><span style="color:#d75f00; font-weight:bold">enum</span> Num:</code><code class=line>  <span style="color:#d75f00; font-weight:bold">case</span> <span style="color:#8700af">Zero</span>; <span style="color:#d75f00; font-weight:bold">case</span> <span style="color:#8700af">Succ</span>(num: Num);</code><code class=line></code><code class=line><span style="color:#d75f00; font-weight:bold">def</span> max =</code><code class=line>  <span style="color:#d75f00; font-weight:bold">prop.rec</span>[<span style="color:#0087af">(<span style="color:#d70087;font-weight:bold">Comm</span> & <span style="color:#d70087;font-weight:bold">Assoc</span> & <span style="color:#d70087;font-weight:bold">Idem</span>) := (Num, Num) =>: Num</span>]: max =></code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Zero</span>, y) => y</code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (x, <span style="color:#8700af">Zero</span>) => x</code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Succ</span>(n), <span style="color:#8700af">Succ</span>(m)) => <span style="color:#8700af">Succ</span>(max(n, m))</code><code class=line></code><code class=line><span style="color:#d75f00; font-weight:bold">def</span> zipWith[P >: (<span style="color:#d70087;font-weight:bold">Comm</span> & <span style="color:#d70087;font-weight:bold">Assoc</span> & <span style="color:#d70087;font-weight:bold">Idem</span>), T] =</code><code class=line>  <span style="color:#d75f00; font-weight:bold">prop.rec</span>[<span style="color:#0087af">(P := (T, T) =>: T)</span></code><code class=line>           <span style="color:#0087af">=> (P := (List[T], List[T])</span></code><code class=line>           <span style="color:#0087af">=>: List[T])</span>]: zipWith => f =></code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Nil</span>, y) => y</code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (x, <span style="color:#8700af">Nil</span>) => x</code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (x <span style="color:#8700af">::</span> xs, y <span style="color:#8700af">::</span> ys) => f(x, y) <span style="color:#8700af">::</span> zipWith(f)(xs, ys)</code><code class=line></code><code class=line><span style="color:#d75f00; font-weight:bold">def</span> mergeGCounter =</code><code class=line><span style="color:#d75f00; font-weight:bold">  prop</span>[<span style="color:#0087af">(<span style="color:#d70087;font-weight:bold">Comm</span> & <span style="color:#d70087;font-weight:bold">Assoc</span> & <span style="color:#d70087;font-weight:bold">Idem</span>)</span></code><code class=line>       <span style="color:#0087af">:= (List[Num], List[Num]) =>: List[Num]</span>]:</code><code class=line>  zipWith(max)</code></pre><!--}}}-->
         </div>
     </div>
 
@@ -357,7 +357,7 @@ Typecheck <a href="#section-crdt">CRDTs</a> by tracking
         <h3>Associativity</h3>
         <p>An associative function is one that can be folded in any direction on arguments without changing the result</p>
         <button class="btn-example" data-example="matrix-mult">Load In Editor</button>
-        <h4>E.g. Matrix multiplication</h4>
+        <h4>E.g. List concatenation</h4>
     </div>
     <div class="prop_card">
         <img src="/diagrams/sel.svg">
@@ -402,7 +402,7 @@ Typecheck <a href="#section-crdt">CRDTs</a> by tracking
         <div class="prop_card">
             <img src="/diagrams/antisym.svg">
             <h3>Antisymmetry</h3>
-            <p>An antisymmetric relation is one where between any two distinct elements at moste one relation exists</p>
+            <p>An antisymmetric relation is one where between any two distinct elements at most one relation exists</p>
             <button class="btn-example" data-example="divisibility">Load In Editor</button>
             <h4>E.g. Divisibility</h4>
         </div>
@@ -464,7 +464,6 @@ Hence, by default, you can just run <code>propel</code>.
 
 
     <h1 id="section-scala-dsl">Scala DSL</h1>
-<h2>Code Examples</h2>
 
 <h2>From the Propel Docker image</h2>
 <p>
@@ -511,7 +510,7 @@ If the properties cannot be proven, then a compilation error indicates which pro
 <p>
 For example, you can add the following GCounter CRDT example to one of the files in <code>/propel/src/test/scala/propel</code>
 <code><pre>
-def mergeGCounter = prop[(Comm & Assoc & Idem) := (List[Num], List[Num]) =>: List[Num]] { (x, y) => zipWith(maxNum)(x, y) }
+def mergeGCounter = prop[(Comm & Assoc & Idem) := (List[Num], List[Num]) =>: List[Num]] { zipWith(maxNum) }
 </pre></code>
 </p>
 
@@ -678,32 +677,16 @@ Propel is a research language developed at the <a href="https://programming-grou
 </script>
 
 
-<script type="text/propel" id="matrix-mult">
+<script type="text/propel" id="list-concat">
 (type nat (rec x {Z (S x)}))
 
-(type mat2x2 {(Mat nat nat nat nat)})
+(type list (rec x {Nil (Cons nat x)}))
 
-(def nat_add (fun nat nat nat)
-  (lambda [assoc] (a nat) (b nat)
+(def concat (fun list list list)
+  (lambda [assoc] (a list) (b list)
     (cases a
-      [Z b]
-      [(S a) (S (nat_add a b))])))
-
-(def nat_mult (fun nat nat nat)
-  (lambda [assoc] (a nat) (b nat)
-    (cases a
-      [Z Z]
-      [(S a) (nat_add b (nat_mult a b))])))
-
-
-(def mat2x2_mult (fun mat2x2 mat2x2 mat2x2)
-  (lambda [assoc] (a mat2x2) (b mat2x2)
-    (let (Mat a11 a12 a21 a22) a
-    (let (Mat b11 b12 b21 b22) b
-      (Mat (nat_add (nat_mult a11 b11) (nat_mult a12 b21))
-           (nat_add (nat_mult a11 b12) (nat_mult a12 b22))
-           (nat_add (nat_mult a21 b11) (nat_mult a22 b21))
-           (nat_add (nat_mult a21 b12) (nat_mult a22 b22)))))))
+      [Nil b]
+      [(Cons a as) (Cons a (concat as b))])))
 </script>
 
 
@@ -733,9 +716,9 @@ Propel is a research language developed at the <a href="https://programming-grou
 (type bool {True False})
 
 (type Cat {Nutmeg Jake           Dovewing Socks
-;            |     |                 |     |
-;      ----------------          -----------------
-;      |              |          |               |
+;            |     |                 |      |
+;       ---------------          ----------------
+;       |             |          |              |
      Princess      Firestar  Sandstorm      Cloudtail
 ;                     |          |
 ;                     ------------
@@ -819,13 +802,12 @@ Propel is a research language developed at the <a href="https://programming-grou
     [(Tuple (S x) (S y)) (sub x y)])))
 
 
-(def divides (fun nat nat bool)
+(def divisible-by (fun nat nat bool)
   (lambda [antisym] (a nat) (b nat)
-    (if (eq a b)
-        True
-        (if (less a b)
-            False
-            (divides (sub a b) b)))))
+    (and (not (eq b Z))
+         (if (less a b)
+             (eq a Z)
+             (divisible-by (sub a b) b))))
 </script>
 
 <script src="editor.js"></script>
