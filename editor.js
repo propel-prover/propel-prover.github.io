@@ -593,3 +593,18 @@ function initTypeChecker() {
 
 initEditor();
 initTypeChecker();
+
+function loadExample(exampleId) {
+    const editor = document.querySelector("#editor");
+    editor.value = document.getElementById(exampleId).innerHTML.trim();
+    editor.dispatchEvent(new Event("input"));
+    document.querySelector("#example").value = exampleId;
+    document.getElementById("jumbo").scrollIntoView({ behavior: "smooth" });
+}
+
+
+document.querySelectorAll(".btn-example").forEach(function (elem) {
+    elem.addEventListener("click", function() {
+        loadExample(elem.dataset.example);
+    });
+});
