@@ -21,7 +21,6 @@ a {
     text-decoration: underline;
     color: #186643;
 }
-
 #interactiveCode {
     max-width: 1200px;
     margin: auto;
@@ -255,6 +254,39 @@ main, header, footer, #nav, #tagline {
     margin: auto;
 }
 
+main .preview {
+    font-size: 14px;
+    counter-reset: line 0;
+}
+main .preview .line {
+    min-height: 0px;
+    line-height: 20px;
+    counter-increment: line;
+}
+main .preview .line:before {
+    content: counter(line);
+    font-size: 10px;
+    color: #666;
+    margin-left: -20px;
+    width: 20px;
+    display: inline-block;
+}
+
+main .code-example {
+    display: flex;
+    width: 100%;
+    margin-bottom: 50px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.code-example-50 {
+    width: 50%;
+    max-width: 575px;
+}
+.code-example-50 pre {
+    margin-left: 20px;
+}
 
 header {
     padding: 30px 0;
@@ -364,6 +396,12 @@ main #crdt-vis {
     margin-top: -5%;
 }
 
+main #gcounter {
+    display: block;
+    width: 50%;
+    margin: 30px auto;
+}
+
 main .prop_card img {
     width: 210px;
     text-align: center;
@@ -413,5 +451,15 @@ footer {
         float: none;
         display: block;
         margin: auto;
+    }
+
+    main #gcounter {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .code-example-50 {
+        width: 100%;
     }
 }

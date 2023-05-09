@@ -20,8 +20,6 @@ function syntaxHighlight(code) {
 
         const t = token;
 
-        console.log("state=", state, " index=", index, " token='", t, "'");
-
         switch (state) {
         case IN_SINGLE_QUOTE_STRING:
         case IN_DOUBLE_QUOTE_STRING:
