@@ -20,6 +20,8 @@ function syntaxHighlight(code) {
 
         const t = token;
 
+        console.log("state=", state, " index=", index, " token='", t, "'");
+
         switch (state) {
         case IN_SINGLE_QUOTE_STRING:
         case IN_DOUBLE_QUOTE_STRING:
@@ -54,14 +56,20 @@ function syntaxHighlight(code) {
                 color = '#d70000';
             else if ("()[]{},".includes(t))
                 color = '#888888';
-            else if (t == '\n')
-                output += '</code><code class=line>';
         }
 
-        if (t != '\n') { // do not print new lines
-            if (color === null) output += token;
-            else output += `<span style='color:${color};font-weight:${weight || 'normal'}'${index == null ? "" : " id=index"+index}>${token}</span>`;
-        }
+        // invariant: the `token` (short alias `t`) must never include a newline except as the last char
+        // in which case special care has to be done: the newline should be stripped and a new
+        // <code class=line> should be opened.
+        const tokenEndsInNewLine = t.charAt(t.length-1) == '\n';
+        if (tokenEndsInNewLine) token = token.substr(0, token.length-1);
+
+        // handle line as usual
+        if (color === null) output += token;
+        else output += `<span style='color:${color};font-weight:${weight || 'normal'}'${index == null ? "" : " id=index"+index}>${token}</span>`;
+
+        // introduce a newline if needed
+        if (tokenEndsInNewLine) output += '</code><code class=line>';
 
         token = "";
         state = START;
