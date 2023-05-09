@@ -254,7 +254,9 @@ Typecheck <a href="#section-crdt">CRDTs</a> by tracking
             <select id="example">
                 <option value="bv_eq" selected>BitVector equality</option>
                 <option value="nat_add3p">Peano Number addition</option>
-                <option value="natlist_gcounter">GCounter merge</option>
+                <option value="natlist_gcounter">GCounter</option>
+                <option value="bv_lwwreg">Last-Writer-Wins Bitvector Register</option>
+                <option value="gset">GSets encoded as functions</option>
             </select>
             <input type="checkbox" id="printReduction">
             <label for="printReduction">Print reductions</label>
@@ -555,7 +557,7 @@ Propel is a research language developed at the <a href="https://programming-grou
       [(Tuple (S x) (S y)) (S (nat_max x y))])))
 
 ; definition of the merge function of a GCounter
-(def natlist_gcounter (fun list list list)
+(def gcounter_merge (fun list list list)
   ; it must be idempotent, commutative, and associative
   (lambda [idem comm assoc] (x list) (y list)
     (cases (Tuple x y)
@@ -564,6 +566,79 @@ Propel is a research language developed at the <a href="https://programming-grou
       [(Tuple (Cons x xs) (Cons y ys))
        (Cons (nat_max x y) (natlist_gcounter xs ys))])))
 </script>
+
+<script type="text/propel" id="bv_lwwreg">
+; bitvectors are either empty (BZ), or a bitvector with a 0 at the
+; end (B0) or a bitvector with a 1 at the end (B1)
+(type bitvec (rec X {(B0 X) (B1 X) BZ}))
+
+; booleans
+(type bool {True False})
+
+; a last-writer-wins register is a pair of data (here a bitvector)
+; and a timestamp (also a bitvector)
+(type reg {(LWWReg bitvec bitvec)})
+
+; equality of bitvectors
+; PS: BZ != (B0 BZ)
+(def bv_eq (fun bitvec bitvec bool)
+  ; transitivity is required for the proof of associativity of
+  ; `lwwreg_merge` but we can omit it because the compiler will
+  ; conjecture it and prove it
+  (lambda [refl sym antisym] (x bitvec) (y bitvec)
+    (cases (Tuple x y)
+      [(Tuple BZ BZ) True]
+      [(Tuple (B0 x) (B0 y)) (bv_eq x y)]
+      [(Tuple (B1 x) (B1 y)) (bv_eq x y)]
+      [_ False])))
+
+; the maximum of bitvectors
+(def bv_max (fun bitvec bitvec bitvec)
+  (lambda [comm assoc idem] (x bitvec) (y bitvec)
+    (cases (Tuple x y)
+      [(Tuple BZ y) y]
+      [(Tuple x BZ) x]
+      [(Tuple (B0 x) (B0 y)) (B0 (bv_max x y))]
+      [(Tuple (B1 x) (B1 y)) (B1 (bv_max x y))]
+      [(Tuple (B0 x) (B1 y))
+        (if (bv_eq (bv_max x y) y) ; i.e. y >= x
+          (B1 y)
+          (B0 x))]
+      [(Tuple (B1 x) (B0 y))
+        (if (bv_eq (bv_max x y) x) ; i.e. x >= y
+          (B1 x)
+          (B0 y))])))
+
+; compute the merge of two last-writer-wins registers
+(def lwwreg_merge (fun reg reg reg)
+  (lambda [comm assoc idem] (x reg) (y reg)
+    ; we destruct each register to get the data and timestamp
+    (let (Tuple (LWWReg xd xt) (LWWReg yd yt)) (Tuple x y)
+      (if (bv_eq xt yt)
+          ; even when the timestamps are equal the data must still be merged
+          (LWWReg (bv_max xd yd) xt)
+          (if (bv_eq (bv_max xt yt) xt) ; i.e. xt >= yt
+              x
+              y)))))
+</script>
+
+
+<script type="text/propel" id="gset">
+(type bool {True False})
+
+; we encode a set as a function returning a boolean `fun t bool`
+; thus the only operation possible on such a set is
+; membership testing by calling the set with the member
+
+; the GSet merge is polymorphic over the contents of the set
+(def gset_merge (forall t (fun (fun t bool)
+                               (fun t bool)
+                               t bool))
+  (lambda t ; t is a type variable
+    (lambda [comm assoc idem] (x (fun t bool)) (y (fun t bool))
+      (lambda (e t) (or (x e) (y e))))))
+</script>
+
 
 <script src="editor.js"></script>
 </body>

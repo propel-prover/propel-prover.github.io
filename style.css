@@ -59,11 +59,11 @@ a {
     font-family: monospace;
     padding-left: 40px;
     line-height: 20px;
-    overflow: scroll;
+    overflow-y: scroll;
     border: 1px solid #CCC;
     display: block;
     box-sizing: content-box;
-    white-space: pre;
+    white-space: break-spaces;
     position: absolute;
     top: 0;
     left: 0;
