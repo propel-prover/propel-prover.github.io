@@ -1,24 +1,31 @@
 @font-face {
     font-family: 'Montserrat';
-    src: url('/fonts/Montserrat-ExtraBold.ttf') format('truetype');
-    font-weight: bold;
+    src: /* local('Montserrat Regular'), local('Montserrat-Regular'), */ url('/fonts/Montserrat-Regular.ttf') format('truetype');
 }
 @font-face {
     font-family: 'Montserrat';
-    src: url('/fonts/Montserrat-ExtraBoldItalic.ttf') format('truetype');
-    font-weight: bold;
+    src: /* local('Montserrat Italic'), local('Montserrat-Italic'), */ url('/fonts/Montserrat-Italic.ttf') format('truetype');
     font-style: italic;
 }
 @font-face {
     font-family: 'Montserrat';
-    src: url('/fonts/Montserrat-Regular.ttf') format('truetype');
-    font-weight: normal;
+    src: /* local('Montserrat ExtraBold'), local('Montserrat-ExtraBold'), */ url('/fonts/Montserrat-ExtraBold.ttf') format('truetype');
+    font-weight: bold;
 }
 @font-face {
     font-family: 'Montserrat';
-    src: url('/fonts/Montserrat-Italic.ttf') format('truetype');
-    font-weight: normal;
+    src: /* local('Montserrat ExtraBold Italic'), local('Montserrat-ExtraBoldItalic'), */ url('/fonts/Montserrat-ExtraBoldItalic.ttf') format('truetype');
+    font-weight: bold;
     font-style: italic;
+}
+@font-face {
+    font-family: 'DejaVu Sans Mono';
+    src: local('DejaVuSansMono'), local('DejaVuSansMono'), url('/fonts/DejaVuSansMono.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'DejaVu Sans Mono';
+    src: local('DejaVuSansMono Bold'), local('DejaVuSansMono-Bold'), url('/fonts/DejaVuSansMono-Bold.ttf') format('truetype');
+    font-weight: bold;
 }
 
 html, body {
@@ -32,6 +39,9 @@ html, body {
 a {
     text-decoration: underline;
     color: #186643;
+}
+pre, code {
+    font-family: 'DejaVu Sans Mono', monospace;
 }
 #interactiveCode {
     max-width: 1200px;
@@ -68,7 +78,7 @@ a {
     padding: 10px;
     margin: 0px;
     font-size: 14px;
-    font-family: monospace;
+    font-family: 'DejaVu Sans Mono', monospace;
     padding-left: 40px;
     line-height: 20px;
     overflow-y: scroll;
