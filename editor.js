@@ -516,65 +516,71 @@ function initTypeChecker() {
     let timer = 0;
     let interval = 0;
     let checkingStart = 0;
-    let lastProgress = 0;
+    let receivedUpdates = -1;
 
-    const spinner = "⠋⠙⠹⠸⢰⣰⣠⣄⣆⡆⠇⠏";
+    const spinnerCharacters = "⠋⠙⠹⠸⢰⣰⣠⣄⣆⡆⠇⠏";
     let spinnerIndex = 0;
-
-    function updateStatus() {
-        statusElem.innerHTML = "<strong>Checking …</strong> (" + ((Date.now() - checkingStart) / 1000).toFixed(0) + "&thinsp;s)";
-    }
 
     function setCodeTimeoutTypeChecker(timeout) {
         clearInterval(interval);
         clearTimeout(timer);
 
         timer = setTimeout(function() {
-            checkingStart = Date.now();
-            interval = setInterval(updateStatus, 1000);
-            updateStatus();
-
-            consoleElem.innerHTML = "&nbsp;<div style='scroll-snap-align: end'>&nbsp;</div>";
+            consoleElem.innerHTML = "<span></span>&nbsp;<div style='scroll-snap-align: end'>&nbsp;</div>";
             consoleElem.style.scrollSnapType = "y mandatory";
-            let output = consoleElem.firstChild;
+            const spinner = consoleElem.firstChild;
+            const output = spinner.nextSibling;
 
-            if (worker != null)
-                worker.terminate();
+            function updateStatus() {
+                statusElem.innerHTML = "<strong>Checking …</strong> (" + ((Date.now() - checkingStart) / 1000).toFixed(0) + "&thinsp;s)";
+                if (receivedUpdates > 0) {
+                    receivedUpdates -= 1;
+                    console.log(receivedUpdates)
+                    spinnerIndex = (spinnerIndex + 1) % spinnerCharacters.length;
+                    spinner.textContent = spinnerCharacters[spinnerIndex];
+                }
+            }
+
+            checkingStart = Date.now();
+            interval = setInterval(updateStatus, 50);
+            updateStatus();
 
             const printDeduction = document.getElementById("printDeduction").checked
             const printReduction = document.getElementById("printReduction").checked
+
+            if (worker != null)
+                worker.terminate();
 
             worker = new Worker(workerCode);
             worker.postMessage([ editorElem.value, printDeduction, printReduction ]);
 
             if (!printDeduction && !printReduction) {
-                lastProgress = checkingStart;
+                receivedUpdates = 0;
+                spinner.style.display= "inline-block";
+                spinner.style.width = "1ch";
                 spinnerIndex = 0;
-                output.textContent = spinner[spinnerIndex] + " Checking …";
+                spinner.textContent = spinnerCharacters[spinnerIndex];
+                output.textContent = " Checking …";
             }
-            else
-                lastProgress = 0;
 
             worker.onmessage = function(e) {
                 requestAnimationFrame(function() {
-                    if (lastProgress && Date.now() - lastProgress > 10) {
-                        lastProgress = Date.now();
-                        spinnerIndex = (spinnerIndex + 1) % spinner.length;
-                        output.textContent = spinner[spinnerIndex] + " Checking …";
-                    }
+                    if (receivedUpdates != -1)
+                        receivedUpdates = Math.min(12, receivedUpdates + 3);
                     if (e.data.done) {
                         clearInterval(interval);
                         statusElem.innerHTML =
                             "<strong>Result</strong> (" + (e.data.time / 1000).toFixed(1) + "&thinsp;s) " +
                             (output.textContent.startsWith("Error:") ? "✘ Syntax Error" : output.textContent.match(/([^\r\n]*)[\r\n\s]*$/)[1]);
+                        spinner.remove();
                         consoleElem.lastChild.remove();
                         consoleElem.style.scrollSnapType = "";
                         consoleElem.scrollTop = consoleElem.scrollHeight;
                         worker = null;
                     } else if (e.data.line) {
-                        if (lastProgress)
+                        if (receivedUpdates != -1)
                             output.textContent = "";
-                        lastProgress = 0;
+                        receivedUpdates = -1;
                         output.textContent += e.data.line;
                     }
                 })
