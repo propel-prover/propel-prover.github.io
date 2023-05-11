@@ -316,14 +316,14 @@ Typecheck <a href="#section-crdt">CRDTs</a> by tracking
     <div class="code-example">
         <div class="code-example-50">
             <h3>Propel Lang</h3>
-<!--{{{--><pre class="preview"><code class="line"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">type</span> nat <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">rec</span> x <span style="color:#888888;font-weight:normal">{</span><span style="color:#8700af;font-weight:normal">Zero</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> x<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">}</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#878787;font-weight:normal">; natural numbers
-</span></code><code class="line"><span style="color: rgb(136, 136, 136); font-weight: normal; background: transparent none repeat scroll 0% 0%;">(</span><span style="color:#d75f00;font-weight:bold">type</span> list <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">rec</span> x <span style="color:#888888;font-weight:normal">{</span><span style="color:#8700af;font-weight:normal">Nil</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> nat x<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">}</span><span style="color:#888888;font-weight:normal">)</span><span style="color: rgb(136, 136, 136); font-weight: normal; background: transparent none repeat scroll 0% 0%;">)</span> <span style="color:#878787;font-weight:normal">; lists
-</span></code><code class="line"></code><code class="line"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">def</span> max <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">fun</span> nat nat nat<span style="color:#888888;font-weight:normal">)</span></code><code class="line">  <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">lambda</span> <span style="color:#888888;font-weight:normal">[</span><span style="color:#d70087;font-weight:bold">comm</span> <span style="color:#d70087;font-weight:bold">assoc</span> <span style="color:#d70087;font-weight:bold">idem</span><span style="color:#888888;font-weight:normal">]</span> <span style="color:#888888;font-weight:normal">(</span>x nat<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>y nat<span style="color:#888888;font-weight:normal">)</span></code><code class=line>    <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">cases</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> x y<span style="color:#888888;font-weight:normal">)</span></code><code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#8700af;font-weight:normal">Zero</span> y<span style="color:#888888;font-weight:normal">)</span> y<span style="color:#888888;font-weight:normal">]</span></code><code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> x <span style="color:#8700af;font-weight:normal">Zero</span><span style="color:#888888;font-weight:normal">)</span> x<span style="color:#888888;font-weight:normal">]</span></code><code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> a<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> b<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> <span style="color:#888888;font-weight:normal">(</span>max a b<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">]</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span></code><code class="line"></code><code class="line"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">def</span> merge <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">fun</span> list list list<span style="color:#888888;font-weight:normal">)</span></code><code class="line">  <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">lambda</span> <span style="color:#888888;font-weight:normal">[</span><span style="color:#d70087;font-weight:bold">comm</span> <span style="color:#d70087;font-weight:bold">assoc</span> <span style="color:#d70087;font-weight:bold">idem</span><span style="color:#888888;font-weight:normal">]</span> <span style="color:#888888;font-weight:normal">(</span>x list<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>y list<span style="color:#888888;font-weight:normal">)</span></code><code class=line>    <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">cases</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> x y<span style="color:#888888;font-weight:normal">)</span></code><code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#8700af;font-weight:normal">Nil</span> _<span style="color:#888888;font-weight:normal">)</span> <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">]</span></code><code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> _ <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">]</span></code><code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> a xs<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> b ys<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span></code><code class=line>       <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> <span style="color:#888888;font-weight:normal">(</span>max a b<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>merge xs ys<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">]</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal"></span></code></pre><!--}}}-->
+<!--{{{--><pre class="preview"><code class="line"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">type</span> nat <span style="color:#888888;font-weight:normal">{</span><span style="color:#8700af;font-weight:normal">Zero</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> nat<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">}</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#878787;font-weight:normal">; natural numbers
+</span></code><code class="line"><span style="color:#888888;font-weight: normal;">(</span><span style="color:#d75f00;font-weight:bold">type</span> list <span style="color:#888888;font-weight:normal">{</span><span style="color:#8700af;font-weight:normal">Nil</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> nat list<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">}</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#878787;font-weight:normal">; lists
+</span></code><code class="line"></code><code class="line"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">def</span> max <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">fun</span> nat nat nat<span style="color:#888888;font-weight:normal">)</span></code><code class="line">  <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">lambda</span> <span style="color:#888888;font-weight:normal">[</span><span style="color:#d70087;font-weight:bold">comm</span> <span style="color:#d70087;font-weight:bold">assoc</span> <span style="color:#d70087;font-weight:bold">idem</span><span style="color:#888888;font-weight:normal">]</span> <span style="color:#888888;font-weight:normal">(</span>x nat<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>y nat<span style="color:#888888;font-weight:normal">)</span></code><code class="line">    <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">cases</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> x y<span style="color:#888888;font-weight:normal">)</span></code><code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#8700af;font-weight:normal">Zero</span> y<span style="color:#888888;font-weight:normal">)</span> y<span style="color:#888888;font-weight:normal">]</span></code><code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> x <span style="color:#8700af;font-weight:normal">Zero</span><span style="color:#888888;font-weight:normal">)</span> x<span style="color:#888888;font-weight:normal">]</span></code><code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> a<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> b<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> <span style="color:#888888;font-weight:normal">(</span>max a b<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">]</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span></code><code class="line"></code><code class="line"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">def</span> mergeGCounter <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">fun</span> list list list<span style="color:#888888;font-weight:normal">)</span></code><code class="line">  <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">lambda</span> <span style="color:#888888;font-weight:normal">[</span><span style="color:#d70087;font-weight:bold">comm</span> <span style="color:#d70087;font-weight:bold">assoc</span> <span style="color:#d70087;font-weight:bold">idem</span><span style="color:#888888;font-weight:normal">]</span> <span style="color:#888888;font-weight:normal">(</span>x list<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>y list<span style="color:#888888;font-weight:normal">)</span></code><code class="line">    <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">cases</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> x y<span style="color:#888888;font-weight:normal">)</span></code><code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#8700af;font-weight:normal">Nil</span> _<span style="color:#888888;font-weight:normal">)</span> <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">]</span></code><code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> _ <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">]</span></code><code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> a xs<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> b ys<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span></code><code class="line">       <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> <span style="color:#888888;font-weight:normal">(</span>max a b<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>mergeGCounter xs ys<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">]</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal"></span></code></pre><!--}}}-->
     </div>
 
         <div class="code-example-50">
             <h3>Propel in Scala</h3>
-<!--{{{--><pre class="preview"><code class=line><span style="color:#d75f00; font-weight:bold">enum</span> Num:</code><code class=line>  <span style="color:#d75f00; font-weight:bold">case</span> <span style="color:#8700af">Zero</span>; <span style="color:#d75f00; font-weight:bold">case</span> <span style="color:#8700af">Succ</span>(num: Num);</code><code class=line></code><code class=line><span style="color:#d75f00; font-weight:bold">def</span> max =</code><code class=line>  <span style="color:#d75f00; font-weight:bold">prop.rec</span>[<span style="color:#0087af">(<span style="color:#d70087;font-weight:bold">Comm</span> & <span style="color:#d70087;font-weight:bold">Assoc</span> & <span style="color:#d70087;font-weight:bold">Idem</span>) := (Num, Num) =>: Num</span>]: max =></code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Zero</span>, y) => y</code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (x, <span style="color:#8700af">Zero</span>) => x</code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Succ</span>(n), <span style="color:#8700af">Succ</span>(m)) => <span style="color:#8700af">Succ</span>(max(n, m))</code><code class=line></code><code class=line><span style="color:#d75f00; font-weight:bold">def</span> zipWith[P >: (<span style="color:#d70087;font-weight:bold">Comm</span> & <span style="color:#d70087;font-weight:bold">Assoc</span> & <span style="color:#d70087;font-weight:bold">Idem</span>), T] =</code><code class=line>  <span style="color:#d75f00; font-weight:bold">prop.rec</span>[<span style="color:#0087af">(P := (T, T) =>: T)</span></code><code class=line>           <span style="color:#0087af">=> (P := (List[T], List[T])</span></code><code class=line>           <span style="color:#0087af">=>: List[T])</span>]: zipWith => f =></code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Nil</span>, y) => y</code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (x, <span style="color:#8700af">Nil</span>) => x</code><code class=line>    <span style="color:#d75f00; font-weight:bold">case</span> (x <span style="color:#8700af">::</span> xs, y <span style="color:#8700af">::</span> ys) => f(x, y) <span style="color:#8700af">::</span> zipWith(f)(xs, ys)</code><code class=line></code><code class=line><span style="color:#d75f00; font-weight:bold">def</span> mergeGCounter =</code><code class=line><span style="color:#d75f00; font-weight:bold">  prop</span>[<span style="color:#0087af">(<span style="color:#d70087;font-weight:bold">Comm</span> & <span style="color:#d70087;font-weight:bold">Assoc</span> & <span style="color:#d70087;font-weight:bold">Idem</span>)</span></code><code class=line>       <span style="color:#0087af">:= (List[Num], List[Num]) =>: List[Num]</span>]:</code><code class=line>  zipWith(max)</code></pre><!--}}}-->
+<!--{{{--><pre class="preview"><code class="line"><span style="color:#d75f00; font-weight:bold">enum</span> Num:</code><code class="line">  <span style="color:#d75f00; font-weight:bold">case</span> <span style="color:#8700af">Zero</span>; <span style="color:#d75f00; font-weight:bold">case</span> <span style="color:#8700af">Succ</span>(num: Num);</code><code class="line"></code><code class="line"><span style="color:#d75f00; font-weight:bold">def</span> max =</code><code class="line">  <span style="color:#d75f00; font-weight:bold">prop.rec</span>[<span style="color:#0087af">(<span style="color:#d70087;font-weight:bold">Comm</span> &amp; <span style="color:#d70087;font-weight:bold">Assoc</span> &amp; <span style="color:#d70087;font-weight:bold">Idem</span>) := (Num, Num) =>: Num</span>]: max =></code><code class="line">    <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Zero</span>, y) => y</code><code class="line">    <span style="color:#d75f00; font-weight:bold">case</span> (x, <span style="color:#8700af">Zero</span>) => x</code><code class="line">    <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Succ</span>(n), <span style="color:#8700af">Succ</span>(m)) => <span style="color:#8700af">Succ</span>(max(n, m))</code><code class="line"></code><code class="line"><span style="color:#d75f00; font-weight:bold">def</span> zipWith[P >: (<span style="color:#d70087;font-weight:bold">Comm</span> &amp; <span style="color:#d70087;font-weight:bold">Assoc</span> &amp; <span style="color:#d70087;font-weight:bold">Idem</span>), T] =</code><code class="line">  <span style="color:#d75f00; font-weight:bold">prop.rec</span>[<span style="color:#0087af">(P := (T, T) =>: T)</span></code><code class="line">           <span style="color:#0087af">=> (P := (List[T], List[T])</span></code><code class="line">           <span style="color:#0087af">=>: List[T])</span>]: zipWith => f =></code><code class="line">    <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Nil</span>, y) => y</code><code class="line">    <span style="color:#d75f00; font-weight:bold">case</span> (x, <span style="color:#8700af">Nil</span>) => x</code><code class="line">    <span style="color:#d75f00; font-weight:bold">case</span> (x <span style="color:#8700af">::</span> xs, y <span style="color:#8700af">::</span> ys) => f(x, y) <span style="color:#8700af">::</span> zipWith(f)(xs, ys)</code><code class="line"></code><code class="line"><span style="color:#d75f00; font-weight:bold">def</span> mergeGCounter =</code><code class="line"><span style="color:#d75f00; font-weight:bold">  prop</span>[<span style="color:#0087af">(<span style="color:#d70087;font-weight:bold">Comm</span> &amp; <span style="color:#d70087;font-weight:bold">Assoc</span> &amp; <span style="color:#d70087;font-weight:bold">Idem</span>)</span></code><code class="line">       <span style="color:#0087af">:= (List[Num], List[Num]) =>: List[Num]</span>]:</code><code class="line">  zipWith(max)</code></pre><!--}}}-->
         </div>
     </div>
 
@@ -530,7 +530,7 @@ Propel is a research language developed at the <a href="https://programming-grou
 
 <script type="text/propel" id="bv_eq">
 ; type definitions
-(type bitvec (rec x {(B0 x) (B1 x) BZ}))
+(type bitvec {(B0 bitvec) (B1 bitvec) BZ})
 (type bool {True False})
 
 ; definition of equality over bitvectors
@@ -546,7 +546,7 @@ Propel is a research language developed at the <a href="https://programming-grou
 
 <script type="text/propel" id="nat_add3p">
 ; type definitions
-(type nat (rec x {(S x) Z}))
+(type nat {(S nat) Z})
 
 ; definition of addition over the natural numbers
 (def nat_add3p (fun nat nat nat)
@@ -560,8 +560,8 @@ Propel is a research language developed at the <a href="https://programming-grou
 
 <script type="text/propel" id="natlist_gcounter">
 ; type definitions
-(type nat (rec x {(S x) Z}))
-(type list (rec x {(Cons nat x) Nil}))
+(type nat {(S nat) Z})
+(type natlist {(Cons nat natlist) Nil})
 
 ; definition of maximum over the natural numbers
 (def nat_max (fun nat nat nat)
@@ -573,20 +573,20 @@ Propel is a research language developed at the <a href="https://programming-grou
       [(Tuple (S x) (S y)) (S (nat_max x y))])))
 
 ; definition of the merge function of a GCounter
-(def gcounter_merge (fun list list list)
+(def gcounter_merge (fun natlist natlist natlist)
   ; it must be idempotent, commutative, and associative
-  (lambda [idem comm assoc] (x list) (y list)
+  (lambda [idem comm assoc] (x natlist) (y natlist)
     (cases (Tuple x y)
       [(Tuple Nil y) y]
       [(Tuple x Nil) x]
       [(Tuple (Cons x xs) (Cons y ys))
-       (Cons (nat_max x y) (natlist_gcounter xs ys))])))
+       (Cons (nat_max x y) (gcounter_merge xs ys))])))
 </script>
 
 <script type="text/propel" id="bv_lwwreg">
 ; bitvectors are either empty (BZ), or a bitvector with a 0 at the
 ; end (B0) or a bitvector with a 1 at the end (B1)
-(type bitvec (rec X {(B0 X) (B1 X) BZ}))
+(type bitvec {(B0 bitvec) (B1 bitvec) BZ})
 
 ; booleans
 (type bool {True False})
@@ -618,12 +618,12 @@ Propel is a research language developed at the <a href="https://programming-grou
       [(Tuple (B1 x) (B1 y)) (B1 (bv_max x y))]
       [(Tuple (B0 x) (B1 y))
         (if (bv_eq (bv_max x y) y) ; i.e. y >= x
-          (B1 y)
-          (B0 x))]
+            (B1 y)
+            (B0 x))]
       [(Tuple (B1 x) (B0 y))
         (if (bv_eq (bv_max x y) x) ; i.e. x >= y
-          (B1 x)
-          (B0 y))])))
+            (B1 x)
+            (B0 y))])))
 
 ; compute the merge of two last-writer-wins registers
 (def lwwreg_merge (fun reg reg reg)
@@ -631,11 +631,11 @@ Propel is a research language developed at the <a href="https://programming-grou
     ; we destruct each register to get the data and timestamp
     (let (Tuple (LWWReg xd xt) (LWWReg yd yt)) (Tuple x y)
       (if (bv_eq xt yt)
-          ; even when the timestamps are equal the data must still be merged
-          (LWWReg (bv_max xd yd) xt)
-          (if (bv_eq (bv_max xt yt) xt) ; i.e. xt >= yt
-              x
-              y)))))
+        ; even when the timestamps are equal the data must still be merged
+        (LWWReg (bv_max xd yd) xt)
+        (if (bv_eq (bv_max xt yt) xt) ; i.e. xt >= yt
+            x
+            y)))))
 </script>
 
 
@@ -657,7 +657,7 @@ Propel is a research language developed at the <a href="https://programming-grou
 
 
 <script type="text/propel" id="average">
-(type nat (rec x {Z (S x)}))
+(type nat {Z (S nat)})
 
 (def add (fun nat nat nat)
   (lambda [comm] (a nat) (b nat)
@@ -679,12 +679,11 @@ Propel is a research language developed at the <a href="https://programming-grou
 
 
 <script type="text/propel" id="list-concat">
-(type nat (rec x {Z (S x)}))
+(type nat {(S nat) Z})
+(type natlist {(Cons nat natlist) Nil})
 
-(type list (rec x {Nil (Cons nat x)}))
-
-(def concat (fun list list list)
-  (lambda [assoc] (a list) (b list)
+(def concat (fun natlist natlist natlist)
+  (lambda [assoc] (a natlist) (b natlist)
     (cases a
       [Nil b]
       [(Cons a as) (Cons a (concat as b))])))
@@ -692,7 +691,7 @@ Propel is a research language developed at the <a href="https://programming-grou
 
 
 <script type="text/propel" id="nat-max">
-(type nat (rec x {Z (S x)}))
+(type nat {(S nat) Z})
 
 (def max (fun nat nat nat)
   (lambda [sel] (a nat) (b nat) (cases (Tuple a b)
@@ -702,7 +701,7 @@ Propel is a research language developed at the <a href="https://programming-grou
 </script>
 
 <script type="text/propel" id="asym-eq">
-(type nat (rec x {Z (S x)}))
+(type nat {(S nat) Z})
 (type bool {True False})
 
 (def not-eq (fun nat nat bool)
@@ -764,7 +763,7 @@ Propel is a research language developed at the <a href="https://programming-grou
 
 
 <script type="text/propel" id="total-ord">
-(type nat (rec x {Z (S x)}))
+(type nat {(S nat) Z})
 (type bool {True False})
 
 (def leq (fun nat nat bool)
@@ -776,9 +775,8 @@ Propel is a research language developed at the <a href="https://programming-grou
 
 
 <script type="text/propel" id="divisibility">
-(type nat (rec x {Z (S x)}))
+(type nat {(S nat) Z})
 (type bool {True False})
-
 
 (def eq (fun nat nat bool)
   (lambda (a nat) (b nat) (cases (Tuple a b)
@@ -787,7 +785,6 @@ Propel is a research language developed at the <a href="https://programming-grou
     [(Tuple Z (S _)) False]
     [(Tuple (S x) (S y)) (eq x y)])))
 
-
 (def less (fun nat nat bool)
   (lambda (a nat) (b nat) (cases (Tuple a b)
     [(Tuple Z Z) False]
@@ -795,20 +792,18 @@ Propel is a research language developed at the <a href="https://programming-grou
     [(Tuple (S _) Z) False]
     [(Tuple (S x) (S y)) (less x y)])))
 
-
 (def sub (fun nat nat nat)
   (lambda (a nat) (b nat) (cases (Tuple a b)
     [(Tuple a Z) a]
     [(Tuple Z a) Z]
     [(Tuple (S x) (S y)) (sub x y)])))
 
-
 (def divisible-by (fun nat nat bool)
   (lambda [antisym] (a nat) (b nat)
     (and (not (eq b Z))
          (if (less a b)
              (eq a Z)
-             (divisible-by (sub a b) b))))
+             (divisible-by (sub a b) b)))))
 </script>
 
 <script src="editor.js"></script>
