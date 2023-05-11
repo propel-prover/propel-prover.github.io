@@ -529,9 +529,9 @@ Compiling the examples may not work inside the Docker container on Apple M1 mach
 <p>
 You may define your own function using the following syntax:
 <code><pre>
-def myFunction = prop[(FunctionProperties) ::= (T1, T1) =>: T2] { (x, y) => body }
+def myFunction = prop[(FunctionProperties) := (T1, T1) =>: T2] { (x, y) => body }
 // or
-def myRecursiveFunction = prop.rec[(FunctionProperties) ::= (T1, T1) =>: T2] { myRecursiveFunction => (x, y) => body }
+def myRecursiveFunction = prop.rec[(FunctionProperties) := (T1, T1) =>: T2] { myRecursiveFunction => (x, y) => body }
 </pre></code>
 Here, <code>myFunction</code> is the name of the function, <code>FunctionProperties</code> is a list of function properties the function has (separated by <code>&amp;</code>), <code>T1</code> is the type of the arguments of the binary function, <code>T2</code> is the return type of the function, <code>x</code> and <code>y</code> are the names of the function arguments, and <code>body</code> is the function body.
 </p>
