@@ -250,7 +250,7 @@ Typecheck <a href="#section-crdt">CRDTs</a> by tracking
             </div>
         <!--}}}--></div>
         <div id="controls">
-            <input type="button" value="Check" id="checkCode"></input>
+            <input type="button" value="Check" id="checkCode">
             <select id="example">
                 <option value="bv_eq" selected>Bitvector equality</option>
                 <option value="nat_add3p">Peano Number addition</option>
@@ -416,7 +416,7 @@ Typecheck <a href="#section-crdt">CRDTs</a> by tracking
 We provide you with <code>propel.tar.xz</code> on <a href="https://doi.org/10.5281/zenodo.7817421">Zenodo (doi: 10.5281/zenodo.7817421)</a>, which is a pre-built container image that contains all necessary programs.
 To load, run the following command:
 <br><code>
-$ docker load < propel.tar.xz
+$ docker load &lt; propel.tar.xz
 </code>
 </p>
 
@@ -481,8 +481,9 @@ $ docker run -it --rm propel bash                               # open a shell
 $ nano /propel/src/test/scala/propel/ScalaExamplesList.scala    # open the file
 
 # edit and save the file
-$ cd /propel && sbt Test/compile                                # recompile
+$ cd /propel &amp;&amp; sbt Test/compile                                # recompile
 </pre></code>
+</p>
 
 <p>
 Compiling the examples may not work inside the Docker container on Apple M1 machines for the reasons mentioned earlier.
@@ -495,7 +496,7 @@ def myFunction = prop[(FunctionProperties) ::= (T1, T1) =>: T2] { (x, y) => body
 // or
 def myRecursiveFunction = prop.rec[(FunctionProperties) ::= (T1, T1) =>: T2] { myRecursiveFunction => (x, y) => body }
 </pre></code>
-Here, <code>myFunction</code> is the name of the function, <code>FunctionProperties</code> is a list of function properties the function has (separated by <code>&</code>), <code>T1</code> is the type of the arguments of the binary function, <code>T2</code> is the return type of the function, <code>x</code> and <code>y</code> are the names of the function arguments, and <code>body</code> is the function body.
+Here, <code>myFunction</code> is the name of the function, <code>FunctionProperties</code> is a list of function properties the function has (separated by <code>&amp;</code>), <code>T1</code> is the type of the arguments of the binary function, <code>T2</code> is the return type of the function, <code>x</code> and <code>y</code> are the names of the function arguments, and <code>body</code> is the function body.
 </p>
 
 <p>
@@ -510,7 +511,7 @@ If the properties cannot be proven, then a compilation error indicates which pro
 <p>
 For example, you can add the following GCounter CRDT example to one of the files in <code>/propel/src/test/scala/propel</code>
 <code><pre>
-def mergeGCounter = prop[(Comm & Assoc & Idem) := (List[Num], List[Num]) =>: List[Num]] { zipWith(maxNum) }
+def mergeGCounter = prop[(Comm &amp; Assoc &amp; Idem) := (List[Num], List[Num]) =>: List[Num]] { zipWith(maxNum) }
 </pre></code>
 </p>
 
@@ -518,7 +519,7 @@ def mergeGCounter = prop[(Comm & Assoc & Idem) := (List[Num], List[Num]) =>: Lis
     <h1 id="section-publications">Publications</h1>
     <ol class="publications">
         <li>George Zakhour, Pascal Weisenburger, and Guido Salvaneschi. 2023. Type-Checking CRDT Convergence.
-            In <em>Proceedings of the 44th ACM SIGPLAN Conference on Programming Language Design and Implementation</em>, PLDI, June 17-21, 2023, Orlando, Florida, United States. <a href="https://doi.org/10.1145/3591276">https://doi.org/10.1145/3591276</a> [<a href="https://programming-group.com/assets/pdf/papers/2023_Type-Checking-CRDT-Convergence.pdf">author version</a>]</li>
+            <i>Proceedings of the ACM on Programming Languages</i>&nbsp;7, PLDI, Article&nbsp;162, June 17&ndash;21, 2023, Orlando, Florida, United States. <a href="https://doi.org/10.1145/3591276">https://doi.org/10.1145/3591276</a> [<a href="https://programming-group.com/assets/pdf/papers/2023_Type-Checking-CRDT-Convergence.pdf">author version</a>]</li>
     </ol>
 </main>
 
