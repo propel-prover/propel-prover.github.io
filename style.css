@@ -269,6 +269,8 @@ main, header, footer, #nav, #tagline {
 main .preview {
     font-size: 14px;
     counter-reset: line 0;
+    display: flex;
+    flex-direction: column;
 }
 main .preview .line {
     min-height: 0px;
