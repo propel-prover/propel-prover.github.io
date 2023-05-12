@@ -337,6 +337,7 @@ header {
 }
 header img {
     margin: auto;
+    display: block;
 }
 
 header ul {
