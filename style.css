@@ -270,7 +270,7 @@ pre, code {
 
 
 
-main, header, footer, #nav, #tagline {
+main, header, footer, #nav, #tagline, #tagtitle {
     width: 1200px;
     max-width: 80%;
     margin: auto;
@@ -357,12 +357,16 @@ header a:hover {
     color: #fff;
 }
 
+#tagtitle {
+    text-align: center;
+    margin-bottom: 20px;
+}
 #tagline {
     font-weight: normal;
     text-align: center;
     margin-bottom: 50px;
 }
-#tagline a {
+#tagtitle a, #tagline a {
     text-decoration: none;
 }
 
