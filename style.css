@@ -257,7 +257,6 @@ pre, code {
     background: #186643;
     padding: 30px;
     margin-bottom: 50px;
-    color: #fff;
 }
 
 #interactiveCode h1 {
@@ -271,6 +270,7 @@ pre, code {
 #interactiveCode p {
     margin-bottom: 30px;
     text-align: center;
+    color: #fff;
 }
 #interactiveCode p a {
     color: #fff;
