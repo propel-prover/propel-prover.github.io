@@ -332,10 +332,11 @@ main .code-example {
 }
 
 header {
-    padding: 30px 0;
-    display: flex;
-    flex-wrap: wrap;
-    row-gap: 20px;
+    padding-top: 40px;
+    padding-bottom: 10px;
+}
+header img {
+    margin: auto;
 }
 
 header ul {
@@ -371,20 +372,19 @@ header a:hover {
 #tagline {
     font-weight: normal;
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 20px;
 }
 #tagtitle a, #tagline a {
     text-decoration: none;
 }
 .summary p {
-    margin-bottom: 30px;
+    margin-bottom: 50px;
 }
 
 #nav {
     display: flex;
     flex-wrap: wrap;
     margin: 0px auto;
-    margin-bottom: 30px;
     padding: 0;
     width: 100%;
 }
@@ -406,10 +406,10 @@ header a:hover {
     background: transparent;
     color: #186643;
 }
-#nav li a:hover:before {
+#nav li a.section:hover:before {
     color: #999;
 }
-#nav li a:before {
+#nav li a.section:before {
     content: '# ';
     color: rgba(255,255,255,0.5);
     font-size: 12px;

@@ -9,15 +9,18 @@
 </head>
 <body>
 
-<header>
-    <div id="logo">
-        <img src="logo.svg" width="200px">
-    </div>
+<ul id="nav">
+    <li><a class="section" href="#section-crdt">CRDTs</a></li>
+    <li><a class="section" href="#section-properties">Properties</a></li>
+    <li><a class="section" href="#section-getting-started">Getting Started</a></li>
+    <li><a class="section" href="#section-scala-dsl">Scala DSL</a></li>
+    <li><a class="section" href="#section-publications">Publications</a></li>
+    <li><a href="#section-publications">Github</a></li>
+    <li><a href="#section-publications">Programming Group</a></li>
+</ul>
 
-    <ul>
-        <li><a href="https://programming-group.com">Programming Group</a></li>
-        <li><a href="https://github.com/propel-prover">GitHub</a></li>
-    </ul>
+<header>
+    <img src="logo.svg" width="300px">
 </header>
 
 <div class="summary">
@@ -25,14 +28,6 @@
 <h2 id="tagline">
 Track commutativity, associativity, idempotency, and <a href="#section-properties">other algebraic properties</a> in types
 </h2>
-
-<ul id="nav">
-    <li><a href="#section-crdt">CRDTs</a></li>
-    <li><a href="#section-properties">Properties</a></li>
-    <li><a href="#section-getting-started">Getting Started</a></li>
-    <li><a href="#section-scala-dsl">Scala DSL</a></li>
-    <li><a href="#section-publications">Publications</a></li>
-</ul>
 
 <p>
 Propel is a programming language developed in the <a href="https://programming-group.com">Programming Group</a> at the <a href="https://www.unisg.ch">University of St. Gallen</a>.
@@ -289,7 +284,7 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
                 <textarea id="editor" spellcheck="false"></textarea>
             </div>
             <div id="consoleContainer">
-                <pre id="console">Click on 'Check' to start the checking</pre>
+                <pre id="console">Click <strong>Check</strong> to check your code</pre>
             </div>
         </div>
         <div id="status"><br></div>
