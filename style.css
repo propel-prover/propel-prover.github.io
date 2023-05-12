@@ -257,6 +257,7 @@ pre, code {
     background: #186643;
     padding: 30px;
     margin-bottom: 50px;
+    color: #fff;
 }
 
 #interactiveCode h1 {
@@ -264,13 +265,19 @@ pre, code {
     color: #fff;
     font-size: 32px;
     margin: 0; padding: 0;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     font-weight: bold;
+}
+#interactiveCode p {
+    margin-bottom: 30px;
+    text-align: center;
+}
+#interactiveCode p a {
+    color: #fff;
 }
 
 
-
-main, header, footer, #nav, #tagline, #tagtitle {
+main, header, footer, .summary {
     width: 1200px;
     max-width: 80%;
     margin: auto;
@@ -369,6 +376,9 @@ header a:hover {
 #tagtitle a, #tagline a {
     text-decoration: none;
 }
+.summary p {
+    margin-bottom: 30px;
+}
 
 #nav {
     display: flex;
@@ -376,6 +386,7 @@ header a:hover {
     margin: 0px auto;
     margin-bottom: 30px;
     padding: 0;
+    width: 100%;
 }
 #nav li {
     flex-grow: 1;
@@ -404,7 +415,7 @@ header a:hover {
     font-size: 12px;
 }
 
-main { line-height: 28px; }
+main, .summary { line-height: 28px; }
 main h1, main h2, main h3, main h4 { font-family: 'Montserrat', sans-serif; }
 
 main h1 {

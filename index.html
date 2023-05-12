@@ -20,7 +20,8 @@
     </ul>
 </header>
 
-<h1 id="tagtitle">Typecheck <a href="#section-crdt">CRDTs</a></h1>
+<div class="summary">
+<h1 id="tagtitle">Type-check your <a href="#section-crdt">CRDTs</a>!</h1>
 <h2 id="tagline">
 Track commutativity, associativity, idempotency, and <a href="#section-properties">other algebraic properties</a> in types
 </h2>
@@ -33,9 +34,19 @@ Track commutativity, associativity, idempotency, and <a href="#section-propertie
     <li><a href="#section-publications">Publications</a></li>
 </ul>
 
+<p>
+Propel is a programming language developed in the <a href="https://programming-group.com">Programming Group</a> at the <a href="https://unisg.ch">University of St. Gallen</a>.
+It allows developers to annotate functions with algebraic properties such as commutativity, associativity, and idempotency.
+Propel's type system uses a specialized automated inductive theorem prover to reason about these properties.
+The language focuses on verifying the convergence properties of <a href="#section-crdt">CRDT</a> implementations.
+Propel is available as a standalone language and as a <a href="#section-scala-dsl">Scala DSL</a>.
+</p>
+</div>
+
 <div id="jumbo">
     <div id="interactiveCode">
         <h1>Try Propel</h1>
+        <p>We compiled Propel to JavaScript using <a href="https://scala-js.org">Scala.js</a> for you to try the latest version locally in your browser</p>
         <div id="autocomplete"><!--{{{-->
             <div id="syntax">
             <h3 id="syntax-definitions">Definitions</h3>
