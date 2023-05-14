@@ -612,7 +612,7 @@ function loadExample(exampleId) {
 }
 
 
-document.querySelectorAll(".btn-example").forEach(function (elem) {
+document.querySelectorAll(".prop_card button").forEach(function (elem) {
     elem.addEventListener("click", function() {
         loadExample(elem.dataset.example);
     });

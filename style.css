@@ -58,21 +58,81 @@
     font-weight: bold;
 }
 
+#section-scala-dsl + h2 + p {
+    text-align: left;
+}
+img[src="crdt.svg"] {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    margin-left: 50px;
+    margin-top: -30px;
+    float: right;
+}
+@media (max-width: 950px) {
+    img[src="crdt.svg"] {
+        float: none;
+        margin: auto;
+    }
+}
+img[src="gcounter.svg"] {
+    display: block;
+    width: 100%;
+    max-width: 600px;
+    height: auto;
+    margin-left: 50px;
+    margin-bottom: 30px;
+    float: right;
+}
+img[src="gcounter.svg"] + p + p {
+    clear: both;
+}
+@media (max-width: 1200px) {
+    img[src="gcounter.svg"] {
+        float: none;
+        margin: auto;
+    }
+}
+
+
 html, body {
     padding: 0;
     margin: 0;
     font-family: 'Montserrat', sans-serif;
     font-size: 16px;
     letter-spacing: 0.3px;
+    background: white;
+    scroll-behavior: smooth;
+}
+::selection {
+    background: #08b96a;
+    color: white;
 }
 
 a {
     text-decoration: underline;
     color: #186643;
 }
+.summary > p, main > p, main > ol, main > ul {
+    text-align: justify;
+    hyphens: auto;
+}
 pre, code {
     font-family: 'DejaVu Sans Mono', monospace;
 }
+
+input[type="button"], button, select {
+    background: #ffffff;
+    border: 1px solid #186643;
+    border-radius: 3px;
+    padding: 5px 7px;
+    cursor: pointer;
+}
+input[type="button"]:hover, button:hover, select:hover {
+    background: #eeffee;
+}
+
 #interactiveCode {
     max-width: 1200px;
     margin: auto;
@@ -124,7 +184,10 @@ pre, code {
     outline: none;
     letter-spacing: 0px;
 }
-#viewer { z-index: 0; }
+#editor::selection {
+    background: #08b96a66;
+    color: transparent;
+}
 #editor {
     z-index: 1;
     color: transparent;
@@ -132,6 +195,7 @@ pre, code {
     caret-color: #444;
 }
 #viewer {
+    z-index: 0;
     background: #f8f8f8;
     color: #444444;
     counter-reset: line 0;
@@ -264,21 +328,9 @@ pre, code {
     font-size: 14px;
 }
 
-#checkCode, #example {
-    background: #ffffff;
-    border: 1px solid #186643;
-    border-radius: 3px;
-    padding: 5px 7px;
-    cursor: pointer;
-}
 #example {
     margin-left: 20px;
 }
-
-#checkCode:hover, #example:hover {
-    background: #eeffee;
-}
-
 #controls input[type=checkbox] {
     margin-left: 20px;
 }
@@ -328,7 +380,7 @@ main .preview .line:before {
     content: counter(line);
     font-size: 10px;
     color: #666;
-    margin-left: -30px;
+    margin-left: -40px;
     padding-right: 10px;
     width: 30px;
     display: inline-block;
@@ -350,15 +402,45 @@ main .code-example {
     margin-left: 20px;
 }
 
-.btn-example {
-    padding: 7px 10px;
-    border-radius: 0;
-    background: transparent;
-    border: 2px solid #186643;
-    color: #186643;
-    font-weight: bold;
-    cursor: pointer;
-    align-self: flex-end;
+main pre .line
+{
+  display: inline-block;
+  white-space: pre-wrap;
+}
+main pre .line.indent-0
+{
+  margin-left: 2ch;
+  text-indent: -2ch;
+}
+main pre .line.indent-1, main pre .line.indent-2
+{
+  margin-left: 4ch;
+  text-indent: -4ch;
+}
+main pre .line.indent-3, main pre .line.indent-4
+{
+  margin-left: 6ch;
+  text-indent: -6ch;
+}
+main pre .line.indent-5, main pre .line.indent-6
+{
+  margin-left: 8ch;
+  text-indent: -8ch;
+}
+main pre .line.indent-7, main pre .line.indent-8
+{
+  margin-left: 10ch;
+  text-indent: -10ch;
+}
+main pre .line.indent-9, main pre .line.indent-10
+{
+  margin-left: 12ch;
+  text-indent: -12ch;
+}
+main pre .line.indent-11, main pre .line.indent-1
+{
+  margin-left: 14ch;
+  text-indent: -14ch;
 }
 
 header {
@@ -368,6 +450,9 @@ header {
 header img {
     margin: auto;
     display: block;
+    max-width: 350px;
+    width: 100%;
+    height: auto;
 }
 
 header ul {
@@ -398,56 +483,79 @@ header a:hover {
 
 #tagtitle {
     text-align: center;
-    margin-bottom: 20px;
+    /*
+    border-top: 1px solid #18664344;
+    padding-top: 30px;
+    margin-top: 15px;
+    */
+    margin-bottom: 10px;
 }
 #tagline {
     font-weight: normal;
     text-align: center;
-    margin-bottom: 20px;
+    font-size: 1em;
+    margin: 0 auto 20px;
+    max-width: 430px;
 }
 #tagtitle a, #tagline a {
     text-decoration: none;
 }
 .summary p {
+    border-top: 1px solid #18664344;
+    padding-top: 20px;
     margin-bottom: 50px;
 }
 
-#nav {
+nav ul {
     display: flex;
     flex-wrap: wrap;
     margin: 0px auto;
     padding: 0;
     width: 100%;
 }
-#nav li {
+nav ul li {
     flex-grow: 1;
     text-align: center;
     list-style: none;
+    flex: 1;
+    white-space: nowrap;
 }
-#nav li a {
+nav ul li a {
     text-decoration: none;
     padding: 13px 20px;
     background: #186643;
     display: block;
+    box-sizing: border-box;
+    height: 100%;
     color: #fff;
     font-weight: bold;
     border: 2px solid #186643;
 }
-#nav li a:hover {
+nav ul li a:hover {
     background: transparent;
     color: #186643;
 }
-#nav li a.section:hover:before {
+nav ul li a:hover:before {
     color: #999;
 }
-#nav li a.section:before {
-    content: '# ';
+nav ul li a:before {
     color: rgba(255,255,255,0.5);
     font-size: 12px;
 }
+nav ul li a[href^="#"]:before {
+    content: '# ';
+}
+nav ul li a[href^="http"]:before {
+    content: '⬈ ';
+}
 
-main, .summary { line-height: 28px; }
-main h1, main h2, main h3, main h4 { font-family: 'Montserrat', sans-serif; }
+main, .summary {
+    line-height: 28px;
+}
+main h1, main h2, main h3, main h4 {
+    font-family: 'Montserrat', sans-serif;
+    clear: both;
+}
 
 main h1 {
     margin: 50px 0;
@@ -471,61 +579,60 @@ main pre, main p code {
     white-space: pre-wrap;
     word-break: break-word;
 }
-
-main #crdt-vis {
-    float: right;
-    margin-left: 50px;
-    margin-top: -5%;
+main pre code span.select {
+    user-select: all;
 }
 
-main #gcounter {
-    display: block;
-    width: 50%;
-    margin: 30px auto;
+span.break, span.nobreak {
+  visibility: hidden;
 }
 
 main .prop_card img {
+    order: 0;
     width: 210px;
-    margin: auto;
+    height: auto;
+    margin: 0 auto;
+}
+main .prop_card img + p {
+    flex: 1;
+}
+main .prop_card p + p {
+    order: 2;
+    padding: 0;
+    margin: 5px 0;
+    font-style: italic;
+    min-height: 75px;
+}
+main .prop_card button {
+    padding: 7px 10px;
 }
 main .prop_box {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
 }
-main .prop_box > * {
-    text-align: center;
-    line-height: 25px;
-}
-
-
 main .prop_card {
-    width: 210px;
+    display: flex;
+    flex-direction: column;
     padding: 7px 15px;
-    margin-bottom: 20px;
+    width: 210px;
+    line-height: 25px;
+    text-align: center;
 }
-
 main .prop_card * {
     width: 100%;
-}
-main .prop_card p {
-    height: 120px;
+    order: 1;
 }
 main .prop_card h3 {
     margin: 0;
     padding: 0;
     margin-top: 10px;
 }
-main .prop_card h4 {
-    padding: 0;
-    margin: 5px 0;
-    font-weight: normal;
-    font-style: italic;
-    width: 100%;
-}
 
 footer {
-    margin: 50px auto;
+    border-top: 1px solid #18664344;
+    padding-top: 20px;
+    margin: 50px auto 30px;
     text-align: center;
 }
 
@@ -535,17 +642,6 @@ footer {
     }
     #consoleContainer {
         margin-top: 20px;
-        width: 100%;
-    }
-
-    main #crdt-vis {
-        width: 60%;
-        float: none;
-        display: block;
-        margin: auto;
-    }
-
-    main #gcounter {
         width: 100%;
     }
 }

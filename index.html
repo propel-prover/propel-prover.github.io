@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <title>Propel</title>
 <meta charset="utf8">
@@ -9,18 +9,20 @@
 </head>
 <body>
 
-<ul id="nav">
-    <li><a class="section" href="#section-crdt">CRDTs</a></li>
-    <li><a class="section" href="#section-properties">Properties</a></li>
-    <li><a class="section" href="#section-getting-started">Getting Started</a></li>
-    <li><a class="section" href="#section-scala-dsl">Scala DSL</a></li>
-    <li><a class="section" href="#section-publications">Publications</a></li>
-    <li><a href="#section-publications">Github</a></li>
-    <li><a href="#section-publications">Programming Group</a></li>
+<nav>
+<ul>
+    <li><a href="#section-crdt">CRDTs</a></li>
+    <li><a href="#section-properties">Properties</a></li>
+    <li><a href="#section-getting-started">Getting Started</a></li>
+    <li><a href="#section-scala-dsl">Scala DSL</a></li>
+    <li><a href="#section-publications">Publications</a></li>
+    <li><a href="https://github.com/propel-prover">GitHub</a></li>
+    <li><a href="https://programming-group.com">Programming Group</a></li>
 </ul>
+</nav>
 
 <header>
-    <img src="logo.svg" width="300px">
+    <img src="logo.svg" width="350" height="100" alt="Propel">
 </header>
 
 <div class="summary">
@@ -30,9 +32,9 @@ Track commutativity, associativity, idempotency, and <a href="#section-propertie
 </h2>
 
 <p>
-Propel is a programming language developed in the <a href="https://programming-group.com">Programming Group</a> at the <a href="https://www.unisg.ch">University of St. Gallen</a>.
+Propel is a programming language developed in the <a href="https://programming-group.com">Programming Group</a> at the <a href="https://www.unisg.ch">University of St.&#x202F;Gal&shy;len</a>.
 It allows developers to annotate functions with algebraic properties such as commutativity, associativity, and idempotency.
-Propel's type system uses a specialized automated inductive theorem prover to reason about these properties.
+Propel’s type system uses a specialized automated inductive theorem prover to reason about these properties.
 The language focuses on verifying the convergence properties of <a href="#section-crdt">CRDT</a> implementations.
 Propel is available as a standalone language and as a <a href="#section-scala-dsl">Scala DSL</a>.
 </p>
@@ -41,7 +43,7 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
 <div id="jumbo">
     <div id="interactiveCode">
         <h1>Try Propel</h1>
-        <p>We compiled Propel to JavaScript using <a href="https://scala-js.org">Scala.js</a> for you to try the latest version locally in your browser</p>
+        <p>We compiled Propel to JavaScript using <a href="https://scala-js.org">Scala.js</a> for you to try the latest version locally in your browser.</p>
         <div id="autocomplete"><!--{{{-->
             <div id="syntax">
             <h3 id="syntax-definitions">Definitions</h3>
@@ -68,7 +70,7 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
                     <code>(lambda [<em>&lt;[prop...]&gt;</em>] <em>&lt;arg...&gt;</em> <em>&lt;expr&gt;</em>)</code>
                     <div class="description">
                     A lambda expression with zero or more <em>&lt;properties&gt;</em>, one or more arguments of the form (<em>&lt;var&gt;</em> <em>&lt;type&gt;</em>), and a body <em>&lt;expr&gt;</em>.
-                    The annotated properties are type-checked and will be part of the function's type.
+                    The annotated properties are type-checked and will be part of the function’s type.
                     </div>
                 </li>
                 <li>
@@ -163,7 +165,7 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
                     <code>{<em>&lt;constructor...&gt;</em>}</code>
                     <div class="description">
                     Defines a tagged union defined by at least one constructor.
-                    Additionally, if constructors take arguments, then the arguments' types must follow after the constructor inside parenthesis.
+                    Additionally, if constructors take arguments, then the arguments’ types must follow after the constructor inside parenthesis.
                     </div>
                 </li>
                 <li>
@@ -292,10 +294,10 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
 </div>
 
 <main>
-    <h1 id="section-crdt">Conflict-Free Replicated Datatypes (CRDT)</h1>
-    <img src="crdt.svg" id="crdt-vis" width="30%">
+    <h1 id="section-crdt">Conflict-Free Replicated Datatypes (CRDTs)</h1>
+    <img src="crdt.svg" width="400" height="400">
     <p>
-    A state-based Conflict-Free Replicated Datatype (CRDT) is any datatype that defines a <code>merge</code> function that combines any two instances&mdash;any two replicas&mdash;into one without any conflict or manual conflict resolution.
+    A state-based <em>Conflict-Free Rep&shy;li&shy;cat&shy;ed Da&shy;ta Type (CRDT)</em> is any datatype that defines a <code>merge</code> function that combines any two instances&mdash;any two replicas&mdash;into one without any conflict or manual conflict resolution.
     We expect the two following properties to hold:
     </p>
     <ol>
@@ -309,64 +311,62 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
     </p>
 
     <h2>Example: GCounter</h2>
-    <p>A <em>conflict-free replicated growing counter (GCounter)</em> between three peers is implemented as a map between a peer's identifier and a number.
+    <img src="gcounter.svg" width="600" height="480">
+    <p>A <em>conflict-free rep&shy;li&shy;cat&shy;ed grow&shy;ing count&shy;er (GCounter)</em> between three peers is implemented as a map between a peer’s identifier and a number.
     The counter not only tracks the number of increments but tracks the origin of each increment.
     For example in the following figure, at the beginning&mdash;on the first line&mdash;the purple peer incremented the counter 9 times, received 0 increments from the yellow peer and 3 increments from the green peer.
     On the other hand the yellow peer received 7 increments from the purple peer, incremented its counter 2 times, and received 4 increments from the green peer.
     After syncing the purple and the yellow peer&mdash;on the second line&mdash;both agree on the number of increments.
     They do so by taking the pair-wise maximum number of increments.
-    Finally after all peers sync&mdash;on the last line&mdash;they all agree on the number of increments and they are all able to deduce that there were 9+2+5 = 16 increments in total among them.
+    Finally after all peers sync&mdash;on the last line&mdash;they all agree on the number of increments and they are all able to deduce that there were 9&thinsp;+&thinsp;2&thinsp;+&thinsp;5&thinsp;=&thinsp;16 increments in total among them.
     </p>
-    <img src="gcounter.svg" id="gcounter">
-    <p>The following two code snippets show how a GCounter can be implemented using Propel's language which you can use in the editor above, and using Propel's Scala DSL.</p>
+    <p>The following two code snippets show how a GCounter can be implemented using Propel’s language which you can use in the editor above, and using Propel’s Scala DSL.</p>
     <div class="code-example">
         <div class="code-example-50">
-            <h3>Propel Lang</h3>
-<!--{{{--><pre class="preview"><code class="line"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">type</span> nat <span style="color:#888888;font-weight:normal">{</span><span style="color:#8700af;font-weight:normal">Zero</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> nat<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">}</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#878787;font-weight:normal">; natural numbers
-</span></code>
-<code class="line"><span style="color:#888888;font-weight: normal;">(</span><span style="color:#d75f00;font-weight:bold">type</span> list <span style="color:#888888;font-weight:normal">{</span><span style="color:#8700af;font-weight:normal">Nil</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> nat list<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">}</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#878787;font-weight:normal">; lists
-</span></code>
-<code class="line"></code>
-<code class="line"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">def</span> max <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">fun</span> nat nat nat<span style="color:#888888;font-weight:normal">)</span></code>
-<code class="line">  <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">lambda</span> <span style="color:#888888;font-weight:normal">[</span><span style="color:#d70087;font-weight:bold">comm</span> <span style="color:#d70087;font-weight:bold">assoc</span> <span style="color:#d70087;font-weight:bold">idem</span><span style="color:#888888;font-weight:normal">]</span> <span style="color:#888888;font-weight:normal">(</span>x nat<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>y nat<span style="color:#888888;font-weight:normal">)</span></code>
-<code class="line">    <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">cases</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> x y<span style="color:#888888;font-weight:normal">)</span></code>
-<code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#8700af;font-weight:normal">Zero</span> y<span style="color:#888888;font-weight:normal">)</span> y<span style="color:#888888;font-weight:normal">]</span></code>
-<code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> x <span style="color:#8700af;font-weight:normal">Zero</span><span style="color:#888888;font-weight:normal">)</span> x<span style="color:#888888;font-weight:normal">]</span></code>
-<code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> a<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> b<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> <span style="color:#888888;font-weight:normal">(</span>max a b<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">]</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span></code>
-<code class="line"></code>
-<code class="line"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">def</span> mergeGCounter <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">fun</span> list list list<span style="color:#888888;font-weight:normal">)</span></code>
-<code class="line">  <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">lambda</span> <span style="color:#888888;font-weight:normal">[</span><span style="color:#d70087;font-weight:bold">comm</span> <span style="color:#d70087;font-weight:bold">assoc</span> <span style="color:#d70087;font-weight:bold">idem</span><span style="color:#888888;font-weight:normal">]</span> <span style="color:#888888;font-weight:normal">(</span>x list<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>y list<span style="color:#888888;font-weight:normal">)</span></code>
-<code class="line">    <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">cases</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> x y<span style="color:#888888;font-weight:normal">)</span></code>
-<code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#8700af;font-weight:normal">Nil</span> _<span style="color:#888888;font-weight:normal">)</span> <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">]</span></code>
-<code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> _ <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">]</span></code>
-<code class="line">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> a xs<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> b ys<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span></code>
-<code class="line">       <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> <span style="color:#888888;font-weight:normal">(</span>max a b<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>mergeGCounter xs ys<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">]</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal"></span></code></pre><!--}}}-->
+            <h3>Propel Language</h3>
+<!--{{{--><pre class="preview"><code class="line indent-0"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">type</span> nat <span style="color:#888888;font-weight:normal">{</span><span style="color:#8700af;font-weight:normal">Zero</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> nat<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">}</span><span style="color:#888888;font-weight:normal">)</span>      <span style="color:#878787;font-weight:normal">; natural numbers</span></code>
+<code class="line indent-0"><span style="color:#888888;font-weight: normal;">(</span><span style="color:#d75f00;font-weight:bold">type</span> list <span style="color:#888888;font-weight:normal">{</span><span style="color:#8700af;font-weight:normal">Nil</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> nat list<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">}</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#878787;font-weight:normal">; lists</span></code>
+<code class="line indent-0"></code>
+<code class="line indent-0"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">def</span> max <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">fun</span> nat nat nat<span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-2">  <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">lambda</span> <span style="color:#888888;font-weight:normal">[</span><span style="color:#d70087;font-weight:bold">comm</span> <span style="color:#d70087;font-weight:bold">assoc</span> <span style="color:#d70087;font-weight:bold">idem</span><span style="color:#888888;font-weight:normal">]</span> <span style="color:#888888;font-weight:normal">(</span>x nat<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>y nat<span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-4">    <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">cases</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> x y<span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-6">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#8700af;font-weight:normal">Zero</span> y<span style="color:#888888;font-weight:normal">)</span> y<span style="color:#888888;font-weight:normal">]</span></code>
+<code class="line indent-6">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> x <span style="color:#8700af;font-weight:normal">Zero</span><span style="color:#888888;font-weight:normal">)</span> x<span style="color:#888888;font-weight:normal">]</span></code>
+<code class="line indent-6">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> a<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> b<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Succ</span> <span style="color:#888888;font-weight:normal">(</span>max a b<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">]</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-0"></code>
+<code class="line indent-0"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">def</span> mergeGCounter <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">fun</span> list list list<span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-2">  <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">lambda</span> <span style="color:#888888;font-weight:normal">[</span><span style="color:#d70087;font-weight:bold">comm</span> <span style="color:#d70087;font-weight:bold">assoc</span> <span style="color:#d70087;font-weight:bold">idem</span><span style="color:#888888;font-weight:normal">]</span> <span style="color:#888888;font-weight:normal">(</span>x list<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>y list<span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-4">    <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">cases</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> x y<span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-6">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#8700af;font-weight:normal">Nil</span> _<span style="color:#888888;font-weight:normal">)</span> <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">]</span></code>
+<code class="line indent-6">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> _ <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">]</span></code>
+<code class="line indent-6">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> a xs<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> b ys<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-7">       <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> <span style="color:#888888;font-weight:normal">(</span>max a b<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>mergeGCounter xs ys<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">]</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal"></span></code></pre><!--}}}-->
     </div>
 
         <div class="code-example-50">
             <h3>Propel in Scala</h3>
-<!--{{{--><pre class="preview"><code class="line"><span style="color:#d75f00; font-weight:bold">enum</span> Nat:</code>
-<code class="line">  <span style="color:#d75f00; font-weight:bold">case</span> <span style="color:#8700af">Zero</span></code>
-<code class="line">  <span style="color:#d75f00; font-weight:bold">case</span> <span style="color:#8700af">Succ</span>(pred: Nat)</code>
-<code class="line"></code>
-<code class="line"><span style="color:#d75f00; font-weight:bold">def</span> max =</code>
-<code class="line">  <span style="color:#d75f00; font-weight:bold">prop.rec</span>[<span style="color:#0087af">(<span style="color:#d70087;font-weight:bold">Comm</span> &amp; <span style="color:#d70087;font-weight:bold">Assoc</span> &amp; <span style="color:#d70087;font-weight:bold">Idem</span>) := (Nat, Nat) =>: Nat</span>]: max =></code>
-<code class="line">    <span style="color:#d75f00; font-weight:bold">case</span> (Nat.<span style="color:#8700af">Zero</span>, y) => y</code>
-<code class="line">    <span style="color:#d75f00; font-weight:bold">case</span> (x, Nat.<span style="color:#8700af">Zero</span>) => x</code>
-<code class="line">    <span style="color:#d75f00; font-weight:bold">case</span> (Nat.<span style="color:#8700af">Succ</span>(n), Nat.<span style="color:#8700af">Succ</span>(m)) => Nat.<span style="color:#8700af">Succ</span>(max(n, m))</code>
-<code class="line"></code>
-<code class="line"><span style="color:#d75f00; font-weight:bold">def</span> zipWith[<span style="color:#0087af">P >: (</span><span style="color:#d70087;font-weight:bold">Comm</span><span style="color:#0087af"> &amp; </span><span style="color:#d70087;font-weight:bold">Assoc</span><span style="color:#0087af"> &amp; </span><span style="color:#d70087;font-weight:bold">Idem</span><span style="color:#0087af">)</span>, <span style="color:#0087af">T</span>] =</code>
-<code class="line">  <span style="color:#d75f00; font-weight:bold">prop.rec</span>[<span style="color:#0087af">(P := (T, T) =>: T) =></span></code>
-<code class="line">           <span style="color:#0087af">(P := (List[T], List[T]) =>: List[T])</span>]:</code>
-<code class="line">    zipWith => f =></code>
-<code class="line">      <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Nil</span>, y) => y</code>
-<code class="line">      <span style="color:#d75f00; font-weight:bold">case</span> (x, <span style="color:#8700af">Nil</span>) => x</code>
-<code class="line">      <span style="color:#d75f00; font-weight:bold">case</span> (x <span style="color:#8700af">::</span> xs, y <span style="color:#8700af">::</span> ys) => f(x, y) <span style="color:#8700af">::</span> zipWith(f)(xs, ys)</code>
-<code class="line"></code>
-<code class="line"><span style="color:#d75f00; font-weight:bold">def</span> mergeGCounter =</code>
-<code class="line"><span style="color:#d75f00; font-weight:bold">  prop</span>[<span style="color:#0087af">(<span style="color:#d70087;font-weight:bold">Comm</span> &amp; <span style="color:#d70087;font-weight:bold">Assoc</span> &amp; <span style="color:#d70087;font-weight:bold">Idem</span>) :=</span></code>
-<code class="line">       <span style="color:#0087af">(List[Nat], List[Nat]) =>: List[Nat]</span>]:</code>
-<code class="line">    zipWith(max)</code></pre><!--}}}-->
+<!--{{{--><pre class="preview"><code class="line indent-0"><span style="color:#d75f00; font-weight:bold">enum</span> Nat:</code>
+<code class="line indent-2">  <span style="color:#d75f00; font-weight:bold">case</span> <span style="color:#8700af">Zero</span></code>
+<code class="line indent-2">  <span style="color:#d75f00; font-weight:bold">case</span> <span style="color:#8700af">Succ</span>(pred: Nat)</code>
+<code class="line indent-0"></code>
+<code class="line indent-0"><span style="color:#d75f00; font-weight:bold">def</span> max =</code>
+<code class="line indent-2">  <span style="color:#d75f00; font-weight:bold">prop.rec</span>[<span style="color:#0087af">(<span style="color:#d70087;font-weight:bold">Comm</span> &amp; <span style="color:#d70087;font-weight:bold">Assoc</span> &amp; <span style="color:#d70087;font-weight:bold">Idem</span>) := (Nat, Nat) =>: Nat</span>]: max =></code>
+<code class="line indent-4">    <span style="color:#d75f00; font-weight:bold">case</span> (Nat.<span style="color:#8700af">Zero</span>, y) => y</code>
+<code class="line indent-4">    <span style="color:#d75f00; font-weight:bold">case</span> (x, Nat.<span style="color:#8700af">Zero</span>) => x</code>
+<code class="line indent-4">    <span style="color:#d75f00; font-weight:bold">case</span> (Nat.<span style="color:#8700af">Succ</span>(n), Nat.<span style="color:#8700af">Succ</span>(m)) => Nat.<span style="color:#8700af">Succ</span>(max(n, m))</code>
+<code class="line indent-0"></code>
+<code class="line indent-0"><span style="color:#d75f00; font-weight:bold">def</span> zipWith[<span style="color:#0087af">P >: (</span><span style="color:#d70087;font-weight:bold">Comm</span><span style="color:#0087af"> &amp; </span><span style="color:#d70087;font-weight:bold">Assoc</span><span style="color:#0087af"> &amp; </span><span style="color:#d70087;font-weight:bold">Idem</span><span style="color:#0087af">)</span>, <span style="color:#0087af">T</span>] =</code>
+<code class="line indent-2">  <span style="color:#d75f00; font-weight:bold">prop.rec</span>[<span style="color:#0087af">(P := (T, T) =>: T) =></span></code>
+<code class="line indent-11">           <span style="color:#0087af">(P := (List[T], List[T]) =>: List[T])</span>]:</code>
+<code class="line indent-4">    zipWith => f =></code>
+<code class="line indent-6">      <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Nil</span>, y) => y</code>
+<code class="line indent-6">      <span style="color:#d75f00; font-weight:bold">case</span> (x, <span style="color:#8700af">Nil</span>) => x</code>
+<code class="line indent-6">      <span style="color:#d75f00; font-weight:bold">case</span> (x <span style="color:#8700af">::</span> xs, y <span style="color:#8700af">::</span> ys) => f(x, y) <span style="color:#8700af">::</span> zipWith(f)(xs, ys)</code>
+<code class="line indent-0"></code>
+<code class="line indent-0"><span style="color:#d75f00; font-weight:bold">def</span> mergeGCounter =</code>
+<code class="line indent-2">  <span style="color:#d75f00; font-weight:bold">prop</span>[<span style="color:#0087af">(<span style="color:#d70087;font-weight:bold">Comm</span> &amp; <span style="color:#d70087;font-weight:bold">Assoc</span> &amp; <span style="color:#d70087;font-weight:bold">Idem</span>) :=</span></code>
+<code class="line indent-7">       <span style="color:#0087af">(List[Nat], List[Nat]) =>: List[Nat]</span>]:</code>
+<code class="line indent-4">    zipWith(max)</code></pre><!--}}}-->
         </div>
     </div>
 
@@ -382,32 +382,32 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
     <h2>Binary Functions</h2>
     <div class="prop_box">
     <div class="prop_card">
-        <img src="/diagrams/comm.svg">
         <h3>Commutativity</h3>
+        <img src="/diagrams/comm.svg" width="210" height="210">
         <p>A commutative function is one whose arguments can be given in any order without changing the result</p>
-        <button class="btn-example" data-example="average">Load In Editor</button>
-        <h4>E.g. Average of two numbers</h4>
+        <p>E.g. Average of two numbers</p>
+        <button data-example="average">Load in Editor</button>
     </div>
     <div class="prop_card">
-        <img src="/diagrams/idem.svg">
         <h3>Idempotency</h3>
+        <img src="/diagrams/idem.svg" width="210" height="210">
         <p>If an idempotent function is called with the same argument it must return it</p>
-        <button class="btn-example" data-example="gset">Load In Editor</button>
-        <h4>E.g. Set union</h4>
+        <p>E.g. Set union</p>
+        <button data-example="gset">Load in Editor</button>
     </div>
     <div class="prop_card">
-        <img src="/diagrams/assoc.svg">
         <h3>Associativity</h3>
+        <img src="/diagrams/assoc.svg" width="210" height="210">
         <p>An associative function is one that can be folded in any direction on arguments without changing the result</p>
-        <button class="btn-example" data-example="matrix-mult">Load In Editor</button>
-        <h4>E.g. List concatenation</h4>
+        <p>E.g. List concatenation</p>
+        <button data-example="matrix-mult">Load in Editor</button>
     </div>
     <div class="prop_card">
-        <img src="/diagrams/sel.svg">
         <h3>Selectivity</h3>
+        <img src="/diagrams/sel.svg" width="210" height="210">
         <p>A selective function must always return one of its arguments</p>
-        <button class="btn-example" data-example="nat-max">Load In Editor</button>
-        <h4>E.g. Maximum of two numbers</h4>
+        <p>E.g. Maximum of two numbers</p>
+        <button data-example="nat-max">Load in Editor</button>
     </div>
     </div>
 
@@ -415,39 +415,39 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
     <h2>Binary Relations</h2>
     <div class="prop_box">
         <div class="prop_card">
-            <img src="/diagrams/refl.svg">
             <h3>Reflexivity</h3>
+            <img src="/diagrams/refl.svg" width="210" height="210">
             <p>A reflexive relation is one where every element is related to itself</p>
-            <button class="btn-example" data-example="bv_eq">Load In Editor</button>
-            <h4>E.g. Equality</h4>
+            <p>E.g. Equality</p>
+            <button data-example="bv_eq">Load in Editor</button>
         </div>
         <div class="prop_card">
-            <img src="/diagrams/sym.svg">
             <h3>Symmetric</h3>
+            <img src="/diagrams/sym.svg" width="210" height="210">
             <p>A symmetric relation is one where an element is related to another if and only if the other is related to it</p>
-            <button class="btn-example" data-example="asym-eq">Load In Editor</button>
-            <h4>E.g. Inequality</h4>
+            <p>E.g. Inequality</p>
+            <button data-example="asym-eq">Load in Editor</button>
         </div>
         <div class="prop_card">
-            <img src="/diagrams/trans.svg">
             <h3>Transitivity</h3>
+            <img src="/diagrams/trans.svg" width="210" height="210">
             <p>In a transitive relation if an element <em>a</em> is related to <em>b</em> and <em>b</em> is related to <em>c</em> then <em>a</em> must be related to <em>c</em></p>
-            <button class="btn-example" data-example="ancestor-transitivity">Load In Editor</button>
-            <h4>E.g. Ancestry</h4>
+            <p>E.g. Ancestry</p>
+            <button data-example="ancestor-transitivity">Load in Editor</button>
         </div>
         <div class="prop_card">
-            <img src="/diagrams/conn.svg">
             <h3>Connectivity</h3>
+            <img src="/diagrams/conn.svg" width="210" height="210">
             <p>A connected relation is one where between any two distinct elements some relation exists</p>
-            <button class="btn-example" data-example="total-ord">Load In Editor</button>
-            <h4>E.g. Total order</h4>
+            <p>E.g. Total order</p>
+            <button data-example="total-ord">Load in Editor</button>
         </div>
         <div class="prop_card">
-            <img src="/diagrams/antisym.svg">
             <h3>Antisymmetry</h3>
+            <img src="/diagrams/antisym.svg" width="210" height="210">
             <p>An antisymmetric relation is one where between any two distinct elements at most one relation exists</p>
-            <button class="btn-example" data-example="divisibility">Load In Editor</button>
-            <h4>E.g. Divisibility</h4>
+            <p>E.g. Divisibility</p>
+            <button data-example="divisibility">Load in Editor</button>
         </div>
     </div>
 
@@ -458,18 +458,14 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
 <p>
 We provide you with <code>propel.tar.xz</code> on <a href="https://doi.org/10.5281/zenodo.7817421">Zenodo (doi: 10.5281/zenodo.7817421)</a>, which is a pre-built container image that contains all necessary programs.
 To load, run the following command:
-<br><code>
-$ docker load &lt; propel.tar.xz
-</code>
 </p>
+<pre><code>$ <span class="select">docker load &lt; propel.tar.xz</span></code></pre>
 
 <p>
 Further, we also provide the option to build the contain anew. To build, run the
 following command which takes between 10 and 20 minutes:
-<br><code>
-$ docker build -t propel .
-</code>
 </p>
+<pre><code>$ <span class="select">docker build -t propel .</span></code></pre>
 
 <p>
 Rebuilding the image may not work on Apple M1 machines because of incomplete emulation of system calls (specifically the <code>inotify</code> kernel subsystem).
@@ -483,24 +479,20 @@ The provided container already contains a binary executable of Propel.
 
 <p>
 To compile Propel to Java bytecode yourself, run the following command:
-<br><code>
-$ docker run -it --rm propel bash -c 'cd /propel; sbt clean compile'
-</code>
 </p>
+<pre><code>$ <span class="select">docker run -it --rm propel bash -c 'cd /propel; sbt clean compile'</span></code></pre>
 
 <p>
 To compile Propel to a native binary yourself, run the following command:
-<br><code>
-$ docker run -it --rm propel bash -c 'cd /propel; sbt clean nativeLink'
-</code>
 </p>
+<pre><code>$ <span class="select">docker run -it --rm propel bash -c 'cd /propel; sbt clean nativeLink'</span></code></pre>
 
 <p>
 Compiling Propel, to bytecode or to a native executable, may not work inside the Docker container on Apple M1 machines for the reasons mentioned earlier.
 </p>
 
 <p>
-The resulting binary is at <code>/propel/.native/target/scala-3.2.2/propel</code>.
+The resulting binary is at <code>/propel/<span class="break">&#x200b;</span>.native/<span class="break">&#x200b;</span>target/<span class="break">&#x200b;</span>scala-3.2.2/<span class="break">&#x200b;</span>propel</code>.
 The <code>propel</code> executable in the <code>$PATH</code> is already symlinked to that binary file.
 Hence, by default, you can just run <code>propel</code>.
 </p>
@@ -512,21 +504,19 @@ Hence, by default, you can just run <code>propel</code>.
 <p>
 Propel is also provided as a DSL in Scala.
 To experiment with the DSL, we invite you take a look into the following files in the <a href="https://doi.org/10.5281/zenodo.7817421">Propel Docker image</a>:
-<code>/propel/src/test/scala/propel/ScalaExamplesNat.scala</code>,
-<code>/propel/src/test/scala/propel/ScalaExamplesNum.scala</code> and
-<code>/propel/src/test/scala/propel/ScalaExamplesList.scala</code> inside the container.
+<code>/propel/<span class="break">&#x200b;</span>src/<span class="break">&#x200b;</span>test/<span class="break">&#x200b;</span>scala/<span class="break">&#x200b;</span>propel/<span class="break">&#x200b;</span>ScalaExamplesNat.scala</code>,
+<code>/propel/<span class="break">&#x200b;</span>src/<span class="break">&#x200b;</span>test/<span class="break">&#x200b;</span>scala/<span class="break">&#x200b;</span>propel/<span class="break">&#x200b;</span>ScalaExamplesNum.scala</code> and
+<code>/propel/<span class="break">&#x200b;</span>src/<span class="break">&#x200b;</span>test/<span class="break">&#x200b;</span>scala/<span class="break">&#x200b;</span>propel/<span class="break">&#x200b;</span>ScalaExamplesList.scala</code> inside the container.
 </p>
 
 <p>
 As an example, you can execute the following commands to run a shell, explore the files and recompile the project:
-<code><pre>
-$ docker run -it --rm propel bash                               # open a shell
-$ nano /propel/src/test/scala/propel/ScalaExamplesList.scala    # open the file
-
-# edit and save the file
-$ cd /propel &amp;&amp; sbt Test/compile                                # recompile
-</pre></code>
 </p>
+<pre><code>$ <span class="select">docker run -it --rm propel bash</span>                               # open a shell</code>
+<code>$ <span class="select">nano /propel/src/test/scala/propel/ScalaExamplesList.scala</span>    # open the file</code>
+
+<code># edit and save the file</code>
+<code>$ <span class="select">cd /propel &amp;&amp; sbt Test/compile</span>                                # recompile</code></pre>
 
 <p>
 Compiling the examples may not work inside the Docker container on Apple M1 machines for the reasons mentioned earlier.
@@ -534,11 +524,11 @@ Compiling the examples may not work inside the Docker container on Apple M1 mach
 
 <p>
 You may define your own function using the following syntax:
-<code><pre>
-def myFunction = prop[(FunctionProperties) := (T1, T1) =>: T2] { (x, y) => body }
-// or
-def myRecursiveFunction = prop.rec[(FunctionProperties) := (T1, T1) =>: T2] { myRecursiveFunction => (x, y) => body }
-</pre></code>
+</p>
+<pre><code><span class="select">def myFunction = prop[(FunctionProperties) := (T1, T1) =>: T2] { (x, y) => body }</span></code>
+<code>// or</code>
+<code><span class="select">def myRecursiveFunction = prop.rec[(FunctionProperties) := (T1, T1) =>: T2] { myRecursiveFunction => (x, y) => body }</span></code></pre>
+<p>
 Here, <code>myFunction</code> is the name of the function, <code>FunctionProperties</code> is a list of function properties the function has (separated by <code>&amp;</code>), <code>T1</code> is the type of the arguments of the binary function, <code>T2</code> is the return type of the function, <code>x</code> and <code>y</code> are the names of the function arguments, and <code>body</code> is the function body.
 </p>
 
@@ -552,17 +542,15 @@ If the properties cannot be proven, then a compilation error indicates which pro
 </p>
 
 <p>
-For example, you can add the following GCounter CRDT example to one of the files in <code>/propel/src/test/scala/propel</code>
-<code><pre>
-def mergeGCounter = prop[(Comm &amp; Assoc &amp; Idem) := (List[Num], List[Num]) =>: List[Num]] { zipWith(maxNum) }
-</pre></code>
+For example, you can add the following GCounter CRDT example to one of the files in <code>/propel/<span class="break">&#x200b;</span>src/<span class="break">&#x200b;</span>test/<span class="break">&#x200b;</span>scala/<span class="break">&#x200b;</span>propel</code>:
 </p>
+<pre><code><span class="select">def mergeGCounter = prop[(Comm &amp; Assoc &amp; Idem) := (List[Num], List[Num]) =>: List[Num]] { zipWith(maxNum) }</span></code></pre>
 
 
     <h1 id="section-publications">Publications</h1>
     <ol class="publications">
         <li>George Zakhour, Pascal Weisenburger, and Guido Salvaneschi. 2023. Type-Checking CRDT Convergence.
-            <i>Proceedings of the ACM on Programming Languages</i>&nbsp;7, PLDI, Article&nbsp;162, June 17&ndash;21, 2023, Orlando, Florida, United States. <a href="https://doi.org/10.1145/3591276">https://doi.org/10.1145/3591276</a> [<a href="https://programming-group.com/assets/pdf/papers/2023_Type-Checking-CRDT-Convergence.pdf">author version</a>]</li>
+            <i>Proceedings of the ACM on Programming Languages</i>&nbsp;7, PLDI, Article&nbsp;162, June 17&ndash;21, 2023, Orlando, Florida, United States. <a href="https://doi.org/10.1145/3591276">https://<span class="break">&#x200b;</span>doi.org/<span class="break">&#x200b;</span>10.1145/3591276</a> [<a href="https://programming-group.com/assets/pdf/papers/2023_Type-Checking-CRDT-Convergence.pdf">author version</a>]</li>
     </ol>
 </main>
 
