@@ -30,11 +30,11 @@ function syntaxHighlight(code) {
             break;
         case IN_ID:
             // types
-            if (t=='fun' || t=='forall' || t=='rec')
+            if (t=='fun' || t=='forall' || t=='rec' || t=='==')
                 color = '#0087af';
             // terms
             else if (t=='lambda' || t=='cases' || t=='let' || t=='letrec' || t=='lettype' || t=='if' || t=='not'
-                  || t=='or' || t=='and' || t=='implies' || t=='def' || t=='type') {
+                  || t=='or' || t=='and' || t=='implies' || t=='def' || t=='type' || t=='prop-for') {
                 color = '#d75f00';
                 weight = 'bold';
             }

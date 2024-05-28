@@ -56,7 +56,7 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
                 <li class="selected">
                     <code>(def <em>&lt;var&gt;</em> [<em>&lt;type&gt;</em>] <em>&lt;expr&gt;</em>)</code>
                     <div class="description">
-                    Introduces a definition that has is bound to <em>&lt;var&gt;</em> in the rest of the program.
+                    Introduces a definition that is bound to <em>&lt;var&gt;</em> in the rest of the program.
                     Recursive definitions must designate their type.
                     Non-recursive definitions leave out the type declaration.
                     </div>
@@ -67,12 +67,20 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
                     Introduce a recursive or non-recursive type alias <em>&lt;var&gt;</em> for <em>&lt;type&gt;</em> in the rest of the program.
                     </div>
                 </li>
+                <li>
+                    <code>(prop-for <em>&lt;var&gt;</em> ([forall <em>&lt;[var type]...&gt;</em>] (== <em>&lt;expr&gt;</em> <em>&lt;expr&gt;</em>)))</code>
+                    <div class="description">
+                    Asserts a universally quantified equation to be proven for the definition referenced by its identifier <em>&lt;var&gt;</em>.
+                    The universally quantified variables are of the form (<em>&lt;var type&gt;</em>).
+                    The equality is of the form (== <em>&lt;expr&gt;</em> <em>&lt;expr&gt;</em>).
+                    </div>
+                </li>
             </ul>
 
             <h3 id="syntax-expressions">Expressions</h3>
             <ul>
                 <li>
-                    <code>(lambda [<em>&lt;[prop...]&gt;</em>] <em>&lt;arg...&gt;</em> <em>&lt;expr&gt;</em>)</code>
+                    <code>(lambda [<em>&lt;[properties...]&gt;</em>] <em>&lt;[var type]...&gt;</em> <em>&lt;expr&gt;</em>)</code>
                     <div class="description">
                     A lambda expression with zero or more <em>&lt;properties&gt;</em>, one or more arguments of the form (<em>&lt;var&gt;</em> <em>&lt;type&gt;</em>), and a body <em>&lt;expr&gt;</em>.
                     The annotated properties are type-checked and will be part of the function’s type.
@@ -86,13 +94,13 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
                     </div>
                 </li>
                 <li>
-                    <code>(letrec <em>&lt;var&gt;</em> <em>&lt;type&gt;</em> <em>&lt;expr&gt;</em> <em>&lt;expr&gt;</em>)</code>
+                    <code>(letrec <em>&lt;[var type expr]...&gt;</em> <em>&lt;expr&gt;</em>)</code>
                     <div class="description">
                     Introduces a recursive definition for the first expression that has the designated type and is bound to <em>&lt;var&gt;</em> in the last expression.
                     </div>
                 </li>
                 <li>
-                    <code>(lettype <em>&lt;var&gt;</em> <em>&lt;type&gt;</em> <em>&lt;expr&gt;</em>)</code>
+                    <code>(lettype <em>&lt;[var type]...&gt;</em> <em>&lt;expr&gt;</em>)</code>
                     <div class="description">
                     Introduces a recursive or non-recursive type alias <em>&lt;var&gt;</em> for <em>&lt;type&gt;</em> in <em>&lt;expr&gt;</em>.
                     </div>
@@ -135,7 +143,7 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
                     </div>
                 </li>
                 <li>
-                    <code>(<em>&lt;K&gt;</em> <em>&lt;expr...&gt;</em>)</code>
+                    <code>(<em>&lt;constructor&gt;</em> <em>&lt;expr...&gt;</em>)</code>
                     <div class="description">
                     Applies a constructor to its arguments.
                     </div>
@@ -174,6 +182,12 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
                     </div>
                 </li>
                 <li>
+                    <code>(fun <em>&lt;type...&gt;</em> <em>&lt;type&gt;</em>)</code>
+                    <div class="description">
+                    Defines a function type and with one or more arguments (of the form <em>&lt;type&gt;</em>) and a result <em>&lt;type&gt;</em>.
+                    </div>
+                </li>
+                <li>
                     <code>(rec <em>&lt;var&gt;</em> <em>&lt;type&gt;</em>)</code>
                     <div class="description">
                     Defines a recursive type and
@@ -184,7 +198,7 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
                     <code>(forall <em>&lt;var&gt;</em> <em>&lt;type&gt;</em>)</code>
                     <div class="description">
                     Defines a polymorphic type and
-                    <em>&lt;var&gt;</em> is bound in <em>&lt;type&gt;</em>.
+                    <em>&lt;var&gt;</em> that is bound in <em>&lt;type&gt;</em>.
                     </div>
                 </li>
             </ul>
@@ -266,7 +280,7 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
             <input type="button" value="Check" id="checkCode">
             <select id="example">
                 <option value="bv_eq" selected>Bitvector equality</option>
-                <option value="nat_add3p">Peano Number addition</option>
+                <option value="nat_add">Peano Number addition</option>
                 <option value="natlist_gcounter">GCounter</option>
                 <option value="bv_lwwreg">Last-Writer-Wins Bitvector Register</option>
                 <option value="gset">GSets encoded as functions</option>
@@ -277,6 +291,7 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
                 <option value="ancestor-transitivity">Cat ancestry</option>
                 <option value="total-ord">Peano number ordering</option>
                 <option value="divisibility">Peano number divisibility</option>
+                <option value="option-laws">Option type class laws</option>
             </select>
             <input type="checkbox" id="printReduction">
             <label for="printReduction">Print reductions</label>
@@ -554,6 +569,8 @@ For example, you can add the following GCounter CRDT example to one of the files
 
     <h1 id="section-publications">Publications</h1>
     <ol class="publications">
+        <li>George Zakhour, Pascal Weisenburger, and Guido Salvaneschi. 2024.  Automated Verification of Fundamental Algebraic Laws.
+            <i>Proceedings of the ACM on Programming Languages</i>&nbsp;8, PLDI, Article&nbsp;178, June 24&ndash;28, 2024, Copenhagen, Denmark. <a href="https://doi.org/10.1145/3656408">https://<span class="break">&#x200b;</span>doi.org/<span class="break">&#x200b;</span>10.1145/3656408</a> [<a href="https://programming-group.com/assets/pdf/papers/2024_Automated-Verification-of-Fundamental-Algebraic-Laws.pdf">author version</a>]</li>
         <li>George Zakhour, Pascal Weisenburger, and Guido Salvaneschi. 2023. Type-Checking CRDT Convergence.
             <i>Proceedings of the ACM on Programming Languages</i>&nbsp;7, PLDI, Article&nbsp;162, June 17&ndash;21, 2023, Orlando, Florida, United States. <a href="https://doi.org/10.1145/3591276">https://<span class="break">&#x200b;</span>doi.org/<span class="break">&#x200b;</span>10.1145/3591276</a> [<a href="https://programming-group.com/assets/pdf/papers/2023_Type-Checking-CRDT-Convergence.pdf">author version</a>]</li>
     </ol>
@@ -580,18 +597,28 @@ Propel is a research language developed at the <a href="https://programming-grou
       [_ False])))
 </script>
 
-<script type="text/propel" id="nat_add3p">
+<script type="text/propel" id="nat_add">
 ; type definitions
 (type nat {(S nat) Z})
 
 ; definition of addition over the natural numbers
-(def nat_add3p (fun nat nat nat)
+(def nat_add (fun nat nat nat)
   ; it must be commutative and associative
   (lambda [comm assoc] (x nat) (y nat)
     (cases (Tuple x y)
       [(Tuple Z y) y]
       [(Tuple x Z) x]
-      [(Tuple (S x) (S y)) (S (S (nat_add3p x y)))])))
+      [(Tuple (S x) (S y)) (S (S (nat_add x y)))])))
+
+; left identity
+(prop-for nat_add
+  (forall (x (rec X {(S X) Z}))
+    (== (nat_add Z x) x)))
+
+; right identity
+(prop-for nat_add
+  (forall (x (rec X {(S X) Z}))
+    (== (nat_add x Z) x)))
 </script>
 
 <script type="text/propel" id="natlist_gcounter">
@@ -840,6 +867,71 @@ Propel is a research language developed at the <a href="https://programming-grou
          (if (less a b)
              (eq a Z)
              (divisible-by (sub a b) b)))))
+</script>
+
+
+<script type="text/propel" id="option-laws">
+(type nat {Z (S nat)})
+(type option {None (Some nat)})
+
+(def nat_add (fun nat nat nat)
+  (lambda (x nat) (y nat) (cases x
+    [Z y]
+    [(S x) (S (nat_add x y))])))
+
+
+; functor map
+(def fmap (fun (fun nat nat) option option)
+  (lambda (f (fun nat nat)) (x option)
+    (cases x
+      [None None]
+      [(Some x) (Some (f x))])))
+
+; functor map identity
+(prop-for fmap
+  (forall (x option)
+    (== (fmap (lambda (y nat) y) x) x)))
+
+; functor map composition
+(prop-for fmap
+  (forall (x option) (f (fun nat nat)) (g (fun nat nat))
+    (== (fmap (lambda (y nat) (f (g y))) x) (fmap f (fmap g x)))))
+
+
+; semigroup operation associativity
+
+(def <> (fun option option option)
+  (lambda [assoc] (x option) (y option)
+    (cases (Pair x y)
+      [(Pair None y) y]
+      [(Pair x None) x]
+      [(Pair (Some x) (Some y)) (Some (nat_add x y))])))
+
+
+; monad return and bind
+
+(def return (lambda (x nat) (Some x)))
+
+(def >>= (fun option (fun nat option) option)
+  (lambda (x option) (f (fun nat option))
+    (cases x
+      [None None]
+      [(Some x) (f x)])))
+
+; monad return and bind right identity
+(prop-for >>=
+  (forall (m option)
+    (== (>>= m return) m)))
+
+; monad return and bind left identity
+(prop-for >>=
+  (forall (x nat) (f (fun nat option))
+    (== (>>= (return x) f) (f x))))
+
+; monad bind associativity
+(prop-for >>=
+  (forall (m option) (f (fun nat option)) (g (fun nat option))
+    (== (>>= (>>= m f) g) (>>= m (lambda (x nat) (>>= (f x) g))))))
 </script>
 
 <script src="editor.js"></script>
