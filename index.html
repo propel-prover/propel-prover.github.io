@@ -8,18 +8,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@prg_grp">
-<meta name="twitter:title" content="Propel - Type-check your CRDTs!">
+<meta name="twitter:title" content="Propel – Type-check algebraic laws!">
 <meta name="twitter:image" content="https://propel-prover.github.io/twitter_card.png">
-<meta name="twitter:description" content="Propel - Type-check your CRDTs! Track commutativity, associativity, idempotency, and other algebraic properties in types. Propel is a programming language developed in the Programming Group at the University of St.Gallen. It allows developers to annonate functions with alegbraic properties such as commutativity, associativity, and idempotency.">
+<meta name="twitter:description" content="Propel – Type-check algebraic laws! Track commutativity, associativity, idempotency, and other algebraic properties in types. Propel is a programming language developed in the Programming Group at the University of St.Gallen. It allows developers to annonate functions with alegbraic properties such as commutativity, associativity, and idempotency.">
 </head>
 <body>
 
 <nav>
 <ul>
+    <li><a href="#section-example">Example</a></li>
     <li><a href="#section-crdt">CRDTs</a></li>
     <li><a href="#section-properties">Properties</a></li>
     <li><a href="#section-getting-started">Getting Started</a></li>
-    <li><a href="#section-scala-dsl">Scala DSL</a></li>
     <li><a href="#section-publications">Publications</a></li>
     <li><a href="https://github.com/propel-prover">GitHub</a></li>
     <li><a href="https://programming-group.com">Programming Group</a></li>
@@ -31,7 +31,7 @@
 </header>
 
 <div class="summary">
-<h1 id="tagtitle">Type-check your <a href="#section-crdt">CRDTs</a>!</h1>
+<h1 id="tagtitle">Type-check algebraic laws!</h1>
 <h2 id="tagline">
 Track commutativity, associativity, idempotency, and <a href="#section-properties">other algebraic properties</a> in types
 </h2>
@@ -40,8 +40,6 @@ Track commutativity, associativity, idempotency, and <a href="#section-propertie
 Propel is a programming language developed in the <a href="https://programming-group.com">Programming Group</a> at the <a href="https://www.unisg.ch">University of St.&#x202F;Gal&shy;len</a>.
 It allows developers to annotate functions with algebraic properties such as commutativity, associativity, and idempotency.
 Propel’s type system uses a specialized automated inductive theorem prover to reason about these properties.
-The language focuses on verifying the convergence properties of <a href="#section-crdt">CRDT</a> implementations.
-Propel is available as a standalone language and as a <a href="#section-scala-dsl">Scala DSL</a>.
 </p>
 </div>
 
@@ -314,7 +312,73 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
 </div>
 
 <main>
-    <h1 id="section-crdt">Conflict-Free Replicated Datatypes (CRDTs)</h1>
+    <h1 id="section-example">Example: Addition of Peano Numbers and Vectors</h1>
+    <p>The following example defines the following functions with their algebraic properties to be proven:</p>
+    <ul>
+      <li>Addition of Peano numbers is commutative and associative and has a left and right identity element.</li>
+      <li>Zipping the elements of two lists into a new list using a given function is commutative, associative and/or idempotent if the given function has the same properties.</li>
+      <li>Addition of vectors represented as lists of Peano numbers numbers is commutative and associative.</li>
+    </ul>
+    <p>The following two code snippets show the implementations of these functions using Propel’s language which you can use in the editor above, and using Propel’s Scala DSL.</p>
+    <div class="code-example">
+        <div class="code-example-50">
+            <h3>Propel Language</h3>
+<!--{{{--><pre class="preview"><code class="line indent-0"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">type</span> nat <span style="color:#888888;font-weight:normal">{</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">S</span> nat<span style="color:#888888;font-weight:normal">)</span> <span style="color:#8700af;font-weight:normal">Z</span><span style="color:#888888;font-weight:normal">}</span><span style="color:#888888;font-weight:normal">)</span>            <span style="color:#878787;font-weight:normal">; natural numbers</span></code>
+<code class="line indent-0"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">type</span> list <span style="color:#888888;font-weight:normal">{</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> nat list<span style="color:#888888;font-weight:normal">)</span> <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">}</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#878787;font-weight:normal">; lists</span></code>
+<code class="line indent-0"></code>
+<code class="line indent-0"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">def</span> add <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">fun</span> nat nat nat<span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-2">  <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">lambda</span> <span style="color:#888888;font-weight:normal">[</span><span style="color:#d70087;font-weight:bold">comm</span> <span style="color:#d70087;font-weight:bold">assoc</span><span style="color:#888888;font-weight:normal">]</span> <span style="color:#888888;font-weight:normal">(</span>a nat<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>b nat<span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-4">    <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">cases</span> a</code>
+<code class="line indent-6">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#8700af;font-weight:normal">Z</span> b<span style="color:#888888;font-weight:normal">]</span></code>
+<code class="line indent-6">      <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">S</span> a<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">S</span> <span style="color:#888888;font-weight:normal">(</span>add a b<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">]</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-0"></code>
+<code class="line indent-0"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">prop-for</span> add <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">forall</span> <span style="color:#888888;font-weight:normal">(</span>b nat<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">==</span> <span style="color:#888888;font-weight:normal">(</span>add <span style="color:#8700af;font-weight:normal">Z</span> b<span style="color:#888888;font-weight:normal">)</span> b<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#878787;font-weight:normal">; left identity</span></code>
+<code class="line indent-0"></code>
+<code class="line indent-0"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">prop-for</span> add <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">forall</span> <span style="color:#888888;font-weight:normal">(</span>a nat<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">==</span> <span style="color:#888888;font-weight:normal">(</span>add a <span style="color:#8700af;font-weight:normal">Z</span><span style="color:#888888;font-weight:normal">)</span> a<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#878787;font-weight:normal">; right identity</span></code>
+<code class="line indent-0"></code>
+<code class="line indent-0"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">def</span> zipWith <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">fun</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">fun</span> nat nat nat<span style="color:#888888;font-weight:normal">)</span> list list list<span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-2">  <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">lambda</span> <span style="color:#888888;font-weight:normal">(</span>f <span style="color:#888888;font-weight:normal">(</span><span style="color:#0087af;font-weight:normal">fun</span> nat nat nat<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-4">    <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">lambda</span> <span style="color:#888888;font-weight:normal">[</span><span style="color:#d70087;font-weight:bold">comm</span> <span style="color:#d70087;font-weight:bold">assoc</span> <span style="color:#d70087;font-weight:bold">idem</span><span style="color:#888888;font-weight:normal">]</span> <span style="color:#888888;font-weight:normal">(</span>x list<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>y list<span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-6">      <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">cases</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> x y<span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-8">        <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#8700af;font-weight:normal">Nil</span> y<span style="color:#888888;font-weight:normal">)</span> <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">]</span></code>
+<code class="line indent-8">        <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> x <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">)</span> <span style="color:#8700af;font-weight:normal">Nil</span><span style="color:#888888;font-weight:normal">]</span></code>
+<code class="line indent-8">        <span style="color:#888888;font-weight:normal">[</span><span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Tuple</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> x xs<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> y ys<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-9">         <span style="color:#888888;font-weight:normal">(</span><span style="color:#8700af;font-weight:normal">Cons</span> <span style="color:#888888;font-weight:normal">(</span><span style="color:#888888;font-weight:normal">[</span><span style="color:#d70087;font-weight:bold">comm</span> <span style="color:#d70087;font-weight:bold">assoc</span> <span style="color:#d70087;font-weight:bold">idem</span><span style="color:#888888;font-weight:normal">]</span> f x y<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>zipWith f xs ys<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">]</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span></code>
+<code class="line indent-0"></code>
+<code class="line indent-0"><span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">def</span> addVectors</code>
+<code class="line indent-2">  <span style="color:#888888;font-weight:normal">(</span><span style="color:#d75f00;font-weight:bold">lambda</span> <span style="color:#888888;font-weight:normal">[</span><span style="color:#d70087;font-weight:bold">comm</span> <span style="color:#d70087;font-weight:bold">assoc</span><span style="color:#888888;font-weight:normal">]</span> <span style="color:#888888;font-weight:normal">(</span>x list<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>y list<span style="color:#888888;font-weight:normal">)</span> <span style="color:#888888;font-weight:normal">(</span>zipWith add x y<span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span><span style="color:#888888;font-weight:normal">)</span></code></pre><!--}}}-->
+    </div>
+
+        <div class="code-example-50">
+            <h3>Propel in Scala</h3>
+<!--{{{--><pre class="preview"><code class="line indent-0"><span style="color:#d75f00; font-weight:bold">enum</span> ℕ:</code>
+<code class="line indent-2">  <span style="color:#d75f00; font-weight:bold">case</span> <span style="color:#8700af;font-weight:normal">Z</span></code>
+<code class="line indent-2">  <span style="color:#d75f00; font-weight:bold">case</span> <span style="color:#8700af;font-weight:normal">S</span>(p: <span style="color:#0087af">ℕ</span>)</code>
+<code class="line indent-0"></code>
+<code class="line indent-0"><span style="color:#d75f00; font-weight:bold">def</span> add =</code>
+<code class="line indent-2">  <span style="color:#d75f00; font-weight:bold">prop</span>.<span style="color:#d75f00; font-weight:bold">rec</span>[<span style="color:#0087af">(<span style="color:#d70087;font-weight:bold">Comm</span> & <span style="color:#d70087;font-weight:bold">Assoc</span>) := (ℕ, ℕ) =>: ℕ</span>]: add =></code>
+<code class="line indent-4">    <span style="color:#d75f00; font-weight:bold">props</span>(</code>
+<code class="line indent-6">      (b: <span style="color:#0087af">ℕ</span>) => add(<span style="color:#8700af;font-weight:normal">Z</span>, b) <span style="color:#0087af">=:=</span> b, <span style="color:#878787;font-weight:normal">// left identity</span></code>
+<code class="line indent-6">      (a: <span style="color:#0087af">ℕ</span>) => add(a, <span style="color:#8700af;font-weight:normal">Z</span>) <span style="color:#0087af">=:=</span> a  <span style="color:#878787;font-weight:normal">// right identity</span></code>
+<code class="line indent-4">    ):</code>
+<code class="line indent-6">      <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af;font-weight:normal">Z</span>, b) => b</code>
+<code class="line indent-6">      <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af;font-weight:normal">S</span>(a), b) => <span style="color:#8700af;font-weight:normal">S</span>(add(a, b))</code>
+<code class="line indent-0"></code>
+<code class="line indent-0"><span style="color:#d75f00; font-weight:bold">def</span> zipWith[<span style="color:#0087af">P >: (<span style="color:#d70087;font-weight:bold">Comm</span> & <span style="color:#d70087;font-weight:bold">Assoc</span> & <span style="color:#d70087;font-weight:bold">Idem</span>)</span>, <span style="color:#0087af">T</span>] =</code>
+<code class="line indent-2">  <span style="color:#d75f00; font-weight:bold">prop</span>.<span style="color:#d75f00; font-weight:bold">rec</span>[<span style="color:#0087af">(P := (T, T) =>: T) =></span></code>
+<code class="line indent-11">           <span style="color:#0087af">(P := (List[T], List[T]) =>: List[T])</span>]:</code>
+<code class="line indent-4">    zipWith => f =></code>
+<code class="line indent-6">      <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Nil</span>, y) => <span style="color:#8700af">Nil</span></code>
+<code class="line indent-6">      <span style="color:#d75f00; font-weight:bold">case</span> (x, <span style="color:#8700af">Nil</span>) => <span style="color:#8700af">Nil</span></code>
+<code class="line indent-6">      <span style="color:#d75f00; font-weight:bold">case</span> (x <span style="color:#8700af">::</span> xs, y <span style="color:#8700af">::</span> ys) => f(x, y) <span style="color:#8700af">::</span> zipWith(f)(xs, ys)</code>
+<code class="line indent-0"></code>
+<code class="line indent-0"><span style="color:#d75f00; font-weight:bold">def</span> addVectors =</code>
+<code class="line indent-2">  <span style="color:#d75f00; font-weight:bold">prop</span>[<span style="color:#0087af">(<span style="color:#d70087;font-weight:bold">Comm</span> & <span style="color:#d70087;font-weight:bold">Assoc</span>) := (List[ℕ], List[ℕ]) =>: List[ℕ])</span>]:</code>
+<code class="line indent-4">    zipWith(add)</code></pre><!--}}}-->
+        </div>
+    </div>
+
+    <h1 id="section-crdt">Use Case: Conflict-Free Replicated Datatypes (CRDTs)</h1>
     <img src="crdt.svg" width="400" height="400">
     <p>
     A state-based <em>Conflict-Free Rep&shy;li&shy;cat&shy;ed Da&shy;ta Type (CRDT)</em> is any datatype that defines a <code>merge</code> function that combines any two instances&mdash;any two replicas&mdash;into one without any conflict or manual conflict resolution.
@@ -367,13 +431,13 @@ Propel is available as a standalone language and as a <a href="#section-scala-ds
             <h3>Propel in Scala</h3>
 <!--{{{--><pre class="preview"><code class="line indent-0"><span style="color:#d75f00; font-weight:bold">enum</span> Nat:</code>
 <code class="line indent-2">  <span style="color:#d75f00; font-weight:bold">case</span> <span style="color:#8700af">Zero</span></code>
-<code class="line indent-2">  <span style="color:#d75f00; font-weight:bold">case</span> <span style="color:#8700af">Succ</span>(pred: Nat)</code>
+<code class="line indent-2">  <span style="color:#d75f00; font-weight:bold">case</span> <span style="color:#8700af">Succ</span>(pred: <span style="color:#0087af">Nat</span>)</code>
 <code class="line indent-0"></code>
 <code class="line indent-0"><span style="color:#d75f00; font-weight:bold">def</span> max =</code>
 <code class="line indent-2">  <span style="color:#d75f00; font-weight:bold">prop.rec</span>[<span style="color:#0087af">(<span style="color:#d70087;font-weight:bold">Comm</span> &amp; <span style="color:#d70087;font-weight:bold">Assoc</span> &amp; <span style="color:#d70087;font-weight:bold">Idem</span>) := (Nat, Nat) =>: Nat</span>]: max =></code>
-<code class="line indent-4">    <span style="color:#d75f00; font-weight:bold">case</span> (Nat.<span style="color:#8700af">Zero</span>, y) => y</code>
-<code class="line indent-4">    <span style="color:#d75f00; font-weight:bold">case</span> (x, Nat.<span style="color:#8700af">Zero</span>) => x</code>
-<code class="line indent-4">    <span style="color:#d75f00; font-weight:bold">case</span> (Nat.<span style="color:#8700af">Succ</span>(n), Nat.<span style="color:#8700af">Succ</span>(m)) => Nat.<span style="color:#8700af">Succ</span>(max(n, m))</code>
+<code class="line indent-4">    <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Zero</span>, y) => y</code>
+<code class="line indent-4">    <span style="color:#d75f00; font-weight:bold">case</span> (x, <span style="color:#8700af">Zero</span>) => x</code>
+<code class="line indent-4">    <span style="color:#d75f00; font-weight:bold">case</span> (<span style="color:#8700af">Succ</span>(n), <span style="color:#8700af">Succ</span>(m)) => <span style="color:#8700af">Succ</span>(max(n, m))</code>
 <code class="line indent-0"></code>
 <code class="line indent-0"><span style="color:#d75f00; font-weight:bold">def</span> zipWith[<span style="color:#0087af">P >: (</span><span style="color:#d70087;font-weight:bold">Comm</span><span style="color:#0087af"> &amp; </span><span style="color:#d70087;font-weight:bold">Assoc</span><span style="color:#0087af"> &amp; </span><span style="color:#d70087;font-weight:bold">Idem</span><span style="color:#0087af">)</span>, <span style="color:#0087af">T</span>] =</code>
 <code class="line indent-2">  <span style="color:#d75f00; font-weight:bold">prop.rec</span>[<span style="color:#0087af">(P := (T, T) =>: T) =></span></code>
@@ -517,9 +581,6 @@ The <code>propel</code> executable in the <code>$PATH</code> is already symlinke
 Hence, by default, you can just run <code>propel</code>.
 </p>
 
-
-    <h1 id="section-scala-dsl">Scala DSL</h1>
-
 <h2>From the Propel Docker image</h2>
 <p>
 Propel is also provided as a DSL in Scala.
@@ -612,13 +673,11 @@ Propel is a research language developed at the <a href="https://programming-grou
 
 ; left identity
 (prop-for nat_add
-  (forall (x (rec X {(S X) Z}))
-    (== (nat_add Z x) x)))
+  (forall (x nat) (== (nat_add Z x) x)))
 
 ; right identity
 (prop-for nat_add
-  (forall (x (rec X {(S X) Z}))
-    (== (nat_add x Z) x)))
+  (forall (x nat) (== (nat_add x Z) x)))
 </script>
 
 <script type="text/propel" id="natlist_gcounter">
